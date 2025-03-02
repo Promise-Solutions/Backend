@@ -8,11 +8,11 @@
 		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>zero.project</groupId>
-	<artifactId>api-gerenciamento</artifactId>
+	<groupId>Projeto.Studio.Zero</groupId>
+	<artifactId>StudioZero</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api-gerenciamento</name>
-	<description>API de gerenciamento projeto zero</description>
+	<name>StudioZero</name>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -38,6 +38,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
