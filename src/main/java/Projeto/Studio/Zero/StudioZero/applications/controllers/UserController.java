@@ -1,11 +1,11 @@
-package Projeto.Studio.Zero.StudioZero.web.controllers;
+package Projeto.Studio.Zero.StudioZero.applications.controllers;
 
 import Projeto.Studio.Zero.StudioZero.domain.entities.User;
 import Projeto.Studio.Zero.StudioZero.domain.services.UserService;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserCreateRequestDTO;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserDeleteRequestDTO;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserReadRequestDTO;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserUpdateRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserCreateRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserDeleteRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserReadRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserUpdateRequestDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

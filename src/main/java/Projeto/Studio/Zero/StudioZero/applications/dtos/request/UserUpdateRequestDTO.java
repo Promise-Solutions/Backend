@@ -1,4 +1,4 @@
-package Projeto.Studio.Zero.StudioZero.web.dtos.request;
+package Projeto.Studio.Zero.StudioZero.applications.dtos.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
