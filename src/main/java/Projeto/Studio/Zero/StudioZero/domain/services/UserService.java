@@ -1,10 +1,10 @@
 package Projeto.Studio.Zero.StudioZero.domain.services;
 
 import Projeto.Studio.Zero.StudioZero.domain.entities.User;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserCreateRequestDTO;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserDeleteRequestDTO;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserReadRequestDTO;
-import Projeto.Studio.Zero.StudioZero.web.dtos.request.UserUpdateRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserCreateRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserDeleteRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserReadRequestDTO;
+import Projeto.Studio.Zero.StudioZero.applications.dtos.request.UserUpdateRequestDTO;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package Projeto.Studio.Zero.StudioZero.web.dtos.request;
+package Projeto.Studio.Zero.StudioZero.applications.dtos.request;
 
 import jakarta.validation.constraints.NotNull;
 
