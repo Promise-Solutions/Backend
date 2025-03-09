@@ -1,4 +1,4 @@
-package Projeto.Studio.Zero.StudioZero.Config;
+package Projeto.Studio.Zero.StudioZero.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
