@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(userService.searchAll());
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     @Operation(
             summary = "Search user",
             description = "This method is responsible for searching the user in the repository"
