@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok(userService.read(request));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @Operation(
             summary = "Update user",
             description = "This method is responsible for updating the user in the repository"
@@ -77,7 +77,7 @@ public class UserController {
         return ResponseEntity.ok(userService.update(request));
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     @Operation(
             summary = "Delete user",
             description = "This method is responsible for deleting the user from the repository"
