@@ -6,11 +6,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class UserUpdateRequestDTO {
     @NotNull
-    private Long id;
+    private UUID id;
 
     @NotNull
     @Size(min = 3, max = 100)
@@ -25,11 +26,11 @@ public class UserUpdateRequestDTO {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$")
     private String password;
 
-    public @NotNull Long getId() {
+    public @NotNull UUID getId() {
         return id;
     }
 
-    public void setId(@NotNull Long id) {
+    public void setId(@NotNull UUID id) {
         this.id = id;
     }
 
@@ -49,11 +50,15 @@ public class UserUpdateRequestDTO {
         this.email = email;
     }
 
-    public @NotNull @Size(min = 8, max = 50) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$") String getPassword() {
+    public @NotNull @Size(min = 8, max = 50) @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$"
+    ) String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotNull @Size(min = 8, max = 50) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$") String password) {
+    public void setPassword(@NotNull @Size(min = 8, max = 50) @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$"
+    ) String password) {
         this.password = password;
     }
 }
