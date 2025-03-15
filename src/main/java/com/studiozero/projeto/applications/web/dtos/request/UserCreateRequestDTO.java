@@ -38,11 +38,15 @@ public class UserCreateRequestDTO {
         this.email = email;
     }
 
-    public @NotNull @Size(min = 8, max = 50) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$") String getPassword() {
+    public @NotNull @Size(min = 8, max = 50) @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$"
+    ) String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotNull @Size(min = 8, max = 50) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$") String password) {
+    public void setPassword(@NotNull @Size(min = 8, max = 50) @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$"
+    ) String password) {
         this.password = password;
     }
 }
