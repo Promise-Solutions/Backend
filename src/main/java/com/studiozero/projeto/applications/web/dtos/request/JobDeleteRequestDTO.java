@@ -3,18 +3,17 @@ package com.studiozero.projeto.applications.web.dtos.request;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
-import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-public class UserDeleteRequestDTO {
+public class JobDeleteRequestDTO {
     @NotNull
-    private UUID id;
+    private Integer id;
 
-    public @NotNull UUID getId() {
+    public @NotNull Integer getId() {
         return id;
     }
 
-    public void setId(@NotNull UUID id) {
+    public void setId(@NotNull Integer id) {
         this.id = id;
     }
 }
