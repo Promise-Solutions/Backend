@@ -19,6 +19,8 @@ public class User {
     private UUID id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name="cpf", nullable = false)
+    private String cpf;
     @Column(name = "email", nullable = false)
     private String email;
     @Column(name = "password", nullable = false)
@@ -27,15 +29,17 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    public User(String name, String cpf,String email, String password) {
         this.name = name;
+        this.cpf= cpf;
         this.email = email;
         this.password = password;
     }
 
-    public User(UUID id, String name, String email, String password) {
+    public User(UUID id, String name, String cpf,String email, String password) {
         this.id = id;
         this.name = name;
+        this.cpf = cpf;
         this.email = email;
         this.password = password;
     }
@@ -70,6 +74,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 }
 
