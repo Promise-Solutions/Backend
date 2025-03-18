@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(
                 new User(
                         userDto.getName(),
+                        userDto.getCpf(),
                         userDto.getEmail(),
                         userDto.getPassword()
                 )
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
                 new User(
                         user.getId(),
                         userDto.getName(),
+                        userDto.getCpf(),
                         userDto.getEmail(),
                         userDto.getPassword()
                 )
