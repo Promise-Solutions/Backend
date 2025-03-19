@@ -24,8 +24,6 @@ public class UserCreateRequestDTO {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$")
     private String password;
 
-
-
     public @NotBlank @Size(min = 3, max = 100) String getName() {
         return name;
     }
