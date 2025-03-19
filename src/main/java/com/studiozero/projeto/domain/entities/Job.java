@@ -11,13 +11,13 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "category", length = 50, nullable = false)
+    @Column(name = "categoria", length = 50, nullable = false)
     private String category;
 
     @Column(name = "status", length = 20, nullable = false)
     private String status;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "criado_em", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Job() {

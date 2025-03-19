@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -26,8 +27,8 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.save(
                 new User(
-                        userDto.getName(),
                         userDto.getCpf(),
+                        userDto.getName(),
                         userDto.getEmail(),
                         userDto.getPassword()
                 )
@@ -54,15 +55,11 @@ public class UserServiceImpl implements UserService {
         if (userOpt.isEmpty()) {
             throw new EntityNotFoundException("User not found for update");
         }
-        User user = userOpt.get();
-        return userRepository.save(
-                new User(
-                        user.getCpf(),
-                        userDto.getName(),
-                        userDto.getEmail(),
-                        userDto.getPassword()
-                )
-        );
+        User newUser = userOpt.get();
+        newUser.setName(userDto.getName());
+        newUser.setEmail(userDto.getEmail());
+        newUser.setPassword(userDto.getPassword());
+        return userRepository.save(newUser);
     }
 
     @Override
