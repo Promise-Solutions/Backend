@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "usuario")
 public class User {
 
     @Id
@@ -17,24 +17,24 @@ public class User {
     )
     @Column(name = "id", nullable = false)
     private UUID id;
-    @Column(name = "name", nullable = false)
+
+    @Column(name="cpf", nullable = false)
+    private String cpf;
+
+    @Column(name = "nome", nullable = false)
     private String name;
+
     @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "password", nullable = false)
+
+    @Column(name = "senha", nullable = false)
     private String password;
 
     public User() {
     }
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(UUID id, String name, String email, String password) {
-        this.id = id;
+    public User(String cpf, String name, String email, String password) {
+        this.cpf = cpf;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -46,6 +46,14 @@ public class User {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getName() {
