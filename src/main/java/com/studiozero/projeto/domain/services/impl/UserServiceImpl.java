@@ -1,6 +1,7 @@
 package com.studiozero.projeto.domain.services.impl;
 
 import com.studiozero.projeto.domain.entities.User;
+import com.studiozero.projeto.domain.exceptions.BadRequestException;
 import com.studiozero.projeto.domain.exceptions.EntityNotFoundException;
 import com.studiozero.projeto.domain.repositories.UserRepository;
 import com.studiozero.projeto.domain.services.UserService;
@@ -20,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserCreateRequestDTO userDto) {
+        if (userRepository.existsByCpf(userDto.getCpf())){
+            throw new BadRequestException("CPF já existe");
+        }
         return userRepository.save(
                 new User(
                         userDto.getName(),
@@ -37,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> read(UserReadRequestDTO userDto) {
-        Optional<User> userOpt = userRepository.findById(userDto.getId());
+        Optional<User> userOpt = userRepository.findByCpf(userDto.getCpf());
         if (userOpt.isEmpty()) {
             throw new EntityNotFoundException("User not found for search");
         }
@@ -46,16 +50,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(UserUpdateRequestDTO userDto) {
-        Optional<User> userOpt = userRepository.findById(userDto.getId());
+        Optional<User> userOpt = userRepository.findByCpf(userDto.getCpf());
         if (userOpt.isEmpty()) {
             throw new EntityNotFoundException("User not found for update");
         }
         User user = userOpt.get();
         return userRepository.save(
                 new User(
-                        user.getId(),
+                        user.getCpf(),
                         userDto.getName(),
-                        userDto.getCpf(),
                         userDto.getEmail(),
                         userDto.getPassword()
                 )
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> delete(UserDeleteRequestDTO userDto) {
-        Optional<User> userOpt = userRepository.findById(userDto.getId());
+        Optional<User> userOpt = userRepository.findByCpf(userDto.getCpf());
         if (userOpt.isEmpty()) {
             throw new EntityNotFoundException("User not found for delete");
         }

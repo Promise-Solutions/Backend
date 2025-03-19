@@ -10,15 +10,12 @@ import java.util.UUID;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class UserUpdateRequestDTO {
     @NotBlank
-    private UUID id;
+    @CPF
+    private String cpf;
 
     @NotBlank
     @Size(min = 3, max = 100)
     private String name;
-
-    @NotBlank
-    @CPF
-    private String cpf;
 
     @NotBlank
     @Email
@@ -28,14 +25,6 @@ public class UserUpdateRequestDTO {
     @Size(min = 8, max = 50)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$")
     private String password;
-
-    public @NotBlank UUID getId() {
-        return id;
-    }
-
-    public void setId(@NotBlank UUID id) {
-        this.id = id;
-    }
 
     public @NotBlank @Size(min = 3, max = 100) String getName() {
         return name;
