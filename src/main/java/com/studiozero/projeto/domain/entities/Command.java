@@ -1,16 +1,15 @@
 package com.studiozero.projeto.domain.entities;
 
-import com.studiozero.projeto.domain.enums.JobCategory;
-import com.studiozero.projeto.domain.enums.JobType;
 import com.studiozero.projeto.domain.enums.Status;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ServicoOuPacotes")
-public class Job {
+@Table(name = "Comanda")
+public class Command {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -18,25 +17,30 @@ public class Job {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "idServico", nullable = false)
+    @Column(name = "idComanda", nullable = false)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente", nullable = false)
-    private Client client;
+    @Column(name = "dataHoraAbertura", nullable = false)
+    private LocalDateTime openingDateTime;
+
+    @Column(name = "dataHoraFechamento")
+    private LocalDateTime closingDateTime;
+
+    @Column(name = "desconto")
+    private Double discount;
 
     @Column(name = "valorTotal", nullable = false)
     private Double totalValue;
 
-    @Column(name = "categoria", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private JobCategory category;
+    @ManyToOne
+    @JoinColumn(name = "cliente")
+    private Client client;
+
+    @ManyToOne
+    @JoinColumn(name = "funcionario", nullable = false)
+    private Employee employee;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    @Column(name = "tipoServico", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private JobType serviceType;
 }
