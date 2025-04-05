@@ -1,16 +1,16 @@
 package com.studiozero.projeto.applications.web.controllers;
 
-import com.studiozero.projeto.domain.services.JobService;
+import com.studiozero.projeto.domain.services.CommandService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/jobs")
-@Tag(name = "Jobs", description = "Endpoints for Job Management")
-public class JobController {
+@RequestMapping("/commands")
+@Tag(name = "Commands", description = "Endpoints for Command Management")
+public class CommandController {
 
     @Autowired
-    private JobService jobService;
+    private CommandService commandService;
 }

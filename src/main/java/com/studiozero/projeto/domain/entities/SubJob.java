@@ -2,13 +2,20 @@ package com.studiozero.projeto.domain.entities;
 
 import com.studiozero.projeto.domain.enums.Status;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "SubServico")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SubJob {
 
     @Id
@@ -30,7 +37,7 @@ public class SubJob {
     private Double value;
 
     @Column(name = "data", nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(name = "horaInicio", nullable = false)
     private LocalDateTime startTime;
@@ -42,7 +49,6 @@ public class SubJob {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "servico", nullable = false)
-    private Job service;
+    @Column(name = "fkServico", nullable = false)
+    private UUID fkService;
 }

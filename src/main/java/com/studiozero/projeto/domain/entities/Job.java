@@ -4,12 +4,18 @@ import com.studiozero.projeto.domain.enums.JobCategory;
 import com.studiozero.projeto.domain.enums.JobType;
 import com.studiozero.projeto.domain.enums.Status;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "ServicoOuPacotes")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Job {
 
     @Id
@@ -21,9 +27,8 @@ public class Job {
     @Column(name = "idServico", nullable = false)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente", nullable = false)
-    private Client client;
+    @Column(name = "fkCliente", nullable = false)
+    private UUID fkClient;
 
     @Column(name = "valorTotal", nullable = false)
     private Double totalValue;

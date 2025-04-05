@@ -1,30 +1,27 @@
 package com.studiozero.projeto.domain.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ComandaProduto")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommandProduct {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idComandaProduto", nullable = false)
-    private UUID id;
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "produto", nullable = false)
-    private Product product;
+    @Column(name = "fkProduto", nullable = false)
+    private Integer fkProduct;
 
-    @ManyToOne
-    @JoinColumn(name = "comanda", nullable = false)
-    private Command command;
+    @Column(name = "fkComanda", nullable = false)
+    private Integer fkCommand;
 
     @Column(name = "qtdProduto", nullable = false)
     private Integer productQuantity;

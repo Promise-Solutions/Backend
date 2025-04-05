@@ -3,11 +3,17 @@ package com.studiozero.projeto.domain.entities;
 import com.studiozero.projeto.domain.enums.ClientType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "Cliente")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Client {
 
     @Id
@@ -28,7 +34,7 @@ public class Client {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "tel", nullable = false)
+    @Column(name = "contato", nullable = false)
     private String phone;
 
     @Column(name = "tipoCliente", nullable = false)
