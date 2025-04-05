@@ -1,63 +1,66 @@
-CREATE TABLE IF NOT EXISTS `studiozero`.`Funcionario` (
-  `idFuncionario` INT NOT NULL AUTO_INCREMENT,
+-- FUNCIONÁRIO
+CREATE TABLE IF NOT EXISTS `Funcionario` (
+  `idFuncionario` CHAR(36) NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `tel` VARCHAR(15) NOT NULL,
+  `contato` VARCHAR(15) NOT NULL,
   `cpf` VARCHAR(14) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
   `token` VARCHAR(45) NOT NULL,
   `ativo` BOOLEAN NOT NULL,
-  PRIMARY KEY (`idFuncionario`),
-  UNIQUE INDEX `idFuncionario_UNIQUE` (`idFuncionario` ASC) VISIBLE)
-ENGINE = InnoDB;
+  PRIMARY KEY (`idFuncionario`)
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`Cliente` (
-  `idCliente` INT NOT NULL AUTO_INCREMENT,
+-- CLIENTE
+CREATE TABLE IF NOT EXISTS `Cliente` (
+  `idCliente` CHAR(36) NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `cpf` CHAR(14) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `tel` CHAR(15) NOT NULL,
+  `contato` CHAR(15) NOT NULL,
   `tipoCliente` VARCHAR(45) NOT NULL,
   `ativo` BOOLEAN NOT NULL,
-  PRIMARY KEY (`idCliente`),
-  UNIQUE INDEX `idCliente_UNIQUE` (`idCliente` ASC) VISIBLE)
-ENGINE = InnoDB;
+  PRIMARY KEY (`idCliente`)
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`ServicoOuPacotes` (
-  `idServico` INT NOT NULL AUTO_INCREMENT,
-  `cliente` INT NOT NULL,
+-- SERVIÇO OU PACOTES
+CREATE TABLE IF NOT EXISTS `ServicoOuPacotes` (
+  `idServico` CHAR(36) NOT NULL,
+  `fkCliente` CHAR(36) NOT NULL,
   `valorTotal` FLOAT NOT NULL,
   `categoria` VARCHAR(42) NOT NULL,
   `status` VARCHAR(42) NOT NULL,
   `tipoServico` VARCHAR(42) NOT NULL,
   PRIMARY KEY (`idServico`),
-  INDEX `fk_Servico_Cliente1_idx` (`cliente` ASC) VISIBLE,
-  CONSTRAINT `fk_Servico_Cliente1`
-    FOREIGN KEY (`cliente`)
-    REFERENCES `studiozero`.`Cliente` (`idCliente`)
+  INDEX `fkCliente_idx` (`fkCliente` ASC),
+  CONSTRAINT `fkCliente`
+    FOREIGN KEY (`fkCliente`)
+    REFERENCES `Cliente` (`idCliente`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`Tarefa` (
-  `idTarefa` INT NOT NULL,
+-- TAREFA
+CREATE TABLE IF NOT EXISTS `Tarefa` (
+  `idTarefa` CHAR(36) NOT NULL,
   `titulo` VARCHAR(45) NOT NULL,
   `descricao` VARCHAR(250) NOT NULL,
   `data_inicio` DATE NULL,
   `data_limite` DATE NULL,
-  `responsavel` INT NOT NULL,
+  `fkFuncionario` CHAR(36) NOT NULL,
   `status` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idTarefa`),
-  INDEX `fk_tarefa_Funcionario1_idx` (`responsavel` ASC) VISIBLE,
-  CONSTRAINT `fk_tarefa_Funcionario1`
-    FOREIGN KEY (`responsavel`)
-    REFERENCES `studiozero`.`Funcionario` (`idFuncionario`)
+  INDEX `fkFuncionario_idx` (`fkFuncionario` ASC),
+  CONSTRAINT `fkFuncionario`
+    FOREIGN KEY (`fkFuncionario`)
+    REFERENCES `Funcionario` (`idFuncionario`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`SubServico` (
-  `idSubServico` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+-- SUBSERVIÇO
+CREATE TABLE IF NOT EXISTS `SubServico` (
+  `idSubServico` CHAR(36) NOT NULL,
   `tituloSubServico` VARCHAR(45) NOT NULL,
   `descricaoSubServico` VARCHAR(250) NULL,
   `valorSubServico` DOUBLE NOT NULL,
@@ -65,68 +68,68 @@ CREATE TABLE IF NOT EXISTS `studiozero`.`SubServico` (
   `horaInicio` TIME NOT NULL,
   `horaFim` TIME NULL,
   `status` VARCHAR(42) NOT NULL,
-  `servico` INT NOT NULL,
-  PRIMARY KEY (`idSubServico`, `servico`),
-  INDEX `fk_Servico_Atendimento1_idx` (`servico` ASC) VISIBLE,
-  CONSTRAINT `fk_Servico_Atendimento1`
-    FOREIGN KEY (`servico`)
-    REFERENCES `studiozero`.`ServicoOuPacotes` (`idServico`)
+  `fkServico` CHAR(36) NOT NULL,
+  PRIMARY KEY (`idSubServico`, `fkServico`),
+  INDEX `fkServico_idx` (`fkServico` ASC),
+  CONSTRAINT `fkServico`
+    FOREIGN KEY (`fkServico`)
+    REFERENCES `ServicoOuPacotes` (`idServico`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`Produto` (
+-- PRODUTO (MANTIDO COMO INT)
+CREATE TABLE IF NOT EXISTS `Produto` (
   `idProduto` INT NOT NULL AUTO_INCREMENT,
   `nomeProduto` VARCHAR(45) NOT NULL,
   `qtdProduto` INT NOT NULL,
   `valorUnitario` FLOAT NOT NULL,
-  PRIMARY KEY (`idProduto`),
-  UNIQUE INDEX `idItem_UNIQUE` (`idProduto` ASC) VISIBLE)
-ENGINE = InnoDB;
+  PRIMARY KEY (`idProduto`)
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`Comanda` (
+-- COMANDA (MANTIDO COMO INT)
+CREATE TABLE IF NOT EXISTS `Comanda` (
   `idComanda` INT NOT NULL AUTO_INCREMENT,
   `dataHoraAbertura` DATETIME NOT NULL,
   `dataHoraFechamento` DATETIME NULL,
   `desconto` DOUBLE NULL,
   `valorTotal` DOUBLE NOT NULL,
-  `cliente` INT NULL,
-  `funcionario` INT NOT NULL,
+  `fkCliente` CHAR(36) NULL,
+  `fkFuncionario` CHAR(36) NOT NULL,
   `status` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idComanda`),
-  INDEX `fk_Comanda_Cliente1_idx` (`cliente` ASC) VISIBLE,
-  UNIQUE INDEX `Cliente_idCliente_UNIQUE` (`cliente` ASC) VISIBLE,
-  INDEX `fk_Comanda_Funcionario1_idx` (`funcionario` ASC) VISIBLE,
-  CONSTRAINT `fk_Comanda_Cliente1`
-    FOREIGN KEY (`cliente`)
-    REFERENCES `studiozero`.`Cliente` (`idCliente`)
+  INDEX `fkCliente_idx` (`fkCliente` ASC),
+  INDEX `fkFuncionario_idx` (`fkFuncionario` ASC),
+  CONSTRAINT `fkCliente_Comanda`
+    FOREIGN KEY (`fkCliente`)
+    REFERENCES `Cliente` (`idCliente`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Comanda_Funcionario1`
-    FOREIGN KEY (`funcionario`)
-    REFERENCES `studiozero`.`Funcionario` (`idFuncionario`)
+  CONSTRAINT `fkFuncionario_Comanda`
+    FOREIGN KEY (`fkFuncionario`)
+    REFERENCES `Funcionario` (`idFuncionario`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `studiozero`.`ComandaProduto` (
+-- COMANDA PRODUTO (MANTIDO COMO INT)
+CREATE TABLE IF NOT EXISTS `ComandaProduto` (
   `idComandaProduto` INT NOT NULL,
-  `produto` INT NOT NULL,
-  `comanda` INT NOT NULL,
+  `fkProduto` INT NOT NULL,
+  `fkComanda` INT NOT NULL,
   `qtdProduto` INT NOT NULL,
   `valorUnitario` DOUBLE NOT NULL,
-  PRIMARY KEY (`idComandaProduto`, `produto`, `comanda`),
-  INDEX `fk_Produto_has_Comanda_Comanda1_idx` (`comanda` ASC) VISIBLE,
-  INDEX `fk_Produto_has_Comanda_Produto1_idx` (`produto` ASC) VISIBLE,
-  UNIQUE INDEX `idComandaProduto_UNIQUE` (`idComandaProduto` ASC) VISIBLE,
-  CONSTRAINT `fk_Produto_has_Comanda_Produto1`
-    FOREIGN KEY (`produto`)
-    REFERENCES `studiozero`.`Produto` (`idProduto`)
+  PRIMARY KEY (`idComandaProduto`, `fkProduto`, `fkComanda`),
+  INDEX `fkProduto_idx` (`fkProduto` ASC),
+  INDEX `fkComanda_idx` (`fkComanda` ASC),
+  CONSTRAINT `fkProduto`
+    FOREIGN KEY (`fkProduto`)
+    REFERENCES `Produto` (`idProduto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Produto_has_Comanda_Comanda1`
-    FOREIGN KEY (`comanda`)
-    REFERENCES `studiozero`.`Comanda` (`idComanda`)
+  CONSTRAINT `fkComanda`
+    FOREIGN KEY (`fkComanda`)
+    REFERENCES `Comanda` (`idComanda`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;

@@ -1,13 +1,18 @@
 package com.studiozero.projeto.domain.entities;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "Funcionario")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
 
     @Id
@@ -25,7 +30,7 @@ public class Employee {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "tel", nullable = false)
+    @Column(name = "contato", nullable = false)
     private String phone;
 
     @Column(name = "cpf", nullable = false)

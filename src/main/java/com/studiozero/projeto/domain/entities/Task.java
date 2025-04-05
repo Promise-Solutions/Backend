@@ -2,13 +2,19 @@ package com.studiozero.projeto.domain.entities;
 
 import com.studiozero.projeto.domain.enums.Status;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "Tarefa")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 
     @Id
@@ -27,14 +33,13 @@ public class Task {
     private String description;
 
     @Column(name = "data_inicio")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "data_limite")
-    private LocalDateTime limitDate;
+    private LocalDate limitDate;
 
-    @ManyToOne
-    @JoinColumn(name = "responsavel", nullable = false)
-    private Employee responsible;
+    @Column(name = "fkFuncionario", nullable = false)
+    private UUID fkEmployee;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

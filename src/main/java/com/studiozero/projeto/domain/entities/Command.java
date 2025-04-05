@@ -2,23 +2,24 @@ package com.studiozero.projeto.domain.entities;
 
 import com.studiozero.projeto.domain.enums.Status;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "Comanda")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Command {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idComanda", nullable = false)
-    private UUID id;
+    private Integer id;
 
     @Column(name = "dataHoraAbertura", nullable = false)
     private LocalDateTime openingDateTime;
@@ -32,13 +33,11 @@ public class Command {
     @Column(name = "valorTotal", nullable = false)
     private Double totalValue;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente")
-    private Client client;
+    @Column(name = "fkCliente")
+    private UUID fkClient;
 
-    @ManyToOne
-    @JoinColumn(name = "funcionario", nullable = false)
-    private Employee employee;
+    @Column(name = "fkFuncionario", nullable = false)
+    private UUID fkEmployee;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
