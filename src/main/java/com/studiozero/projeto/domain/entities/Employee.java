@@ -31,7 +31,7 @@ public class Employee {
     private String email;
 
     @Column(name = "contato", nullable = false)
-    private String phone;
+    private String contact;
 
     @Column(name = "cpf", nullable = false)
     private String cpf;

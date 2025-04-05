@@ -23,7 +23,7 @@ public class Client {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "idCliente", nullable = false)
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
     @Column(name = "nome", nullable = false)
     private String name;
@@ -35,7 +35,7 @@ public class Client {
     private String email;
 
     @Column(name = "contato", nullable = false)
-    private String phone;
+    private String contact;
 
     @Column(name = "tipoCliente", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -44,4 +44,3 @@ public class Client {
     @Column(name = "ativo", nullable = false)
     private Boolean active;
 }
-
