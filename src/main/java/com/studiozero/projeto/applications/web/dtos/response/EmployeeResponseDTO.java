@@ -2,8 +2,7 @@ package com.studiozero.projeto.applications.web.dtos.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.studiozero.projeto.domain.entities.Client;
-import com.studiozero.projeto.domain.enums.ClientType;
+import com.studiozero.projeto.domain.entities.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,22 +13,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-public class ClientResponseDTO {
+public class EmployeeResponseDTO {
     private UUID id;
     private String name;
     private String cpf;
     private String email;
     private String contact;
-    private ClientType clientType;
     private Boolean active;
 
-    public ClientResponseDTO(Client client) {
-        this.id = client.getId();
-        this.name = client.getName();
-        this.cpf = client.getCpf();
-        this.email = client.getEmail();
-        this.contact = client.getContact();
-        this.clientType = client.getClientType();
-        this.active = client.getActive();
+    public EmployeeResponseDTO(Employee savedEmployee) {
+        this.id = savedEmployee.getId();
+        this.name = savedEmployee.getName();
+        this.cpf = savedEmployee.getCpf();
+        this.email = savedEmployee.getEmail();
+        this.contact = savedEmployee.getContact();
+        this.active = savedEmployee.getActive();
     }
 }
