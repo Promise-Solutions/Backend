@@ -7,10 +7,11 @@ import com.studiozero.projeto.applications.web.dtos.request.ClientUpdateRequestD
 import com.studiozero.projeto.applications.web.dtos.response.ClientResponseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ClientService {
     ClientResponseDTO save(ClientCreateRequestDTO clientDto);
-    ClientResponseDTO search(ClientSearchRequestDTO clientDto);
+    ClientResponseDTO search(UUID id);
     List<ClientResponseDTO> list();
     ClientResponseDTO update(ClientUpdateRequestDTO clientDto);
     String delete(ClientDeleteRequestDTO clientDto);
