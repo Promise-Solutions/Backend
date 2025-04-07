@@ -1,6 +1,7 @@
 package com.studiozero.projeto.domain.services.impl;
 
 import com.studiozero.projeto.applications.web.dtos.request.ClientDeleteRequestDTO;
+import com.studiozero.projeto.applications.web.dtos.request.ClientSearchRequestDTO;
 import com.studiozero.projeto.applications.web.dtos.request.ClientUpdateRequestDTO;
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.exceptions.EntityNotFoundException;
@@ -33,6 +34,13 @@ public class ClientServiceImpl implements ClientService {
         Client savedClient = clientRepository.save(client);
 
         return new ClientResponseDTO(savedClient);
+    }
+
+    @Override
+    public ClientResponseDTO search(ClientSearchRequestDTO clientDto) {
+        Client client = clientRepository.findById(clientDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        return new ClientResponseDTO(client);
     }
 
     @Override
