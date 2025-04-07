@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/clients")
@@ -29,11 +30,11 @@ public class ClientController {
         return ResponseEntity.ok(clientService.save(clientDto));
     }
 
-    @GetMapping("/seach")
+    @GetMapping("/{id}")
     public ResponseEntity<ClientResponseDTO> searchClient(
-            @PathVariable @Valid ClientSearchRequestDTO clientDto
+            @PathVariable @Valid UUID id
     ) {
-        return ResponseEntity.ok(clientService.search(clientDto));
+        return ResponseEntity.ok(clientService.search(id));
     }
 
     @GetMapping

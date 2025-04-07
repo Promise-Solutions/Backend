@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -37,8 +38,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponseDTO search(ClientSearchRequestDTO clientDto) {
-        Client client = clientRepository.findById(clientDto.getId())
+    public ClientResponseDTO search(UUID id) {
+        Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));
         return new ClientResponseDTO(client);
     }
