@@ -1,10 +1,8 @@
 package com.studiozero.projeto.applications.web.controllers;
 
-import com.studiozero.projeto.applications.web.dtos.request.ClientCreateRequestDTO;
 import com.studiozero.projeto.applications.web.dtos.request.ProductCreateRequestDTO;
 import com.studiozero.projeto.applications.web.dtos.request.ProductDeleteRequestDTO;
 import com.studiozero.projeto.applications.web.dtos.request.ProductUpdateRequestDTO;
-import com.studiozero.projeto.applications.web.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.applications.web.dtos.response.ProductResponseDTO;
 import com.studiozero.projeto.domain.services.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
