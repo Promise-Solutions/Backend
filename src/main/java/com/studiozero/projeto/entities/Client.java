@@ -2,10 +2,8 @@ package com.studiozero.projeto.entities;
 
 import com.studiozero.projeto.enums.ClientType;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Data;
 
 import java.util.UUID;
 
@@ -14,6 +12,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Client {
 
     @Id
