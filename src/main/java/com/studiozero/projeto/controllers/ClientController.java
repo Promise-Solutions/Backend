@@ -39,11 +39,12 @@ public class ClientController {
         return ResponseEntity.ok(clientService.findAll());
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     public ResponseEntity<ClientResponseDTO> updateClient(
+            @PathVariable UUID id,
             @RequestBody @Valid ClientRequestDTO clientDto
     ) {
-        return ResponseEntity.ok(clientService.update(clientDto));
+        return ResponseEntity.ok(clientService.update(id, clientDto));
     }
 
     @DeleteMapping("/{id}")

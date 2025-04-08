@@ -39,8 +39,8 @@ public class ProductService {
         }
 
 
-    public ProductResponseDTO update(ProductRequestDTO productDto) {
-        Product product = productRepository.findById(productDto.getId())
+    public ProductResponseDTO update(Integer id, ProductRequestDTO productDto) {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
         product.setName(productDto.getName());

@@ -42,11 +42,12 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.findAll());
     }
 
-    @PatchMapping
+    @PatchMapping("/{ID}")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
+            @PathVariable UUID id,
             @RequestBody @Valid EmployeeRequestDTO employeeDto
     ) {
-        return ResponseEntity.ok(employeeService.update(employeeDto));
+        return ResponseEntity.ok(employeeService.update(id, employeeDto));
     }
 
     @DeleteMapping("/{id}")

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -49,8 +48,8 @@ public class EmployeeService {
                 .toList();
     }
 
-    public EmployeeResponseDTO update(EmployeeRequestDTO employeeDto) {
-        Employee employee = employeeRepository.findById(employeeDto.getId())
+    public EmployeeResponseDTO update(UUID id, EmployeeRequestDTO employeeDto) {
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
 
         if (employeeRepository.findByCpf(employeeDto.getCpf()) != null) {
