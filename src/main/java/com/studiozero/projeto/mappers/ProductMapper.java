@@ -10,7 +10,6 @@ public class ProductMapper {
 
     public Product toEntity(ProductRequestDTO dto) {
         Product product = new Product();
-        product.setId(dto.getId());
         product.setName(dto.getName());
         product.setQuantity(dto.getQuantity());
         product.setUnitValue(dto.getUnitValue());

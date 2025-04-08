@@ -36,11 +36,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll());
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
+            @PathVariable Integer id,
             @RequestBody @Valid ProductRequestDTO productDto
     ) {
-        return ResponseEntity.ok(productService.update(productDto));
+        return ResponseEntity.ok(productService.update(id, productDto));
     }
 
     @DeleteMapping("/{id}")

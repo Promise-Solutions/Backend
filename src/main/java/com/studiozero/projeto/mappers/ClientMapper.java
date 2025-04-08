@@ -10,7 +10,6 @@ public class ClientMapper {
 
     public Client toEntity(ClientRequestDTO dto) {
         Client client = new Client();
-        client.setId(dto.getId());
         client.setName(dto.getName());
         client.setCpf(dto.getCpf());
         client.setEmail(dto.getEmail());
@@ -23,4 +22,5 @@ public class ClientMapper {
     public ClientResponseDTO toDTO(Client client) {
         return new ClientResponseDTO(client);
     }
+
 }

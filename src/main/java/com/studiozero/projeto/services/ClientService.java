@@ -40,8 +40,8 @@ public class ClientService {
                 .toList();
     }
 
-    public ClientResponseDTO update(ClientRequestDTO clientDto) {
-        Client client = clientRepository.findById(clientDto.getId())
+    public ClientResponseDTO update(UUID id, ClientRequestDTO clientDto) {
+        Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));
 
         client.setName(clientDto.getName());

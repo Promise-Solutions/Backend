@@ -10,7 +10,6 @@ public class EmployeeMapper {
 
     public Employee toEntity(EmployeeRequestDTO dto) {
         Employee employee = new Employee();
-        employee.setId(dto.getId());
         employee.setName(dto.getName());
         employee.setEmail(dto.getEmail());
         employee.setContact(dto.getContact());
