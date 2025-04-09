@@ -13,7 +13,6 @@ import org.hibernate.validator.constraints.br.CPF;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-@Getter @Setter
 public class ClientRequestDTO {
 
     @NotBlank(message = "Name value is mandatory")

@@ -10,8 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-@Getter
-@Setter
 public class ProductRequestDTO {
 
     @NotBlank(message = "name value is mandatory")
