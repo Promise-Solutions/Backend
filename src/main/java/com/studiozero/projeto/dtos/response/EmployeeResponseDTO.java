@@ -11,8 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-@Getter
-@Setter
 public class EmployeeResponseDTO {
     private UUID id;
     private String name;

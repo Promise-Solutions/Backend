@@ -9,8 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-@Getter
-@Setter
 public class ProductResponseDTO {
     private Integer id;
     private String name;
