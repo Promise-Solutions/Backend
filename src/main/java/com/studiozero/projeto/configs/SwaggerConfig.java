@@ -1,4 +1,4 @@
-package com.studiozero.projeto.swagger;
+package com.studiozero.projeto.configs;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

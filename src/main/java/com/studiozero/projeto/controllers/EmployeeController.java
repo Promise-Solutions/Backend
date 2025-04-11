@@ -47,8 +47,8 @@ public class EmployeeController {
     }
 
     @Operation(
-            summary = "List a employees",
-            description = "This method is responsible for list a employees."
+            summary = "List all employees",
+            description = "This method is responsible for list all employees."
     )
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDTO>> listAllEmployees() {
