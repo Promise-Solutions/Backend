@@ -4,6 +4,7 @@ import com.studiozero.projeto.dtos.request.EmployeeRequestDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.services.ClientService;
 import com.studiozero.projeto.services.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,10 @@ public class EmployeeController {
     @Autowired
     private ClientService clientService;
 
+    @Operation(
+            summary = "Create a employee",
+            description = "This method is responsible for create a employee."
+    )
     @PostMapping
     public ResponseEntity<EmployeeResponseDTO> createEmployee(
             @RequestBody @Valid EmployeeRequestDTO employeeDto
@@ -30,6 +35,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.save(employeeDto));
     }
 
+    @Operation(
+            summary = "Search a employee",
+            description = "This method is responsible for search a employee."
+    )
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> findEmployeeById(
             @PathVariable @Valid UUID id
@@ -37,11 +46,19 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.findById(id));
     }
 
+    @Operation(
+            summary = "List a employees",
+            description = "This method is responsible for list a employees."
+    )
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDTO>> listAllEmployees() {
         return ResponseEntity.ok(employeeService.findAll());
     }
 
+    @Operation(
+            summary = "Update a employee",
+            description = "This method is responsible for update a employee."
+    )
     @PatchMapping("/{ID}")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
             @PathVariable UUID id,
@@ -50,6 +67,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.update(id, employeeDto));
     }
 
+    @Operation(
+            summary = "Delete a employee",
+            description = "This method is responsible for delete a employee."
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(
             @PathVariable @Valid UUID id
