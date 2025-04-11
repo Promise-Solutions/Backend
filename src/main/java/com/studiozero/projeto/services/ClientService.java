@@ -56,7 +56,6 @@ public class ClientService {
         return clientMapper.toDTO(updatedClient);
     }
 
-
     public String delete(UUID id) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));

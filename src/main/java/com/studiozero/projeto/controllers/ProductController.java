@@ -41,8 +41,8 @@ public class ProductController {
     }
 
     @Operation(
-            summary = "List a products",
-            description = "This method is responsible for list a products."
+            summary = "List all products",
+            description = "This method is responsible for list all products."
     )
     @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> findAllProducts() {
