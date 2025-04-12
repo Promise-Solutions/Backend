@@ -31,19 +31,19 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> findById(@PathVariable UUID id){
+    public ResponseEntity<TaskResponseDTO> findById(@PathVariable @Valid UUID id){
         return ResponseEntity.ok(taskService.findById(id));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> updateTask(
-            @PathVariable UUID id,
+            @PathVariable @Valid UUID id,
             @RequestBody @Valid TaskRequestDTO taskDto) {
         return ResponseEntity.ok(taskService.update(id, taskDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTask(@PathVariable UUID id){
+    public ResponseEntity<String> deleteTask(@PathVariable @Valid UUID id){
         return ResponseEntity.ok(taskService.delete(id));
     }
 }

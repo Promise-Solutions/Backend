@@ -36,7 +36,7 @@ public class ProductController {
             description = "This method is responsible for search a product."
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<ProductResponseDTO> findById(@PathVariable @Valid Integer id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
@@ -55,7 +55,7 @@ public class ProductController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
-            @PathVariable Integer id,
+            @PathVariable @Valid Integer id,
             @RequestBody @Valid ProductRequestDTO productDto
     ) {
         return ResponseEntity.ok(productService.update(id, productDto));
@@ -66,7 +66,7 @@ public class ProductController {
             description = "This method is responsible for delete a product."
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(Integer id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable @Valid Integer id) {
         return ResponseEntity.ok(productService.delete(id));
     }
 }
