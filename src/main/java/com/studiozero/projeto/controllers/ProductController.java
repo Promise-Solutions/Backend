@@ -28,7 +28,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> createProduct(
             @RequestBody @Valid ProductRequestDTO productDto
     ) {
-        return ResponseEntity.ok(productService.save(productDto));
+        return ResponseEntity.status(201).body(productService.save(productDto));
     }
 
     @Operation(
