@@ -3,6 +3,8 @@ package com.studiozero.projeto.dtos.request;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.enums.ClientType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +31,7 @@ public class ClientRequestDTO {
     @NotBlank(message = "Contact value is mandatory")
     private String contact;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "Client Type value is mandatory")
     private ClientType clientType;
 
