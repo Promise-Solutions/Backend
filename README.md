@@ -31,10 +31,13 @@ Este projeto é um backoffice com o objetivo de auxiliar empresas no gerenciamen
 Para configurar, você pode definir as seguintes variáveis de ambiente criando um arquivo `.env` na raiz do projeto:
 
 ```bash
+SERVER_PORT<port value>
+
 DB_URL=<url value>
 DB_USER=<user value>
 DB_PASSWORD=<password value>
 DB_DRIVER=<driver value>
+DB_PLATFORM=<platform value>
 
 LOCALHOST=<localhost value>
 DEVHOST=<devhost value>
