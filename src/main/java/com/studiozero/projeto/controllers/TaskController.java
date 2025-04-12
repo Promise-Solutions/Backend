@@ -32,8 +32,8 @@ public class TaskController {
     }
 
     @Operation(
-            summary = "Search a task",
-            description = "This method is responsible for search a task."
+            summary = "List all task",
+            description = "This method is responsible for list all task."
     )
     @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> findAllTasks() {
@@ -41,8 +41,8 @@ public class TaskController {
     }
 
     @Operation(
-            summary = "List all tasks",
-            description = "This method is responsible for list all tasks."
+            summary = "Search a tasks",
+            description = "This method is responsible for search a tasks."
     )
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> findById(@PathVariable @Valid UUID id){
