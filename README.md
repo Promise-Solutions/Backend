@@ -23,9 +23,7 @@ Este projeto é um backoffice com o objetivo de auxiliar empresas no gerenciamen
 
 ## ⚙️ Como Usar
 
-* Após a execução do projeto, acesse a aplicação através do seu navegador em `http://localhost:8080`.
-* A aplicação possui uma interface de fácil entendimento, onde será possível realizar o gerenciamento de todos os itens citados nas "Funcionalidades Principais".
-* Os Endpoints da API podem ser consultados através do swagger, que pode ser acessado no endereço: `http://localhost:8080/docs`
+* Os Endpoints da API podem ser consultados através do swagger, que pode ser acessado no endereço: `http://localhost:5000/docs`
 
 ### Variáveis de Ambiente
 Para configurar, você pode definir as seguintes variáveis de ambiente criando um arquivo `.env` na raiz do projeto:
