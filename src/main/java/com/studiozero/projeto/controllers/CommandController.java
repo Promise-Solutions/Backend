@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Commands", description = "Endpoints for Command Management")
 public class CommandController {
 
-    @Autowired
-    private CommandService commandService;
+//    @Autowired
+//    private CommandService commandService;
 }

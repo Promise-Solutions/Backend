@@ -27,6 +27,21 @@ Este projeto é um backoffice com o objetivo de auxiliar empresas no gerenciamen
 * A aplicação possui uma interface de fácil entendimento, onde será possível realizar o gerenciamento de todos os itens citados nas "Funcionalidades Principais".
 * Os Endpoints da API podem ser consultados através do swagger, que pode ser acessado no endereço: `http://localhost:8080/docs`
 
+### Variáveis de Ambiente
+Para configurar, você pode definir as seguintes variáveis de ambiente criando um arquivo `.env` na raiz do projeto:
+
+```bash
+DB_URL=<url value>
+DB_USER=<user value>
+DB_PASSWORD=<password value>
+DB_DRIVER=<driver value>
+
+LOCALHOST=<localhost value>
+DEVHOST=<devhost value>
+HOMHOST=<homhost value>
+PRODHOST=<prodhost value>
+```
+
 ## ✍️ Contribuição
 
 Contribuições são bem-vindas! Se você deseja contribuir com este projeto, siga estas etapas:
