@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/sub-jobs")
 @Tag(name = "Sub Jobs", description = "Endpoints for Sub Job Management")
