@@ -23,7 +23,7 @@ Este projeto é um backoffice com o objetivo de auxiliar empresas no gerenciamen
 
 ## ⚙️ Como Usar
 
-* Os Endpoints da API podem ser consultados através do swagger, que pode ser acessado no endereço: `http://localhost:5000/docs`
+* Os Endpoints da API podem ser consultados através do swagger.
 
 ### Variáveis de Ambiente
 Para configurar, você pode definir as seguintes variáveis de ambiente criando um arquivo `.env` na raiz do projeto:
@@ -38,9 +38,6 @@ DB_DRIVER=<driver value>
 DB_PLATFORM=<platform value>
 
 LOCALHOST=<localhost value>
-DEVHOST=<devhost value>
-HOMHOST=<homhost value>
-PRODHOST=<prodhost value>
 ```
 
 ## ✍️ Contribuição
