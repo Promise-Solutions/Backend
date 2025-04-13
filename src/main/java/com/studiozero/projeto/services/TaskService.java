@@ -2,9 +2,8 @@ package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.TaskRequestDTO;
 import com.studiozero.projeto.dtos.response.TaskResponseDTO;
-import com.studiozero.projeto.entities.Product;
 import com.studiozero.projeto.entities.Task;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.TaskMapper;
 import com.studiozero.projeto.repositories.ProductRepository;
 import com.studiozero.projeto.repositories.TaskRepository;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,6 +21,7 @@ public class TaskService {
 
     @Autowired
     private TaskMapper taskMapper;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -36,7 +35,7 @@ public class TaskService {
 
     public TaskResponseDTO findById(UUID id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found"));
         return taskMapper.toDTO(task);
 
     }
@@ -48,7 +47,7 @@ public class TaskService {
     }
 
     public TaskResponseDTO update(UUID id, TaskRequestDTO taskDto) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Task not found"));
 
         task.setTitle(taskDto.getTitle());
         task.setDescription(taskDto.getDescription());
@@ -64,7 +63,7 @@ public class TaskService {
 
     public void delete (UUID id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found"));
         taskRepository.delete(task);
     }
 }

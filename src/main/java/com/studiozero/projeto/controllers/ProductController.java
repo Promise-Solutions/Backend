@@ -20,36 +20,57 @@ public class ProductController {
         @Autowired
         private ProductService productService;
 
-        @Operation(summary = "Create a product", description = "This method is responsible for create a product.")
+        @Operation(
+                summary = "Create a product",
+                description = "This method is responsible for create a product."
+        )
         @PostMapping
         public ResponseEntity<ProductResponseDTO> createProduct(
-                        @RequestBody @Valid ProductRequestDTO productDto) {
+                @RequestBody @Valid ProductRequestDTO productDto
+        ) {
                 return ResponseEntity.status(201).body(productService.save(productDto));
         }
 
-        @Operation(summary = "Search a product", description = "This method is responsible for search a product.")
+        @Operation(
+                summary = "Search a product",
+                description = "This method is responsible for search a product."
+        )
         @GetMapping("/{id}")
-        public ResponseEntity<ProductResponseDTO> findById(@PathVariable @Valid Integer id) {
+        public ResponseEntity<ProductResponseDTO> findProductById(
+                @PathVariable @Valid Integer id
+        ) {
                 return ResponseEntity.ok(productService.findById(id));
         }
 
-        @Operation(summary = "List all products", description = "This method is responsible for list all products.")
+        @Operation(
+                summary = "List all products",
+                description = "This method is responsible for list all products."
+        )
         @GetMapping
         public ResponseEntity<List<ProductResponseDTO>> findAllProducts() {
                 return ResponseEntity.ok(productService.findAll());
         }
 
-        @Operation(summary = "Update a product", description = "This method is responsible for update a product.")
+        @Operation(
+                summary = "Update a product",
+                description = "This method is responsible for update a product."
+        )
         @PatchMapping("/{id}")
         public ResponseEntity<ProductResponseDTO> updateProduct(
-                        @PathVariable @Valid Integer id,
-                        @RequestBody @Valid ProductRequestDTO productDto) {
+                @PathVariable @Valid Integer id,
+                @RequestBody @Valid ProductRequestDTO productDto
+        ) {
                 return ResponseEntity.ok(productService.update(id, productDto));
         }
 
-        @Operation(summary = "Delete a product", description = "This method is responsible for delete a product.")
+        @Operation(
+                summary = "Delete a product",
+                description = "This method is responsible for delete a product."
+        )
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+        public ResponseEntity<Void> deleteProduct(
+                @PathVariable Integer id
+        ) {
                 productService.delete(id);
                 return ResponseEntity.ok().build();
         }

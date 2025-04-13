@@ -20,34 +20,57 @@ public class CommandController {
     @Autowired
     private CommandService commandService;
 
-    @Operation(summary = "Create a new command", description = "This method is responsible for creating a new command.")
+    @Operation(
+            summary = "Create a new command",
+            description = "This method is responsible for creating a new command."
+    )
     @PostMapping
-    public ResponseEntity<CommandResponseDTO> createCommand(@RequestBody @Valid CommandRequestDTO commandDto) {
+    public ResponseEntity<CommandResponseDTO> createCommand(
+            @RequestBody @Valid CommandRequestDTO commandDto
+    ) {
         return ResponseEntity.status(201).body(commandService.save(commandDto));
     }
 
-    @Operation(summary = "Search a command", description = "This method is responsible for searching a command.")
+    @Operation(
+            summary = "Search a command",
+            description = "This method is responsible for searching a command."
+    )
     @GetMapping("/{id}")
-    public ResponseEntity<CommandResponseDTO> findCommandById(@PathVariable Integer id) {
+    public ResponseEntity<CommandResponseDTO> findCommandById(
+            @PathVariable Integer id
+    ) {
         return ResponseEntity.ok(commandService.findById(id));
     }
 
-    @Operation(summary = "List all commands", description = "This method is responsible for listing all commands.")
+    @Operation(
+            summary = "List all commands",
+            description = "This method is responsible for listing all commands."
+    )
     @GetMapping
     public ResponseEntity<List<CommandResponseDTO>> listAllCommands() {
         return ResponseEntity.ok(commandService.findAll());
     }
 
-    @Operation(summary = "Update a command", description = "This method is responsible for updating a command.")
+    @Operation(
+            summary = "Update a command",
+            description = "This method is responsible for updating a command."
+    )
     @PatchMapping("/{id}")
-    public ResponseEntity<CommandResponseDTO> updateCommand(@PathVariable Integer id,
-            @RequestBody @Valid CommandRequestDTO commandDto) {
+    public ResponseEntity<CommandResponseDTO> updateCommand(
+            @PathVariable Integer id,
+            @RequestBody @Valid CommandRequestDTO commandDto
+    ) {
         return ResponseEntity.ok(commandService.update(id, commandDto));
     }
 
-    @Operation(summary = "Delete a command", description = "This method is responsible for deleting a command.")
+    @Operation(
+            summary = "Delete a command",
+            description = "This method is responsible for deleting a command."
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCommand(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCommand(
+            @PathVariable Integer id
+    ) {
         commandService.delete(id);
         return ResponseEntity.ok().build();
     }

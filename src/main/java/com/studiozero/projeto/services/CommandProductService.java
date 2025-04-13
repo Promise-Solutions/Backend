@@ -3,7 +3,7 @@ package com.studiozero.projeto.services;
 import com.studiozero.projeto.dtos.request.CommandProductRequestDTO;
 import com.studiozero.projeto.dtos.response.CommandProductResponseDTO;
 import com.studiozero.projeto.entities.CommandProduct;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.CommandProductMapper;
 import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.CommandProductRepository;
@@ -20,6 +20,7 @@ public class CommandProductService {
 
     @Autowired
     private CommandProductMapper commandProductMapper;
+
     @Autowired
     private ClientRepository clientRepository;
 
@@ -33,7 +34,7 @@ public class CommandProductService {
 
     public CommandProductResponseDTO findById(Integer id) {
         CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("CommandProduct not found"));
+                .orElseThrow(() -> new NotFoundException("CommandProduct not found"));
         return commandProductMapper.toDTO(commandProduct);
     }
 
@@ -45,7 +46,7 @@ public class CommandProductService {
 
     public CommandProductResponseDTO update(Integer id, CommandProductRequestDTO commandProductDto) {
         CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("commandProduct not found"));
+                .orElseThrow(() -> new NotFoundException("commandProduct not found"));
 
         commandProduct.setFkProduct(commandProductDto.getFkProduct());
         commandProduct.setFkCommand(commandProductDto.getFkCommand());
@@ -59,7 +60,7 @@ public class CommandProductService {
 
     public void delete(Integer id) {
         CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("CommandProduct not found"));
+                .orElseThrow(() -> new NotFoundException("CommandProduct not found"));
         commandProductRepository.delete(commandProduct);
     }
 }

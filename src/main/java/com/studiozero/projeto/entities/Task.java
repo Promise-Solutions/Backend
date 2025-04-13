@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Tarefa")
+@Table(name = "tarefa")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idTarefa", updatable = false, nullable = false)
+    @Column(name = "id_tarefa", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "titulo", nullable = false)
@@ -33,7 +33,7 @@ public class Task {
     @Column(name = "data_limite")
     private LocalDate limitDate;
 
-    @Column(name = "fkFuncionario")
+    @Column(name = "fk_funcionario")
     private UUID fkEmployee;
 
     @Column(name = "status", nullable = false)

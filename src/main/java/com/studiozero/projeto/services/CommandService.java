@@ -3,7 +3,7 @@ package com.studiozero.projeto.services;
 import com.studiozero.projeto.dtos.request.CommandRequestDTO;
 import com.studiozero.projeto.dtos.response.CommandResponseDTO;
 import com.studiozero.projeto.entities.Command;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.CommandMapper;
 import com.studiozero.projeto.repositories.CommandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class CommandService {
 
     public CommandResponseDTO findById(Integer id) {
         Command command = commandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Command not found"));
+                .orElseThrow(() -> new NotFoundException("Command not found"));
         return commandMapper.toDTO(command);
     }
 
@@ -40,7 +40,7 @@ public class CommandService {
 
     public CommandResponseDTO update(Integer id, CommandRequestDTO commandDto) {
         Command command = commandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Command not found"));
+                .orElseThrow(() -> new NotFoundException("Command not found"));
 
         command.setOpeningDateTime(commandDto.getOpeningDateTime());
         command.setClosingDateTime(commandDto.getClosingDateTime());
@@ -56,7 +56,7 @@ public class CommandService {
 
     public void delete(Integer id) {
         Command command = commandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Command not found"));
+                .orElseThrow(() -> new NotFoundException("Command not found"));
         commandRepository.delete(command);
     }
 }

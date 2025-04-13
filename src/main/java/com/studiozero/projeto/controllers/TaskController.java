@@ -26,7 +26,9 @@ public class TaskController {
             description = "This method is responsible for create a task."
     )
     @PostMapping
-    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody @Valid TaskRequestDTO taskDto) {
+    public ResponseEntity<TaskResponseDTO> createTask(
+            @RequestBody @Valid TaskRequestDTO taskDto
+    ) {
         return ResponseEntity.status(201).body(taskService.save(taskDto));
     }
 
@@ -44,7 +46,9 @@ public class TaskController {
             description = "This method is responsible for search a tasks."
     )
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> findById(@PathVariable @Valid UUID id){
+    public ResponseEntity<TaskResponseDTO> findTaskById(
+            @PathVariable @Valid UUID id
+    ){
         return ResponseEntity.ok(taskService.findById(id));
     }
 
@@ -55,7 +59,8 @@ public class TaskController {
     @PatchMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> updateTask(
             @PathVariable @Valid UUID id,
-            @RequestBody @Valid TaskRequestDTO taskDto) {
+            @RequestBody @Valid TaskRequestDTO taskDto
+    ) {
         return ResponseEntity.ok(taskService.update(id, taskDto));
     }
 
@@ -64,7 +69,9 @@ public class TaskController {
             description = "This method is responsible for delete a task."
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable @Valid UUID id){
+    public ResponseEntity<Void> deleteTask(
+            @PathVariable @Valid UUID id
+    ){
         taskService.delete(id);
         return ResponseEntity.ok().build();
     }

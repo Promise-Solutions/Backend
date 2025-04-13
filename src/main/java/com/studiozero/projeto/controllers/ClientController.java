@@ -21,34 +21,57 @@ public class ClientController {
         @Autowired
         private ClientService clientService;
 
-        @Operation(summary = "Create a new client", description = "This method is responsible for creating a new client.")
+        @Operation(
+                summary = "Create a new client",
+                description = "This method is responsible for creating a new client."
+        )
         @PostMapping
-        public ResponseEntity<ClientResponseDTO> createClient(@RequestBody @Valid ClientRequestDTO clientDto) {
+        public ResponseEntity<ClientResponseDTO> createClient(
+                @RequestBody @Valid ClientRequestDTO clientDto
+        ) {
                 return ResponseEntity.status(201).body(clientService.save(clientDto));
         }
 
-        @Operation(summary = "Search a client", description = "This method is responsible for searching a client.")
+        @Operation(
+                summary = "Search a client",
+                description = "This method is responsible for searching a client."
+        )
         @GetMapping("/{id}")
-        public ResponseEntity<ClientResponseDTO> findClientById(@PathVariable UUID id) {
+        public ResponseEntity<ClientResponseDTO> findClientById(
+                @PathVariable UUID id
+        ) {
                 return ResponseEntity.ok(clientService.findById(id));
         }
 
-        @Operation(summary = "List all clients", description = "This method is responsible for listing all clients.")
+        @Operation(
+                summary = "List all clients",
+                description = "This method is responsible for listing all clients."
+        )
         @GetMapping
         public ResponseEntity<List<ClientResponseDTO>> listAllClients() {
                 return ResponseEntity.ok(clientService.findAll());
         }
 
-        @Operation(summary = "Update a client", description = "This method is responsible for updating a client.")
+        @Operation(
+                summary = "Update a client",
+                description = "This method is responsible for updating a client."
+        )
         @PatchMapping("/{id}")
-        public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id,
-                        @RequestBody @Valid ClientRequestDTO clientDto) {
+        public ResponseEntity<ClientResponseDTO> updateClient(
+                @PathVariable UUID id,
+                @RequestBody @Valid ClientRequestDTO clientDto
+        ) {
                 return ResponseEntity.ok(clientService.update(id, clientDto));
         }
 
-        @Operation(summary = "Delete a client", description = "This method is responsible for deleting a client.")
+        @Operation(
+                summary = "Delete a client",
+                description = "This method is responsible for deleting a client."
+        )
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteClient(@PathVariable @Valid UUID id) {
+        public ResponseEntity<Void> deleteClient(
+                @PathVariable @Valid UUID id
+        ) {
                 clientService.delete(id);
                 return ResponseEntity.ok().build();
         }

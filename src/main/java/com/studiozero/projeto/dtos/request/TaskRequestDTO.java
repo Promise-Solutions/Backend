@@ -18,21 +18,21 @@ import java.util.UUID;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class TaskRequestDTO {
-    @NotBlank
+    @NotBlank(message = "Title value is mandatory")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Description value is mandatory")
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "Start date value is mandatory")
     private LocalDate startDate;
 
-    @NotBlank
+    @NotBlank(message = "Limit date value is mandatory")
     private LocalDate limitDate;
 
     private UUID fkEmployee;
 
-    @NotBlank
+    @NotBlank(message = "Status value is mandatory")
     @Enumerated(EnumType.STRING)
     private Status status;
 }
