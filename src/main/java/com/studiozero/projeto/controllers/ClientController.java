@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/clients")
 @Tag(name = "Clients", description = "Endpoints for Client Management")
@@ -41,7 +40,7 @@ public class ClientController {
         }
 
         @Operation(summary = "Update a client", description = "This method is responsible for updating a client.")
-        @PutMapping("/{id}")
+        @PatchMapping("/{id}")
         public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id,
                         @RequestBody @Valid ClientRequestDTO clientDto) {
                 return ResponseEntity.ok(clientService.update(id, clientDto));

@@ -1,4 +1,4 @@
-package com.studiozero.projeto.config;
+package com.studiozero.projeto.configs;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

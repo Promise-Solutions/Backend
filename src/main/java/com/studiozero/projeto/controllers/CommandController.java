@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/commands")
 @Tag(name = "Commands", description = "Endpoints for Command Management")
@@ -40,7 +39,7 @@ public class CommandController {
     }
 
     @Operation(summary = "Update a command", description = "This method is responsible for updating a command.")
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<CommandResponseDTO> updateCommand(@PathVariable Integer id,
             @RequestBody @Valid CommandRequestDTO commandDto) {
         return ResponseEntity.ok(commandService.update(id, commandDto));
