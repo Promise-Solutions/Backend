@@ -107,8 +107,3 @@ CREATE TABLE comanda_produto (
     FOREIGN KEY (fk_produto) REFERENCES produto (id_produto),
     FOREIGN KEY (fk_comanda) REFERENCES comanda (id_comanda)
 );
-
--- TESTES/CONSULTAS
-DESC cliente;
-
-SELECT * FROM tarefa;
