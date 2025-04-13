@@ -30,7 +30,6 @@ public class TaskRequestDTO {
     @NotBlank
     private LocalDate limitDate;
 
-    @NotBlank
     private UUID fkEmployee;
 
     @NotBlank

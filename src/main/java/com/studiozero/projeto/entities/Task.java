@@ -33,7 +33,7 @@ public class Task {
     @Column(name = "data_limite")
     private LocalDate limitDate;
 
-    @Column(name = "fkFuncionario", nullable = false)
+    @Column(name = "fkFuncionario")
     private UUID fkEmployee;
 
     @Column(name = "status", nullable = false)

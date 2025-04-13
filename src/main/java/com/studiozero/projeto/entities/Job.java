@@ -25,6 +25,9 @@ public class Job {
     @Column(name = "fkCliente", nullable = false)
     private UUID fkClient;
 
+    @Column(name = "titulo", nullable = false)
+    private String title;
+
     @Column(name = "valorTotal", nullable = false)
     private Double totalValue;
 

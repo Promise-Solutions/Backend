@@ -21,6 +21,9 @@ public class JobRequestDTO {
     @NotNull(message = "fkClient value is mandatory")
     private UUID fkClient;
 
+    @NotBlank
+    private String title;
+
     @NotBlank(message = "Total value value is mandatory")
     @Positive
     private Double totalValue;

@@ -19,6 +19,7 @@ import java.util.UUID;
 public class JobResponseDTO {
     private UUID id;
     private UUID fkClient;
+    private String title;
     private Double totalValue;
     private JobCategory category;
     private Status status;
@@ -27,6 +28,7 @@ public class JobResponseDTO {
     public JobResponseDTO(Job job) {
         this.id = job.getId();
         this.fkClient = job.getFkClient();
+        this.title = job.getTitle();
         this.totalValue = job.getTotalValue();
         this.category = job.getCategory();
         this.status = job.getStatus();
