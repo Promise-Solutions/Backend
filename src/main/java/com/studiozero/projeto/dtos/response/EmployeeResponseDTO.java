@@ -22,6 +22,7 @@ public class EmployeeResponseDTO {
     private Boolean active;
 
     public EmployeeResponseDTO(Employee employee) {
+        this.id = employee.getId();
         this.name = employee.getName();
         this.email = employee.getEmail();
         this.contact = employee.getContact();

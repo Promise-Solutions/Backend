@@ -579,3 +579,9 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 54 more
+2025-04-12 21:18:16.806915-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CLIENTE FUNCIONARIO [*]FUNCIONARIO"; SQL statement:
+SELECT * FROM CLIENTE FUNCIONARIO FUNCIONARIO [42000-232]
+2025-04-12 21:20:46.280155-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]SFUNCIONARIO ELECT * FROM FUNCIONARIO"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SFUNCIONARIO ELECT * FROM FUNCIONARIO [42001-232]

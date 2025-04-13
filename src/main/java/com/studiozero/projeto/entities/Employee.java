@@ -9,7 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Funcionario")
+@Table(name = "funcionario")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class Employee {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "idFuncionario", nullable = false)
+    @Column(name = "id_funcionario", nullable = false)
     private UUID id;
 
     @Column(name = "nome", nullable = false)

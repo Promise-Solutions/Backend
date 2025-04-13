@@ -8,7 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Cliente")
+@Table(name = "cliente")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,8 +20,8 @@ public class Client {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "idCliente", nullable = false)
-    private UUID id = UUID.randomUUID();
+    @Column(name = "id_cliente", nullable = false)
+    private UUID id;
 
     @Column(name = "nome", nullable = false)
     private String name;
