@@ -28,7 +28,7 @@ public class EmployeeController {
         @PostMapping
         public ResponseEntity<EmployeeResponseDTO> createEmployee(
                         @RequestBody @Valid EmployeeRequestDTO employeeDto) {
-                return ResponseEntity.ok(employeeService.save(employeeDto));
+                return ResponseEntity.status(201).body(employeeService.save(employeeDto));
         }
 
         @Operation(summary = "Search a employee", description = "This method is responsible for search a employee.")
