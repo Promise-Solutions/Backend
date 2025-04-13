@@ -16,7 +16,7 @@ public class BadRequestException extends ApiException {
 
     @Override
     public String userResponseMessage() {
-        return getMessage();
+        return "Invalid request: " + getMessage(); // Updated for more descriptive message
     }
 
     @Override

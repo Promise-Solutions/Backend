@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -22,6 +23,7 @@ public class ClientRequestDTO {
 
     @NotBlank(message = "Cpf value is mandatory")
     @CPF
+    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
     @NotBlank(message = "Email value is mandatory")
@@ -29,6 +31,7 @@ public class ClientRequestDTO {
     private String email;
 
     @NotBlank(message = "Contact value is mandatory")
+    @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "Contact must be in the format (XX) XXXXX-XXXX")
     private String contact;
 
     @Enumerated(EnumType.STRING)

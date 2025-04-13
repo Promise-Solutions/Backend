@@ -11,6 +11,8 @@ import com.studiozero.projeto.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +26,9 @@ public class EmployeeService {
     private EmployeeMapper employeeMapper;
     @Autowired
     private ClientRepository clientRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public EmployeeResponseDTO save(EmployeeRequestDTO employeeDto) {
         if (employeeRepository.findByCpf(employeeDto.getCpf()) != null) {
@@ -52,7 +57,8 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
 
-        if (employeeRepository.findByCpf(employeeDto.getCpf()) != null) {
+        Employee existingEmployee = employeeRepository.findByCpf(employeeDto.getCpf());
+        if (existingEmployee != null && !existingEmployee.getId().equals(id)) {
             throw new EntityAlreadyExists("Employee with this CPF already exists");
         }
 

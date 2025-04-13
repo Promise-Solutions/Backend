@@ -20,62 +20,43 @@ import java.util.UUID;
 @Tag(name = "Employees", description = "Endpoints for Employee Management")
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
-    @Autowired
-    private ClientService clientService;
+        @Autowired
+        private EmployeeService employeeService;
+        @Autowired
+        private ClientService clientService;
 
-    @Operation(
-            summary = "Create a employee",
-            description = "This method is responsible for create a employee."
-    )
-    @PostMapping
-    public ResponseEntity<EmployeeResponseDTO> createEmployee(
-            @RequestBody @Valid EmployeeRequestDTO employeeDto
-    ) {
-        return ResponseEntity.ok(employeeService.save(employeeDto));
-    }
+        @Operation(summary = "Create a employee", description = "This method is responsible for create a employee.")
+        @PostMapping
+        public ResponseEntity<EmployeeResponseDTO> createEmployee(
+                        @RequestBody @Valid EmployeeRequestDTO employeeDto) {
+                return ResponseEntity.ok(employeeService.save(employeeDto));
+        }
 
-    @Operation(
-            summary = "Search a employee",
-            description = "This method is responsible for search a employee."
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDTO> findEmployeeById(
-            @PathVariable @Valid UUID id
-            ) {
-        return ResponseEntity.ok(employeeService.findById(id));
-    }
+        @Operation(summary = "Search a employee", description = "This method is responsible for search a employee.")
+        @GetMapping("/{id}")
+        public ResponseEntity<EmployeeResponseDTO> findEmployeeById(
+                        @PathVariable @Valid UUID id) {
+                return ResponseEntity.ok(employeeService.findById(id));
+        }
 
-    @Operation(
-            summary = "List all employees",
-            description = "This method is responsible for list all employees."
-    )
-    @GetMapping
-    public ResponseEntity<List<EmployeeResponseDTO>> listAllEmployees() {
-        return ResponseEntity.ok(employeeService.findAll());
-    }
+        @Operation(summary = "List all employees", description = "This method is responsible for list all employees.")
+        @GetMapping
+        public ResponseEntity<List<EmployeeResponseDTO>> listAllEmployees() {
+                return ResponseEntity.ok(employeeService.findAll());
+        }
 
-    @Operation(
-            summary = "Update a employee",
-            description = "This method is responsible for update a employee."
-    )
-    @PatchMapping("/{ID}")
-    public ResponseEntity<EmployeeResponseDTO> updateEmployee(
-            @PathVariable UUID id,
-            @RequestBody @Valid EmployeeRequestDTO employeeDto
-    ) {
-        return ResponseEntity.ok(employeeService.update(id, employeeDto));
-    }
+        @Operation(summary = "Update a employee", description = "This method is responsible for update a employee.")
+        @PatchMapping("/{id}")
+        public ResponseEntity<EmployeeResponseDTO> updateEmployee(
+                        @PathVariable @Valid UUID id,
+                        @RequestBody @Valid EmployeeRequestDTO employeeDto) {
+                return ResponseEntity.ok(employeeService.update(id, employeeDto));
+        }
 
-    @Operation(
-            summary = "Delete a employee",
-            description = "This method is responsible for delete a employee."
-    )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployee(
-            @PathVariable @Valid UUID id
-    ) {
-        return ResponseEntity.ok(employeeService.delete(id));
-    }
+        @Operation(summary = "Delete a employee", description = "This method is responsible for delete a employee.")
+        @DeleteMapping("/{id}")
+        public ResponseEntity<String> deleteEmployee(
+                        @PathVariable @Valid UUID id) {
+                return ResponseEntity.ok(employeeService.delete(id));
+        }
 }

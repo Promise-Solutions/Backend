@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -18,12 +17,8 @@ import java.util.UUID;
 public class Task {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "idTarefa", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idTarefa", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "titulo", nullable = false)

@@ -3,7 +3,7 @@ package com.studiozero.projeto.exceptions;
 import com.studiozero.projeto.enums.ApiError;
 import org.springframework.http.HttpStatus;
 
-public class EntityNotFoundException extends ApiException{
+public class EntityNotFoundException extends ApiException {
 
     public EntityNotFoundException(String message) {
         super(message);
@@ -16,7 +16,7 @@ public class EntityNotFoundException extends ApiException{
 
     @Override
     public String userResponseMessage() {
-        return getMessage();
+        return "The requested entity could not be found: " + getMessage();
     }
 
     @Override

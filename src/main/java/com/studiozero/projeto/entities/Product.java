@@ -20,7 +20,7 @@ public class Product {
     @Column(name = "nomeProduto", nullable = false)
     private String name;
 
-    @Column(name = "qtdProduto", nullable = false)
+    @Column(name = "qtd_produto", nullable = false)
     private Integer quantity;
 
     @Column(name = "valorUnitario", nullable = false)

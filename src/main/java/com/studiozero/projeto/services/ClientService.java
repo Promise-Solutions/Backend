@@ -1,11 +1,16 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.ClientRequestDTO;
+import com.studiozero.projeto.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.entities.Client;
+import com.studiozero.projeto.exceptions.BadRequestException;
+import com.studiozero.projeto.exceptions.EntityAlreadyExists;
 import com.studiozero.projeto.exceptions.EntityNotFoundException;
 import com.studiozero.projeto.mappers.ClientMapper;
 import com.studiozero.projeto.repositories.ClientRepository;
-import com.studiozero.projeto.dtos.response.ClientResponseDTO;
+import com.studiozero.projeto.repositories.CommandRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +20,24 @@ import java.util.UUID;
 @Service
 public class ClientService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
     private ClientMapper clientMapper;
 
+    @Autowired
+    private CommandRepository commandRepository;
+
     public ClientResponseDTO save(ClientRequestDTO clientDto) {
+        if (clientRepository.existsByCpf(clientDto.getCpf())) {
+            throw new EntityAlreadyExists("Client with this CPF already exists");
+        }
         Client client = clientMapper.toEntity(clientDto);
         Client savedClient = clientRepository.save(client);
-
         return clientMapper.toDTO(savedClient);
     }
 
@@ -44,6 +57,10 @@ public class ClientService {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));
 
+        if (!client.getCpf().equals(clientDto.getCpf()) && clientRepository.existsByCpf(clientDto.getCpf())) {
+            throw new EntityAlreadyExists("Client with this CPF already exists");
+        }
+
         client.setName(clientDto.getName());
         client.setCpf(clientDto.getCpf());
         client.setEmail(clientDto.getEmail());
@@ -52,14 +69,15 @@ public class ClientService {
         client.setActive(clientDto.getActive());
 
         Client updatedClient = clientRepository.save(client);
-
         return clientMapper.toDTO(updatedClient);
     }
 
-    public String delete(UUID id) {
+    public void delete(UUID id) {
+        if (commandRepository.existsByFkClient(id)) {
+            throw new BadRequestException("Cannot delete client with associated commands");
+        }
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client not found"));
         clientRepository.delete(client);
-        return "Client deleted successfully";
     }
 }

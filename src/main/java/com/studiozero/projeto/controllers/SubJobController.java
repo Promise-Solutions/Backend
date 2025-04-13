@@ -19,61 +19,41 @@ import java.util.UUID;
 @Tag(name = "Sub Jobs", description = "Endpoints for Sub Job Management")
 public class SubJobController {
 
-    @Autowired
-    private SubJobService subJobService;
+        @Autowired
+        private SubJobService subJobService;
 
+        @Operation(summary = "Create a new sub job", description = "This method is responsible for create a new sub job.")
+        @PostMapping
+        public ResponseEntity<SubJobResponseDTO> createSubJob(
+                        @RequestBody @Valid SubJobRequestDTO subJobDto) {
+                return ResponseEntity.ok(subJobService.save(subJobDto));
+        }
 
-    @Operation(
-            summary = "Create a new sub job",
-            description = "This method is responsible for create a new sub job."
-    )
-    @PostMapping
-    public ResponseEntity<SubJobResponseDTO> createSubJob(
-            @RequestBody @Valid SubJobRequestDTO subJobDto
-    ) {
-        return ResponseEntity.ok(subJobService.save(subJobDto));
-    }
+        @Operation(summary = "Search a sub job", description = "This method is responsible for search a sub job.")
+        @GetMapping("/{id}")
+        public ResponseEntity<SubJobResponseDTO> findSubJobById(
+                        @PathVariable @Valid UUID id) {
+                return ResponseEntity.ok(subJobService.findById(id));
+        }
 
-    @Operation(
-            summary = "Search a sub job",
-            description = "This method is responsible for search a sub job."
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<SubJobResponseDTO> findSubJobById(
-            @PathVariable @Valid UUID id
-    ) {
-        return ResponseEntity.ok(subJobService.findById(id));
-    }
+        @Operation(summary = "List all sub jobs", description = "This method is responsible for list all sub jobs.")
+        @GetMapping
+        public ResponseEntity<List<SubJobResponseDTO>> listAllSubJobs() {
+                return ResponseEntity.ok(subJobService.findAll());
+        }
 
-    @Operation(
-            summary = "List all sub jobs",
-            description = "This method is responsible for list all sub jobs."
-    )
-    @GetMapping
-    public ResponseEntity<List<SubJobResponseDTO>> listAllSubJobs() {
-        return ResponseEntity.ok(subJobService.findAll());
-    }
+        @Operation(summary = "Update a sub job", description = "This method is responsible for update a sub job.")
+        @PatchMapping("/{id}")
+        public ResponseEntity<SubJobResponseDTO> updateSubJob(
+                        @PathVariable UUID id,
+                        @RequestBody @Valid SubJobRequestDTO subJobDto) {
+                return ResponseEntity.ok(subJobService.update(id, subJobDto));
+        }
 
-    @Operation(
-            summary = "Update a sub job",
-            description = "This method is responsible for update a sub job."
-    )
-    @PatchMapping("/{id}")
-    public ResponseEntity<SubJobResponseDTO> updateSubJob(
-            @PathVariable UUID id,
-            @RequestBody @Valid SubJobRequestDTO subJobDto
-    ) {
-        return ResponseEntity.ok(subJobService.update(id, subJobDto));
-    }
-
-    @Operation(
-            summary = "Delete a sub job",
-            description = "This method is responsible for delete a sub job."
-    )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSubJob(
-            @PathVariable @Valid UUID id
-    ) {
-        return ResponseEntity.ok(subJobService.delete(id));
-    }
+        @Operation(summary = "Delete a sub job", description = "This method is responsible for delete a sub job.")
+        @DeleteMapping("/{id}")
+        public ResponseEntity<String> deleteSubJob(
+                        @PathVariable UUID id) {
+                return ResponseEntity.ok(subJobService.delete(id));
+        }
 }

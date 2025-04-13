@@ -57,11 +57,9 @@ public class CommandProductService {
         return commandProductMapper.toDTO(updatedCommandProduct);
     }
 
-    public String delete(Integer id) {
+    public void delete(Integer id) {
         CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("commandProduct not found"));
+                .orElseThrow(() -> new EntityNotFoundException("CommandProduct not found"));
         commandProductRepository.delete(commandProduct);
-
-        return "CommandProduct deleted successfully";
     }
 }

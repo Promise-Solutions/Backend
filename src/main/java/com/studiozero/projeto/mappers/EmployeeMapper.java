@@ -23,15 +23,4 @@ public class EmployeeMapper {
     public EmployeeResponseDTO toDTO(Employee employee) {
         return new EmployeeResponseDTO(employee);
     }
-
-    Employee toEntityLogin (EmployeeRequestDTO dto) {
-        Employee employee = new Employee();
-        employee.setEmail(dto.getEmail());
-        employee.setPassword(dto.getPassword());
-        return employee;
-    }
-
-    EmployeeResponseDTO toDtoLogin(Employee employee) {
-        return new EmployeeResponseDTO(employee);
-    }
 }

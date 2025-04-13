@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface SubJobRepository extends JpaRepository<SubJob, UUID> {}
+public interface SubJobRepository extends JpaRepository<SubJob, UUID> {
+    boolean existsByFkService(UUID fkService);
+}

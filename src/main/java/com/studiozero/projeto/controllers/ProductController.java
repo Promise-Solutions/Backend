@@ -18,56 +18,39 @@ import java.util.List;
 @Tag(name = "Products", description = "Endpoints for Product Management")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+        @Autowired
+        private ProductService productService;
 
-    @Operation(
-            summary = "Create a product",
-            description = "This method is responsible for create a product."
-    )
-    @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(
-            @RequestBody @Valid ProductRequestDTO productDto
-    ) {
-        return ResponseEntity.status(201).body(productService.save(productDto));
-    }
+        @Operation(summary = "Create a product", description = "This method is responsible for create a product.")
+        @PostMapping
+        public ResponseEntity<ProductResponseDTO> createProduct(
+                        @RequestBody @Valid ProductRequestDTO productDto) {
+                return ResponseEntity.status(201).body(productService.save(productDto));
+        }
 
-    @Operation(
-            summary = "Search a product",
-            description = "This method is responsible for search a product."
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> findById(@PathVariable @Valid Integer id) {
-        return ResponseEntity.ok(productService.findById(id));
-    }
+        @Operation(summary = "Search a product", description = "This method is responsible for search a product.")
+        @GetMapping("/{id}")
+        public ResponseEntity<ProductResponseDTO> findById(@PathVariable @Valid Integer id) {
+                return ResponseEntity.ok(productService.findById(id));
+        }
 
-    @Operation(
-            summary = "List all products",
-            description = "This method is responsible for list all products."
-    )
-    @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> findAllProducts() {
-        return ResponseEntity.ok(productService.findAll());
-    }
+        @Operation(summary = "List all products", description = "This method is responsible for list all products.")
+        @GetMapping
+        public ResponseEntity<List<ProductResponseDTO>> findAllProducts() {
+                return ResponseEntity.ok(productService.findAll());
+        }
 
-    @Operation(
-            summary = "Update a product",
-            description = "This method is responsible for update a product."
-    )
-    @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(
-            @PathVariable @Valid Integer id,
-            @RequestBody @Valid ProductRequestDTO productDto
-    ) {
-        return ResponseEntity.ok(productService.update(id, productDto));
-    }
+        @Operation(summary = "Update a product", description = "This method is responsible for update a product.")
+        @PatchMapping("/{id}")
+        public ResponseEntity<ProductResponseDTO> updateProduct(
+                        @PathVariable @Valid Integer id,
+                        @RequestBody @Valid ProductRequestDTO productDto) {
+                return ResponseEntity.ok(productService.update(id, productDto));
+        }
 
-    @Operation(
-            summary = "Delete a product",
-            description = "This method is responsible for delete a product."
-    )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable @Valid Integer id) {
-        return ResponseEntity.ok(productService.delete(id));
-    }
+        @Operation(summary = "Delete a product", description = "This method is responsible for delete a product.")
+        @DeleteMapping("/{id}")
+        public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
+                return ResponseEntity.ok(productService.delete(id));
+        }
 }

@@ -10,7 +10,7 @@ public class EntityAlreadyExists extends ApiException {
 
     @Override
     public ApiError apiError() {
-        return ApiError.NO_CONTENT;
+        return ApiError.CONFLICT;
     }
 
     @Override
@@ -20,6 +20,6 @@ public class EntityAlreadyExists extends ApiException {
 
     @Override
     public int httpStatus() {
-        return HttpStatus.NO_CONTENT.value();
+        return HttpStatus.CONFLICT.value();
     }
 }

@@ -60,8 +60,8 @@ public class SubJobService {
 
     public String delete(UUID id) {
         SubJob subJob = subJobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sub job not found"));
+                .orElseThrow(() -> new EntityNotFoundException("SubJob not found"));
         subJobRepository.delete(subJob);
-        return "Sub job deleted successfully";
+        return "SubJob deleted successfully";
     }
 }

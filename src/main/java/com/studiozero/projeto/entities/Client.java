@@ -3,8 +3,6 @@ package com.studiozero.projeto.entities;
 import com.studiozero.projeto.enums.ClientType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-
 import java.util.UUID;
 
 @Entity
@@ -15,12 +13,8 @@ import java.util.UUID;
 public class Client {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id_cliente", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID) // Alterado para GenerationType.UUID
+    @Column(name = "id_cliente", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "nome", nullable = false)

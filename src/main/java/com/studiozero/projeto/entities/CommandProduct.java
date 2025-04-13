@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ComandaProduto")
+@Table(name = "comanda_produto")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,18 +14,18 @@ public class CommandProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idComandaProduto", nullable = false)
+    @Column(name = "id_comanda_produto", nullable = false)
     private Integer id;
 
-    @Column(name = "fkProduto", nullable = false)
+    @Column(name = "fk_produto", nullable = false)
     private Integer fkProduct;
 
-    @Column(name = "fkComanda", nullable = false)
+    @Column(name = "fk_comanda", nullable = false)
     private Integer fkCommand;
 
-    @Column(name = "qtdProduto", nullable = false)
+    @Column(name = "qtd_produto", nullable = false)
     private Integer productQuantity;
 
-    @Column(name = "valorUnitario", nullable = false)
+    @Column(name = "valor_unitario", nullable = false)
     private Double unitValue;
 }

@@ -17,6 +17,7 @@ public class ProductRequestDTO {
     private String name;
 
     @NotNull(message = "qtdProduct value is mandatory")
+    @Positive(message = "qtdProduct must be a positive number")
     private Integer quantity;
 
     @NotNull(message = "unitValue value is mandatory")

@@ -3,9 +3,11 @@ package com.studiozero.projeto.services;
 import com.studiozero.projeto.dtos.request.JobRequestDTO;
 import com.studiozero.projeto.dtos.response.JobResponseDTO;
 import com.studiozero.projeto.entities.Job;
+import com.studiozero.projeto.exceptions.BadRequestException;
 import com.studiozero.projeto.exceptions.EntityNotFoundException;
 import com.studiozero.projeto.mappers.JobMapper;
 import com.studiozero.projeto.repositories.JobRepository;
+import com.studiozero.projeto.repositories.SubJobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class JobService {
 
     @Autowired
     private JobMapper jobMapper;
+
+    @Autowired
+    private SubJobRepository subJobRepository;
 
     public JobResponseDTO save(JobRequestDTO jobDto) {
         Job job = jobMapper.toEntity(jobDto);
@@ -56,6 +61,9 @@ public class JobService {
     }
 
     public String delete(UUID id) {
+        if (subJobRepository.existsByFkService(id)) {
+            throw new BadRequestException("Cannot delete job with associated sub-jobs");
+        }
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Job not found"));
         jobRepository.delete(job);

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,12 +18,8 @@ import java.util.UUID;
 public class SubJob {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "idSubServico", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idSubServico", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "tituloSubServico", nullable = false)
