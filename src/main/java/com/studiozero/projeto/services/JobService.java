@@ -4,7 +4,7 @@ import com.studiozero.projeto.dtos.request.JobRequestDTO;
 import com.studiozero.projeto.dtos.response.JobResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.exceptions.BadRequestException;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.JobMapper;
 import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
@@ -35,7 +35,7 @@ public class JobService {
 
     public JobResponseDTO findById(UUID id) {
         Job job = jobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
+                .orElseThrow(() -> new NotFoundException("Job not found"));
         return jobMapper.toDTO(job);
     }
 
@@ -47,7 +47,7 @@ public class JobService {
 
     public JobResponseDTO update(UUID id, JobRequestDTO jobDto) {
         Job job = jobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
+                .orElseThrow(() -> new NotFoundException("Job not found"));
 
         job.setFkClient(jobDto.getFkClient());
         job.setTotalValue(jobDto.getTotalValue());
@@ -65,7 +65,7 @@ public class JobService {
             throw new BadRequestException("Cannot delete job with associated sub-jobs");
         }
         Job job = jobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
+                .orElseThrow(() -> new NotFoundException("Job not found"));
         jobRepository.delete(job);
     }
 }

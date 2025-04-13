@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "SubServico")
+@Table(name = "sub_servico")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,31 +19,31 @@ public class SubJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idSubServico", updatable = false, nullable = false)
+    @Column(name = "id_sub_servico", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "tituloSubServico", nullable = false)
+    @Column(name = "titulo_sub_servico", nullable = false)
     private String title;
 
-    @Column(name = "descricaoSubServico")
+    @Column(name = "descricao_sub_servico")
     private String description;
 
-    @Column(name = "valorSubServico", nullable = false)
+    @Column(name = "valor_sub_servico", nullable = false)
     private Double value;
 
     @Column(name = "data", nullable = false)
     private LocalDate date;
 
-    @Column(name = "horaInicio", nullable = false)
+    @Column(name = "hora_inicio", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(name = "horaFim")
+    @Column(name = "hora_fim")
     private LocalDateTime endTime;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "fkServico", nullable = false)
+    @Column(name = "fk_servico", nullable = false)
     private UUID fkService;
 }

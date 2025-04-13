@@ -4,8 +4,8 @@ import com.studiozero.projeto.dtos.request.ClientRequestDTO;
 import com.studiozero.projeto.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.exceptions.BadRequestException;
-import com.studiozero.projeto.exceptions.EntityAlreadyExists;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.ConflictException;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.ClientMapper;
 import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.CommandRepository;
@@ -34,7 +34,7 @@ public class ClientService {
 
     public ClientResponseDTO save(ClientRequestDTO clientDto) {
         if (clientRepository.existsByCpf(clientDto.getCpf())) {
-            throw new EntityAlreadyExists("Client with this CPF already exists");
+            throw new ConflictException("Client with this CPF already exists");
         }
         Client client = clientMapper.toEntity(clientDto);
         Client savedClient = clientRepository.save(client);
@@ -43,7 +43,7 @@ public class ClientService {
 
     public ClientResponseDTO findById(UUID id) {
         Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+                .orElseThrow(() -> new NotFoundException("Client not found"));
         return clientMapper.toDTO(client);
     }
 
@@ -55,10 +55,10 @@ public class ClientService {
 
     public ClientResponseDTO update(UUID id, ClientRequestDTO clientDto) {
         Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+                .orElseThrow(() -> new NotFoundException("Client not found"));
 
         if (!client.getCpf().equals(clientDto.getCpf()) && clientRepository.existsByCpf(clientDto.getCpf())) {
-            throw new EntityAlreadyExists("Client with this CPF already exists");
+            throw new ConflictException("Client with this CPF already exists");
         }
 
         client.setName(clientDto.getName());
@@ -77,7 +77,7 @@ public class ClientService {
             throw new BadRequestException("Cannot delete client with associated commands");
         }
         Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+                .orElseThrow(() -> new NotFoundException("Client not found"));
         clientRepository.delete(client);
     }
 }

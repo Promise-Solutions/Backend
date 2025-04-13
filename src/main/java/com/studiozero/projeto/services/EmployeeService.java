@@ -1,10 +1,12 @@
 package com.studiozero.projeto.services;
 
+import com.studiozero.projeto.dtos.request.EmployeeLoginRequestDTO;
 import com.studiozero.projeto.dtos.request.EmployeeRequestDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.entities.Employee;
-import com.studiozero.projeto.exceptions.EntityAlreadyExists;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.ConflictException;
+import com.studiozero.projeto.exceptions.NotFoundException;
+import com.studiozero.projeto.exceptions.UnauthorizedException;
 import com.studiozero.projeto.mappers.EmployeeMapper;
 import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.EmployeeRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,6 +27,7 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
     @Autowired
     private ClientRepository clientRepository;
 
@@ -32,7 +36,7 @@ public class EmployeeService {
 
     public EmployeeResponseDTO save(EmployeeRequestDTO employeeDto) {
         if (employeeRepository.findByCpf(employeeDto.getCpf()) != null) {
-            throw new EntityAlreadyExists("Employee with this CPF already exists");
+            throw new ConflictException("Employee with this CPF already exists");
         }
 
         Employee employee = employeeMapper.toEntity(employeeDto);
@@ -41,9 +45,24 @@ public class EmployeeService {
         return employeeMapper.toDTO(savedEmployee);
     }
 
+    public EmployeeResponseDTO login(EmployeeLoginRequestDTO employeeDto) {
+
+        Optional<Employee> optEmployee = employeeRepository.findByEmail(employeeDto.getEmail());
+
+        if (optEmployee.isEmpty()) {
+            throw new NotFoundException("Email not found");
+        }
+
+        if (!employeeDto.getPassword().equals(optEmployee.get().getPassword())) {
+            throw new UnauthorizedException("Invalid password");
+        }
+
+        return employeeMapper.toDTO(optEmployee.get());
+    }
+
     public EmployeeResponseDTO findById(UUID id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+                .orElseThrow(() -> new NotFoundException("Employee not found"));
         return employeeMapper.toDTO(employee);
     }
 
@@ -55,11 +74,11 @@ public class EmployeeService {
 
     public EmployeeResponseDTO update(UUID id, EmployeeRequestDTO employeeDto) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+                .orElseThrow(() -> new NotFoundException("Employee not found"));
 
         Employee existingEmployee = employeeRepository.findByCpf(employeeDto.getCpf());
         if (existingEmployee != null && !existingEmployee.getId().equals(id)) {
-            throw new EntityAlreadyExists("Employee with this CPF already exists");
+            throw new ConflictException("Employee with this CPF already exists");
         }
 
         employee.setName(employeeDto.getName());
@@ -77,7 +96,7 @@ public class EmployeeService {
 
     public void delete(UUID id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+                .orElseThrow(() -> new NotFoundException("Employee not found"));
 
         employeeRepository.delete(employee);
     }

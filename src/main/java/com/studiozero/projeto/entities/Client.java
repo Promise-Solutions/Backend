@@ -29,7 +29,7 @@ public class Client {
     @Column(name = "contato", nullable = false)
     private String contact;
 
-    @Column(name = "tipoCliente", nullable = false)
+    @Column(name = "tipo_cliente", nullable = false)
     @Enumerated(EnumType.STRING)
     private ClientType clientType;
 

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Comanda")
+@Table(name = "comanda")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,25 +18,25 @@ public class Command {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idComanda", nullable = false)
+    @Column(name = "id_comanda", nullable = false)
     private Integer id;
 
-    @Column(name = "dataHoraAbertura", nullable = false)
+    @Column(name = "data_hora_abertura", nullable = false)
     private LocalDateTime openingDateTime;
 
-    @Column(name = "dataHoraFechamento")
+    @Column(name = "data_hora_fechamento")
     private LocalDateTime closingDateTime;
 
     @Column(name = "desconto")
     private Double discount;
 
-    @Column(name = "valorTotal", nullable = false)
+    @Column(name = "valor_total", nullable = false)
     private Double totalValue;
 
-    @Column(name = "fkCliente")
+    @Column(name = "fk_cliente")
     private UUID fkClient;
 
-    @Column(name = "fkFuncionario", nullable = false)
+    @Column(name = "fk_funcionario", nullable = false)
     private UUID fkEmployee;
 
     @Column(name = "status", nullable = false)

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ServicoOuPacotes")
+@Table(name = "servico_ou_pacotes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,16 +19,16 @@ public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idServico", updatable = false, nullable = false)
+    @Column(name = "id_servico", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "fkCliente", nullable = false)
+    @Column(name = "fk_cliente", nullable = false)
     private UUID fkClient;
 
     @Column(name = "titulo", nullable = false)
     private String title;
 
-    @Column(name = "valorTotal", nullable = false)
+    @Column(name = "valor_total", nullable = false)
     private Double totalValue;
 
     @Column(name = "categoria", nullable = false)
@@ -39,7 +39,7 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "tipoServico", nullable = false)
+    @Column(name = "tipo_servico", nullable = false)
     @Enumerated(EnumType.STRING)
     private JobType serviceType;
 }

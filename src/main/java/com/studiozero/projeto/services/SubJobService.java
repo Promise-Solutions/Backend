@@ -3,7 +3,7 @@ package com.studiozero.projeto.services;
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
 import com.studiozero.projeto.entities.SubJob;
-import com.studiozero.projeto.exceptions.EntityNotFoundException;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.SubJobMapper;
 import com.studiozero.projeto.repositories.SubJobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class SubJobService {
 
     public SubJobResponseDTO findById(UUID id) {
         SubJob subJob = subJobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sub job not found"));
+                .orElseThrow(() -> new NotFoundException("Sub job not found"));
         return subJobMapper.toDTO(subJob);
     }
 
@@ -42,7 +42,7 @@ public class SubJobService {
 
     public SubJobResponseDTO update(UUID id, SubJobRequestDTO jobDto) {
         SubJob subJob = subJobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sub job not found"));
+                .orElseThrow(() -> new NotFoundException("Sub job not found"));
 
         subJob.setTitle(jobDto.getTitle());
         subJob.setDescription(jobDto.getDescription());
@@ -60,7 +60,7 @@ public class SubJobService {
 
     public void delete(UUID id) {
         SubJob subJob = subJobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("SubJob not found"));
+                .orElseThrow(() -> new NotFoundException("SubJob not found"));
         subJobRepository.delete(subJob);
     }
 }
