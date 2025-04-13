@@ -52,10 +52,9 @@ public class ProductService {
         return productMapper.toDTO(updatedProduct);
     }
 
-    public String delete(Integer id) {
+    public void delete(Integer id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
         productRepository.delete(product);
-        return "Product deleted successfully";
     }
 }

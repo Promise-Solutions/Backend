@@ -60,13 +60,12 @@ public class JobService {
         return jobMapper.toDTO(updatedJob);
     }
 
-    public String delete(UUID id) {
+    public void delete(UUID id) {
         if (subJobRepository.existsByFkService(id)) {
             throw new BadRequestException("Cannot delete job with associated sub-jobs");
         }
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Job not found"));
         jobRepository.delete(job);
-        return "Job deleted successfully";
     }
 }

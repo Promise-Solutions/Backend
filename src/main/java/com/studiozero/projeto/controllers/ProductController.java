@@ -49,7 +49,8 @@ public class ProductController {
 
         @Operation(summary = "Delete a product", description = "This method is responsible for delete a product.")
         @DeleteMapping("/{id}")
-        public ResponseEntity<String> deleteProduct(@PathVariable Integer id) {
-                return ResponseEntity.ok(productService.delete(id));
+        public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+                productService.delete(id);
+                return ResponseEntity.ok().build();
         }
 }

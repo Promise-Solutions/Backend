@@ -54,8 +54,10 @@ public class EmployeeController {
 
         @Operation(summary = "Delete a employee", description = "This method is responsible for delete a employee.")
         @DeleteMapping("/{id}")
-        public ResponseEntity<String> deleteEmployee(
+        public ResponseEntity<Void> deleteEmployee(
                         @PathVariable @Valid UUID id) {
-                return ResponseEntity.ok(employeeService.delete(id));
+                employeeService.delete(id);
+                return ResponseEntity.ok().build();
+
         }
 }

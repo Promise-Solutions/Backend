@@ -75,11 +75,10 @@ public class EmployeeService {
         return employeeMapper.toDTO(updatedEmployee);
     }
 
-    public String delete(UUID id) {
+    public void delete(UUID id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
 
         employeeRepository.delete(employee);
-        return "Employee deleted successfully";
     }
 }

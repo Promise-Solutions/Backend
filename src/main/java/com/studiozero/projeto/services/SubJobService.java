@@ -58,10 +58,9 @@ public class SubJobService {
         return subJobMapper.toDTO(updatedSubJob);
     }
 
-    public String delete(UUID id) {
+    public void delete(UUID id) {
         SubJob subJob = subJobRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SubJob not found"));
         subJobRepository.delete(subJob);
-        return "SubJob deleted successfully";
     }
 }

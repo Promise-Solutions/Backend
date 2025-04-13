@@ -51,8 +51,9 @@ public class SubJobController {
 
         @Operation(summary = "Delete a sub job", description = "This method is responsible for delete a sub job.")
         @DeleteMapping("/{id}")
-        public ResponseEntity<String> deleteSubJob(
+        public ResponseEntity<Void> deleteSubJob(
                         @PathVariable UUID id) {
-                return ResponseEntity.ok(subJobService.delete(id));
+                subJobService.delete(id);
+                return ResponseEntity.ok().build();
         }
 }

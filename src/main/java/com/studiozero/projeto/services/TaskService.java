@@ -62,10 +62,9 @@ public class TaskService {
         return taskMapper.toDTO(updatedTask);
     }
 
-    public String delete (UUID id) {
+    public void delete (UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found"));
         taskRepository.delete(task);
-        return "Task deleted successfully";
     }
 }

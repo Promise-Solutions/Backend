@@ -49,6 +49,6 @@ public class CommandController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCommand(@PathVariable Integer id) {
         commandService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

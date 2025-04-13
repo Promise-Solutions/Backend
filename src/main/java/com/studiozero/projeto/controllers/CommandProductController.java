@@ -51,6 +51,6 @@ public class CommandProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCommandProduct(@PathVariable @Valid Integer id) {
         commandProductService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
