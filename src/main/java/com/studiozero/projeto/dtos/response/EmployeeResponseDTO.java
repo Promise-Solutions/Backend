@@ -22,13 +22,13 @@ public class EmployeeResponseDTO {
     private Boolean active;
 
     public EmployeeResponseDTO(Employee employee) {
-        this.id = employee.getId();
-        this.name = employee.getName();
-        this.email = employee.getEmail();
-        this.contact = employee.getContact();
-        this.cpf = employee.getCpf();
-        this.password = employee.getPassword();
-        this.token = employee.getToken();
-        this.active = employee.getActive();
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.contact = contact;
+        this.password = password;
+        this.token = token;
+        this.active = active;
     }
 }

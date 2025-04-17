@@ -16,9 +16,9 @@ public class ProductResponseDTO {
     private Double unitValue;
 
     public ProductResponseDTO(Product product) {
-        this.id = product.getId();
-        this.name = product.getName();
-        this.quantity = product.getQuantity();
-        this.unitValue = product.getUnitValue();
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.unitValue = unitValue;
     }
 }

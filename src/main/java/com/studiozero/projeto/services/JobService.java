@@ -1,71 +1,65 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.JobRequestDTO;
-import com.studiozero.projeto.dtos.response.JobResponseDTO;
+import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.exceptions.BadRequestException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.JobMapper;
+import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class JobService {
 
-    @Autowired
-    private JobRepository jobRepository;
+    private final JobRepository jobRepository;
+    private final SubJobRepository subJobRepository;
+    private final JobMapper jobMapper;
+    private final ClientRepository clientRepository;
 
-    @Autowired
-    private JobMapper jobMapper;
+    final
+    public Job createJob(JobRequestDTO jobdto) {
+        Client client = clientRepository.findById(jobdto.getFkClient())
+                .orElseThrow(() -> new NotFoundException("Client not found!"));
 
-    @Autowired
-    private SubJobRepository subJobRepository;
-
-    public JobResponseDTO save(JobRequestDTO jobDto) {
-        Job job = jobMapper.toEntity(jobDto);
-        Job savedJob = jobRepository.save(job);
-
-        return jobMapper.toDTO(savedJob);
+        Job job = jobMapper.toEntity(jobdto);
+        job.setId(UUID.randomUUID());
+        job.setClient(client);
+        return jobRepository.save(job);
     }
 
-    public JobResponseDTO findById(UUID id) {
-        Job job = jobRepository.findById(id)
+    public Job findjobById(UUID id) {
+        return jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Job not found"));
-        return jobMapper.toDTO(job);
     }
 
-    public List<JobResponseDTO> findAll() {
-        return jobRepository.findAll().stream()
-                .map(jobMapper::toDTO)
-                .toList();
+    public List<Job> listJobs() {
+        return jobRepository.findAll();
+}
+
+    public Job updateJob(Job job) {
+        if (jobRepository.existsById(job.getId())) {
+            job.setId(job.getId());
+            jobRepository.save(job);
+        }
+        throw new NotFoundException("Job not found");
     }
 
-    public JobResponseDTO update(UUID id, JobRequestDTO jobDto) {
-        Job job = jobRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Job not found"));
-
-        job.setFkClient(jobDto.getFkClient());
-        job.setTotalValue(jobDto.getTotalValue());
-        job.setCategory(jobDto.getCategory());
-        job.setStatus(jobDto.getStatus());
-        job.setServiceType(jobDto.getServiceType());
-
-        Job updatedJob = jobRepository.save(job);
-
-        return jobMapper.toDTO(updatedJob);
-    }
-
-    public void delete(UUID id) {
-        if (subJobRepository.existsByFkService(id)) {
+    public void deleteJob(UUID id) {
+        if (subJobRepository.existsByJob_Id(id)) {
             throw new BadRequestException("Cannot delete job with associated sub-jobs");
         }
-        Job job = jobRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Job not found"));
-        jobRepository.delete(job);
+
+        if (jobRepository.existsById(id)) {
+            jobRepository.deleteById(id);
+        }
+        throw new NotFoundException("Job not found");
     }
 }

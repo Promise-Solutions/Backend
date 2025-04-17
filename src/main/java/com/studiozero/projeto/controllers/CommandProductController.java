@@ -2,11 +2,13 @@ package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.CommandProductRequestDTO;
 import com.studiozero.projeto.dtos.response.CommandProductResponseDTO;
+import com.studiozero.projeto.entities.CommandProduct;
+import com.studiozero.projeto.mappers.CommandProductMapper;
 import com.studiozero.projeto.services.CommandProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/command-products")
+@RequiredArgsConstructor
 @Tag(name = "Command Products", description = "Endpoints for Command Product Management")
 public class CommandProductController {
 
-    @Autowired
-    private CommandProductService commandProductService;
+    private final CommandProductService commandProductService;
+    private final CommandProductMapper commandProductMapper;
 
     @Operation(
             summary = "Create a command product",
@@ -28,7 +31,11 @@ public class CommandProductController {
     public ResponseEntity<CommandProductResponseDTO> createCommandProduct(
             @RequestBody @Valid CommandProductRequestDTO commandProductDto
     ) {
-        return ResponseEntity.status(201).body(commandProductService.save(commandProductDto));
+        CommandProduct savedCommandProduct = commandProductService.createCommandProduct(commandProductDto);
+
+        CommandProductResponseDTO savedDto = CommandProductMapper.toDTO(savedCommandProduct);
+
+        return ResponseEntity.status(201).body(savedDto);
     }
 
     @Operation(
@@ -39,7 +46,11 @@ public class CommandProductController {
     public ResponseEntity<CommandProductResponseDTO> findCommandProductById(
             @PathVariable @Valid Integer id
     ) {
-        return ResponseEntity.ok(commandProductService.findById(id));
+        CommandProduct commandProduct = commandProductService.findCommandProductById(id);
+
+        CommandProductResponseDTO commandProductDto = CommandProductMapper.toDTO(commandProduct);
+
+        return ResponseEntity.ok(commandProductDto);
     }
 
     @Operation(
@@ -48,7 +59,15 @@ public class CommandProductController {
     )
     @GetMapping
     public ResponseEntity<List<CommandProductResponseDTO>> findAllCommandProducts() {
-        return ResponseEntity.ok(commandProductService.findAll());
+        List<CommandProduct> commandProducts = commandProductService.listCommandProducts();
+
+        if (commandProducts.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<CommandProductResponseDTO> commandProductsDtos = CommandProductMapper.toListDtos(commandProducts);
+
+        return ResponseEntity.status(302).body(commandProductsDtos);
     }
 
     @Operation(
@@ -60,7 +79,11 @@ public class CommandProductController {
             @PathVariable @Valid Integer id,
             @RequestBody @Valid CommandProductRequestDTO commandProductDto
     ) {
-        return ResponseEntity.ok(commandProductService.update(id, commandProductDto));
+        CommandProduct commandProduct = commandProductMapper.toEntity(commandProductDto, id);
+
+        CommandProduct updatedCommandProduct = commandProductService.updateCommandProduct(commandProduct);
+
+        return ResponseEntity.ok(CommandProductMapper.toDTO(updatedCommandProduct));
     }
 
     @Operation(
@@ -71,7 +94,7 @@ public class CommandProductController {
     public ResponseEntity<Void> deleteCommandProduct(
             @PathVariable @Valid Integer id
     ) {
-        commandProductService.delete(id);
+        commandProductService.deleteCommandProduct(id);
         return ResponseEntity.ok().build();
     }
 }

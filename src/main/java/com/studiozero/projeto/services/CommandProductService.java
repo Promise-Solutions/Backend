@@ -1,66 +1,98 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.CommandProductRequestDTO;
-import com.studiozero.projeto.dtos.response.CommandProductResponseDTO;
+import com.studiozero.projeto.entities.Command;
 import com.studiozero.projeto.entities.CommandProduct;
+import com.studiozero.projeto.entities.Product;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.CommandProductMapper;
-import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.CommandProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.studiozero.projeto.repositories.CommandRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommandProductService {
 
-    @Autowired
-    private CommandProductRepository commandProductRepository;
+    private final CommandProductRepository commandProductRepository;
+    private final CommandRepository commandRepository;
+    private final CommandProductMapper commandProductMapper;
+    private final ProductService productService;
+    private final CommandService commandService;
 
-    @Autowired
-    private CommandProductMapper commandProductMapper;
+    public CommandProduct createCommandProduct(CommandProductRequestDTO dto) {
+        Command command = commandRepository.findById(dto.getFkCommand())
+                .orElseThrow(() -> new NotFoundException("Comanda não encontrada"));
 
-    @Autowired
-    private ClientRepository clientRepository;
+        CommandProduct commandProduct = commandProductMapper.toEntity(dto);
+        commandProduct.setCommand(command);
 
-    public CommandProductResponseDTO save(CommandProductRequestDTO commandProductDto) {
-        CommandProduct commandProduct = commandProductMapper.toEntity(commandProductDto);
+        Product product = productService.findProductById(commandProduct.getProduct().getId());
+        product.setQuantity(product.getQuantity() - commandProduct.getProductQuantity());
 
-        CommandProduct savedCommandProduct = commandProductRepository.save(commandProduct);
+        commandProduct.setProduct(product);
 
-        return commandProductMapper.toDTO(savedCommandProduct);
+        productService.updateProduct(product);
+        commandService.updateCommand(command);
+
+        return commandProductRepository.save(commandProduct);
     }
 
-    public CommandProductResponseDTO findById(Integer id) {
+    public CommandProduct findCommandProductById(Integer id) {
+        return commandProductRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Produto da comanda não encontrado"));
+    }
+
+    public List<CommandProduct> listCommandProducts() {
+        return commandProductRepository.findAll();
+    }
+
+    public CommandProduct updateCommandProduct(CommandProduct updated) {
+        Integer id = updated.getId();
+
+        if (!commandProductRepository.existsById(id)) {
+            throw new NotFoundException("Produto da comanda não encontrado");
+        }
+
+        CommandProduct current = findCommandProductById(id);
+        Product oldProduct = current.getProduct();
+        Product newProduct = updated.getProduct();
+
+        int oldQty = current.getProductQuantity();
+        int newQty = updated.getProductQuantity();
+
+        if (!oldProduct.getId().equals(newProduct.getId())) {
+            oldProduct.setQuantity(oldProduct.getQuantity() + oldQty);
+            newProduct.setQuantity(newProduct.getQuantity() - newQty);
+
+            productService.updateProduct(oldProduct);
+            productService.updateProduct(newProduct);
+        } else {
+            int qtyDiff = newQty - oldQty;
+            newProduct.setQuantity(newProduct.getQuantity() - qtyDiff);
+            productService.updateProduct(newProduct);
+        }
+
+        updated.setCommand(current.getCommand());
+        updated.setProduct(newProduct);
+
+        commandService.updateCommand(current.getCommand());
+
+        return commandProductRepository.save(updated);
+    }
+
+    public void deleteCommandProduct(Integer id) {
         CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("CommandProduct not found"));
-        return commandProductMapper.toDTO(commandProduct);
-    }
+                .orElseThrow(() -> new NotFoundException("Produto da comanda não encontrado"));
 
-    public List<CommandProductResponseDTO> findAll() {
-        return commandProductRepository.findAll().stream()
-                .map(commandProductMapper::toDTO)
-                .toList();
-    }
+        Product product = commandProduct.getProduct();
+        product.setQuantity(product.getQuantity() + commandProduct.getProductQuantity());
+        productService.updateProduct(product);
 
-    public CommandProductResponseDTO update(Integer id, CommandProductRequestDTO commandProductDto) {
-        CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("commandProduct not found"));
-
-        commandProduct.setFkProduct(commandProductDto.getFkProduct());
-        commandProduct.setFkCommand(commandProductDto.getFkCommand());
-        commandProduct.setProductQuantity(commandProductDto.getProductQuantity());
-        commandProduct.setUnitValue(commandProductDto.getUnitValue());
-
-        CommandProduct updatedCommandProduct = commandProductRepository.save(commandProduct);
-
-        return commandProductMapper.toDTO(updatedCommandProduct);
-    }
-
-    public void delete(Integer id) {
-        CommandProduct commandProduct = commandProductRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("CommandProduct not found"));
-        commandProductRepository.delete(commandProduct);
+        commandProductRepository.deleteById(id);
+        commandService.updateCommand(commandProduct.getCommand());
     }
 }

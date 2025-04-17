@@ -15,7 +15,6 @@ import java.util.UUID;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_funcionario", updatable = false, nullable = false)
     private UUID id;
 

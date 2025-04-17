@@ -26,13 +26,13 @@ public class CommandResponseDTO {
     private Status status;
 
     public CommandResponseDTO(Command command) {
-        this.id = command.getId();
-        this.openingDateTime = command.getOpeningDateTime();
-        this.closingDateTime = command.getClosingDateTime();
-        this.discount = command.getDiscount();
-        this.totalValue = command.getTotalValue();
-        this.fkClient = command.getFkClient();
-        this.fkEmployee = command.getFkEmployee();
-        this.status = command.getStatus();
+        this.id = id;
+        this.openingDateTime = openingDateTime;
+        this.closingDateTime = closingDateTime;
+        this.discount = discount;
+        this.totalValue = totalValue;
+        this.fkClient = fkClient;
+        this.fkEmployee = fkEmployee;
+        this.status = status;
     }
 }

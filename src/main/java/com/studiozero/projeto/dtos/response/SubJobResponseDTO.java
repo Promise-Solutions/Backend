@@ -29,14 +29,14 @@ public class SubJobResponseDTO {
     private UUID fkService;
 
     public SubJobResponseDTO(SubJob subJob) {
-        this.id = subJob.getId();
-        this.title = subJob.getTitle();
-        this.description = subJob.getDescription();
-        this.value = subJob.getValue();
-        this.date = subJob.getDate();
-        this.startTime = subJob.getStartTime();
-        this.endTime = subJob.getEndTime();
-        this.status = subJob.getStatus();
-        this.fkService = subJob.getFkService();
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.fkService = fkService;
     }
 }

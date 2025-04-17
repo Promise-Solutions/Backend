@@ -33,11 +33,13 @@ public class Command {
     @Column(name = "valor_total", nullable = false)
     private Double totalValue;
 
-    @Column(name = "fk_cliente")
-    private UUID fkClient;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "fk_cliente")
+    private Client client;
 
-    @Column(name = "fk_funcionario", nullable = false)
-    private UUID fkEmployee;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_funcionario")
+    private Employee employee;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

@@ -13,7 +13,6 @@ import java.util.UUID;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // Alterado para GenerationType.UUID
     @Column(name = "id_cliente", updatable = false, nullable = false)
     private UUID id;
 

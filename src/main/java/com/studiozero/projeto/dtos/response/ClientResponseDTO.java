@@ -22,13 +22,12 @@ public class ClientResponseDTO {
     private Boolean active;
 
     public ClientResponseDTO(Client client) {
-        this.id = client.getId();
-        this.name = client.getName();
-        this.cpf = client.getCpf();
-        this.email = client.getEmail();
-        this.contact = client.getContact();
-        this.clientType = client.getClientType();
-        this.active = client.getActive();
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.contact = contact;
+        this.clientType = clientType;
+        this.active = active;
     }
-
 }

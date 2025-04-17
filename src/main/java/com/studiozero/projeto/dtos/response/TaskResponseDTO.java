@@ -27,12 +27,12 @@ public class TaskResponseDTO {
     private Status status;
 
     public TaskResponseDTO(Task task) {
-        this.id = task.getId();
-        this.title = task.getTitle();
-        this.description = task.getDescription();;
-        this.startDate = task.getStartDate();
-        this.limitDate = task.getLimitDate();
-        this.fkEmployee = task.getFkEmployee();
-        this.status = task.getStatus();
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.limitDate = limitDate;
+        this.fkEmployee = fkEmployee;
+        this.status = status;
     }
 }

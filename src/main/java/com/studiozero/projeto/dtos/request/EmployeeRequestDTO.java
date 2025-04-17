@@ -37,5 +37,5 @@ public class EmployeeRequestDTO {
     private String token;
 
     @NotNull(message = "Active value is mandatory")
-    private Boolean active;
+    private Boolean active = true;
 }

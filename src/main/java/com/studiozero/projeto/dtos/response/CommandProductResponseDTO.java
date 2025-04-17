@@ -19,10 +19,10 @@ public class CommandProductResponseDTO {
     private Double unitValue;
 
     public CommandProductResponseDTO(CommandProduct commandProduct) {
-        this.id = commandProduct.getId();
-        this.fkProduct = commandProduct.getFkProduct();
-        this.fkCommand = commandProduct.getFkCommand();
-        this.productQuantity = commandProduct.getProductQuantity();
-        this.unitValue = commandProduct.getUnitValue();
+        this.id = id;
+        this.fkProduct = fkProduct;
+        this.fkCommand = fkCommand;
+        this.productQuantity = productQuantity;
+        this.unitValue = unitValue;
     }
 }

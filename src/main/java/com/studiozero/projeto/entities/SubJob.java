@@ -18,7 +18,6 @@ import java.util.UUID;
 public class SubJob {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_sub_servico", updatable = false, nullable = false)
     private UUID id;
 
@@ -44,6 +43,7 @@ public class SubJob {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "fk_servico", nullable = false)
-    private UUID fkService;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_servico")
+    private Job job;
 }

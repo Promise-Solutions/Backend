@@ -18,12 +18,12 @@ import java.util.UUID;
 public class Job {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_servico", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "fk_cliente", nullable = false)
-    private UUID fkClient;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_cliente")
+    private Client client;
 
     @Column(name = "titulo", nullable = false)
     private String title;

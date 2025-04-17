@@ -1,66 +1,58 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
-import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
+import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.SubJobMapper;
+import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class SubJobService {
 
-    @Autowired
-    private SubJobRepository subJobRepository;
+    private final SubJobRepository subJobRepository;
+    private final JobRepository jobRepository;
+    private final SubJobMapper subJobMapper;
 
-    @Autowired
-    private SubJobMapper subJobMapper;
+    public SubJob createSubJob(SubJobRequestDTO subJobdto) {
+        Job job = jobRepository.findById(subJobdto.getFkService())
+                .orElseThrow(() -> new NotFoundException("Job not found"));
 
-    public SubJobResponseDTO save(SubJobRequestDTO subJobDto) {
-        SubJob subJob = subJobMapper.toEntity(subJobDto);
-        SubJob savedSubJob = subJobRepository.save(subJob);
+        SubJob subjob = subJobMapper.toEntity(subJobdto);
 
-        return subJobMapper.toDTO(savedSubJob);
+        subjob.setId(UUID.randomUUID());
+        subjob.setJob(job);
+        return subJobRepository.save(subjob);
     }
 
-    public SubJobResponseDTO findById(UUID id) {
-        SubJob subJob = subJobRepository.findById(id)
+    public SubJob findSubJobById(UUID id) {
+        return subJobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sub job not found"));
-        return subJobMapper.toDTO(subJob);
     }
 
-    public List<SubJobResponseDTO> findAll() {
-        return subJobRepository.findAll().stream()
-                .map(subJobMapper::toDTO)
-                .toList();
+    public List<SubJob> listSubJobs() {
+        return subJobRepository.findAll();
     }
 
-    public SubJobResponseDTO update(UUID id, SubJobRequestDTO jobDto) {
-        SubJob subJob = subJobRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Sub job not found"));
-
-        subJob.setTitle(jobDto.getTitle());
-        subJob.setDescription(jobDto.getDescription());
-        subJob.setValue(jobDto.getValue());
-        subJob.setDate(jobDto.getDate());
-        subJob.setStartTime(jobDto.getStartTime());
-        subJob.setEndTime(jobDto.getEndTime());
-        subJob.setStatus(jobDto.getStatus());
-        subJob.setFkService(jobDto.getFkService());
-
-        SubJob updatedSubJob = subJobRepository.save(subJob);
-
-        return subJobMapper.toDTO(updatedSubJob);
+    public SubJob updateSubJob(SubJob subjob) {
+        if (subJobRepository.existsById(subjob.getId())) {
+            subjob.setId(subjob.getId());
+            return subJobRepository.save(subjob);
+        }
+        throw new NotFoundException("Sub job not found");
     }
 
-    public void delete(UUID id) {
-        SubJob subJob = subJobRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("SubJob not found"));
-        subJobRepository.delete(subJob);
+    public void deleteSubJob(UUID id) {
+        if (subJobRepository.existsById(id)) {
+            subJobRepository.deleteById(id);
+        }
+        throw new NotFoundException("SubJob not found");
     }
 }

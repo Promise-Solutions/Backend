@@ -2,10 +2,13 @@ package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.TaskRequestDTO;
 import com.studiozero.projeto.dtos.response.TaskResponseDTO;
+import com.studiozero.projeto.entities.Task;
+import com.studiozero.projeto.mappers.TaskMapper;
 import com.studiozero.projeto.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +18,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
+@RequiredArgsConstructor
 @Tag(name = "Tasks", description = "Endpoints for Task Management")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final TaskMapper taskMapper;
 
     @Operation(
             summary = "Create a task",
@@ -29,7 +33,9 @@ public class TaskController {
     public ResponseEntity<TaskResponseDTO> createTask(
             @RequestBody @Valid TaskRequestDTO taskDto
     ) {
-        return ResponseEntity.status(201).body(taskService.save(taskDto));
+        Task savedTask = taskService.createTask(taskDto);
+        TaskResponseDTO savedDto = TaskMapper.toDTO(savedTask);
+        return ResponseEntity.status(201).body(savedDto);
     }
 
     @Operation(
@@ -38,7 +44,15 @@ public class TaskController {
     )
     @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> findAllTasks() {
-        return ResponseEntity.ok(taskService.findAll());
+        List<Task> tasks = taskService.listTasks();
+
+        if (tasks.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<TaskResponseDTO> taskDtos = TaskMapper.toListDtos(tasks);
+
+        return ResponseEntity.status(302).body(taskDtos);
     }
 
     @Operation(
@@ -48,8 +62,11 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> findTaskById(
             @PathVariable @Valid UUID id
-    ){
-        return ResponseEntity.ok(taskService.findById(id));
+    ) {
+        Task task = taskService.findTaskById(id);
+        TaskResponseDTO taskDto = TaskMapper.toDTO(task);
+
+        return ResponseEntity.ok(taskDto);
     }
 
     @Operation(
@@ -61,7 +78,10 @@ public class TaskController {
             @PathVariable @Valid UUID id,
             @RequestBody @Valid TaskRequestDTO taskDto
     ) {
-        return ResponseEntity.ok(taskService.update(id, taskDto));
+        Task task = taskMapper.toEntity(taskDto, id);
+        Task updatedTask = taskService.updateTask(task);
+
+        return ResponseEntity.ok(TaskMapper.toDTO(updatedTask));
     }
 
     @Operation(
@@ -71,8 +91,8 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(
             @PathVariable @Valid UUID id
-    ){
-        taskService.delete(id);
+    ) {
+        taskService.deleteTask(id);
         return ResponseEntity.ok().build();
     }
 }

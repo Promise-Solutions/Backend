@@ -39,6 +39,6 @@ public class ClientRequestDTO {
     private ClientType clientType;
 
     @NotNull(message = "Active value is mandatory")
-    private Boolean active;
+    private Boolean active = true;
 
 }

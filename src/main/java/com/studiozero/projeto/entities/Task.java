@@ -17,7 +17,6 @@ import java.util.UUID;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_tarefa", updatable = false, nullable = false)
     private UUID id;
 
@@ -33,8 +32,9 @@ public class Task {
     @Column(name = "data_limite")
     private LocalDate limitDate;
 
-    @Column(name = "fk_funcionario")
-    private UUID fkEmployee;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "fk_funcionario")
+    private Employee employee;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

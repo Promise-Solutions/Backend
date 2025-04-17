@@ -1,60 +1,45 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.request.ProductRequestDTO;
-import com.studiozero.projeto.dtos.response.ProductResponseDTO;
 import com.studiozero.projeto.entities.Product;
 import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.mappers.ProductMapper;
 import com.studiozero.projeto.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private ProductMapper productMapper;
-
-    public ProductResponseDTO save(ProductRequestDTO productDto) {
-        Product product = productMapper.toEntity(productDto);
-        Product savedProduct = productRepository.save(product);
-
-        return productMapper.toDTO(savedProduct);
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
     }
-    public ProductResponseDTO findById(Integer id) {
-        Product product = productRepository.findById(id)
+
+    public Product findProductById(Integer id) {
+        return productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
-        return productMapper.toDTO(product);
     }
 
-    public List<ProductResponseDTO> findAll() {
-            return productRepository.findAll().stream()
-                    .map(productMapper::toDTO)
-                    .toList();
+    public List<Product> listProducts() {
+        return productRepository.findAll();
+    }
+
+
+    public Product updateProduct(Product product) {
+        if (productRepository.existsById(product.getId())) {
+            product.setId(product.getId());
+            return productRepository.save(product);
         }
-
-
-    public ProductResponseDTO update(Integer id, ProductRequestDTO productDto) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
-
-        product.setName(productDto.getName());
-        product.setQuantity(productDto.getQuantity());
-        product.setUnitValue(productDto.getUnitValue());
-
-        Product updatedProduct = productRepository.save(product);
-
-        return productMapper.toDTO(updatedProduct);
+        throw new NotFoundException("Product not found");
     }
 
-    public void delete(Integer id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
-        productRepository.delete(product);
+    public void deleteProduct(Integer id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        }
+        throw new NotFoundException("Product not found");
     }
 }

@@ -2,11 +2,13 @@ package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.CommandRequestDTO;
 import com.studiozero.projeto.dtos.response.CommandResponseDTO;
+import com.studiozero.projeto.entities.Command;
+import com.studiozero.projeto.mappers.CommandMapper;
 import com.studiozero.projeto.services.CommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/commands")
+@RequiredArgsConstructor
 @Tag(name = "Commands", description = "Endpoints for Command Management")
 public class CommandController {
 
-    @Autowired
-    private CommandService commandService;
+    private final CommandService commandService;
+    private final CommandMapper commandMapper;
 
     @Operation(
             summary = "Create a new command",
@@ -28,7 +31,10 @@ public class CommandController {
     public ResponseEntity<CommandResponseDTO> createCommand(
             @RequestBody @Valid CommandRequestDTO commandDto
     ) {
-        return ResponseEntity.status(201).body(commandService.save(commandDto));
+        Command savedCommand = commandService.createCommand(commandDto);
+        CommandResponseDTO savedDto = CommandMapper.toDTO(savedCommand);
+
+        return ResponseEntity.status(201).body(savedDto);
     }
 
     @Operation(
@@ -39,7 +45,10 @@ public class CommandController {
     public ResponseEntity<CommandResponseDTO> findCommandById(
             @PathVariable Integer id
     ) {
-        return ResponseEntity.ok(commandService.findById(id));
+        Command command = commandService.findCommandById(id);
+        CommandResponseDTO commandDto = CommandMapper.toDTO(command);
+
+        return ResponseEntity.ok(commandDto);
     }
 
     @Operation(
@@ -48,7 +57,15 @@ public class CommandController {
     )
     @GetMapping
     public ResponseEntity<List<CommandResponseDTO>> listAllCommands() {
-        return ResponseEntity.ok(commandService.findAll());
+        List<Command> commands = commandService.listCommands();
+
+        if (commands.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<CommandResponseDTO> commandDtos = CommandMapper.toListDtos(commands);
+
+        return ResponseEntity.status(302).body(commandDtos);
     }
 
     @Operation(
@@ -60,7 +77,9 @@ public class CommandController {
             @PathVariable Integer id,
             @RequestBody @Valid CommandRequestDTO commandDto
     ) {
-        return ResponseEntity.ok(commandService.update(id, commandDto));
+        Command command = commandMapper.toEntity(commandDto, id);
+        Command updatedCommand = commandService.updateCommand(command);
+        return ResponseEntity.ok(CommandMapper.toDTO(updatedCommand));
     }
 
     @Operation(
@@ -71,7 +90,7 @@ public class CommandController {
     public ResponseEntity<Void> deleteCommand(
             @PathVariable Integer id
     ) {
-        commandService.delete(id);
+        commandService.deleteCommand(id);
         return ResponseEntity.ok().build();
     }
 }

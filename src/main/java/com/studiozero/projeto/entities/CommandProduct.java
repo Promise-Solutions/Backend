@@ -17,11 +17,13 @@ public class CommandProduct {
     @Column(name = "id_comanda_produto", nullable = false)
     private Integer id;
 
-    @Column(name = "fk_produto", nullable = false)
-    private Integer fkProduct;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_produto")
+    private Product product;
 
-    @Column(name = "fk_comanda", nullable = false)
-    private Integer fkCommand;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_comanda", nullable = false)
+    private Command command;
 
     @Column(name = "qtd_produto", nullable = false)
     private Integer productQuantity;

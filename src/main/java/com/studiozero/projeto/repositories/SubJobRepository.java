@@ -9,4 +9,6 @@ import java.util.UUID;
 @Repository
 public interface SubJobRepository extends JpaRepository<SubJob, UUID> {
     boolean existsByFkService(UUID fkService);
+
+    boolean existsByJob_Id(UUID jobId);
 }

@@ -5,10 +5,13 @@ import com.studiozero.projeto.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.entities.Client;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.UUID;
+
 @Component
 public class ClientMapper {
 
-    public Client toEntity(ClientRequestDTO dto) {
+    public static Client toEntity(ClientRequestDTO dto) {
         Client client = new Client();
         client.setName(dto.getName());
         client.setCpf(dto.getCpf());
@@ -19,8 +22,34 @@ public class ClientMapper {
         return client;
     }
 
-    public ClientResponseDTO toDTO(Client client) {
+    public static ClientResponseDTO toDTO(Client client) {
         return new ClientResponseDTO(client);
+    }
+
+    public static List<ClientResponseDTO> toListDtos(List<Client> entities) {
+        if (entities == null) {
+            return null;
+        }
+
+        return entities.stream()
+                .map(ClientMapper::toDTO)
+                .toList();
+    }
+
+    public static Client toEntity(ClientRequestDTO dto, UUID id) {
+        if (dto == null) {
+            return null;
+        }
+
+        return new Client(
+                id,
+                dto.getName(),
+                dto.getCpf(),
+                dto.getEmail(),
+                dto.getContact(),
+                dto.getClientType(),
+                dto.getActive()
+        );
     }
 
 }
