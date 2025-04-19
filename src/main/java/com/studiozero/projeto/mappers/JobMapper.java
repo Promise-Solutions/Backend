@@ -36,7 +36,18 @@ public class JobMapper {
     }
 
     public static JobResponseDTO toDTO(Job job) {
-        return new JobResponseDTO(job);
+        if (job == null) {
+            return null;
+        }
+        JobResponseDTO dto = new JobResponseDTO();
+        dto.setId(job.getId());
+        dto.setTitle(job.getTitle());
+        dto.setCategory(job.getCategory());
+        dto.setServiceType(job.getServiceType());
+        dto.setTotalValue(job.getTotalValue());
+        dto.setFkClient(job.getClient() != null ? job.getClient().getId() : null);
+        dto.setStatus(job.getStatus());
+        return dto;
     }
 
     public static List<JobResponseDTO> toListDtos(List<Job> entities) {

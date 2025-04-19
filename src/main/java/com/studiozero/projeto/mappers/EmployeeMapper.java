@@ -23,6 +23,9 @@ public class EmployeeMapper {
     }
 
     public static EmployeeResponseDTO toDTO(Employee employee) {
+        if (employee == null) {
+            return null;
+        }
         EmployeeResponseDTO dto = new EmployeeResponseDTO();
         dto.setId(employee.getId());
         dto.setName(employee.getName());

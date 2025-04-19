@@ -37,7 +37,20 @@ public class SubJobMapper {
     }
 
     public static SubJobResponseDTO toDTO(SubJob subjob) {
-        return new SubJobResponseDTO(subjob);
+        if (subjob == null) {
+            return null;
+        }
+        SubJobResponseDTO dto = new SubJobResponseDTO();
+        dto.setId(subjob.getId());
+        dto.setTitle(subjob.getTitle());
+        dto.setDescription(subjob.getDescription());
+        dto.setValue(subjob.getValue());
+        dto.setDate(subjob.getDate());
+        dto.setStartTime(subjob.getStartTime());
+        dto.setEndTime(subjob.getEndTime());
+        dto.setStatus(subjob.getStatus());
+        dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        return dto;
     }
 
     public static List<SubJobResponseDTO> toListDtos(List<SubJob> entities) {

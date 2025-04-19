@@ -38,7 +38,16 @@ public class CommandProductMapper {
     }
 
     public static CommandProductResponseDTO toDTO(CommandProduct commandProduct) {
-        return new CommandProductResponseDTO(commandProduct);
+        if (commandProduct == null) {
+            return null;
+        }
+        CommandProductResponseDTO dto = new CommandProductResponseDTO();
+        dto.setId(commandProduct.getId());
+        dto.setProductQuantity(commandProduct.getProductQuantity());
+        dto.setUnitValue(commandProduct.getUnitValue());
+        dto.setFkCommand(commandProduct.getCommand() != null ? commandProduct.getCommand().getId() : null);
+        dto.setFkProduct(commandProduct.getProduct() != null ? commandProduct.getProduct().getId() : null);
+        return dto;
     }
 
     public static List<CommandProductResponseDTO> toListDtos(List<CommandProduct> entities) {

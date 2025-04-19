@@ -19,7 +19,15 @@ public class ProductMapper {
     }
 
     public static ProductResponseDTO toDTO(Product product) {
-        return new ProductResponseDTO(product);
+        if (product == null) {
+            return null;
+        }
+        ProductResponseDTO dto = new ProductResponseDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setQuantity(product.getQuantity());
+        dto.setUnitValue(product.getUnitValue());
+        return dto;
     }
 
     public static List<ProductResponseDTO> toListDtos(List<Product> entities) {

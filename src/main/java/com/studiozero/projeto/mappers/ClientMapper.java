@@ -23,7 +23,18 @@ public class ClientMapper {
     }
 
     public static ClientResponseDTO toDTO(Client client) {
-        return new ClientResponseDTO(client);
+        if (client == null) {
+            return null;
+        }
+        ClientResponseDTO dto = new ClientResponseDTO();
+        dto.setId(client.getId());
+        dto.setName(client.getName());
+        dto.setCpf(client.getCpf());
+        dto.setEmail(client.getEmail());
+        dto.setContact(client.getContact());
+        dto.setClientType(client.getClientType());
+        dto.setActive(client.getActive());
+        return dto;
     }
 
     public static List<ClientResponseDTO> toListDtos(List<Client> entities) {

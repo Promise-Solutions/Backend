@@ -45,7 +45,19 @@ public class CommandMapper {
     }
 
     public static CommandResponseDTO toDTO(Command command) {
-        return new CommandResponseDTO(command);
+        if (command == null) {
+            return null;
+        }
+        CommandResponseDTO dto = new CommandResponseDTO();
+        dto.setId(command.getId());
+        dto.setOpeningDateTime(command.getOpeningDateTime());
+        dto.setClosingDateTime(command.getClosingDateTime());
+        dto.setDiscount(command.getDiscount());
+        dto.setTotalValue(command.getTotalValue());
+        dto.setFkClient(command.getClient() != null ? command.getClient().getId() : null);
+        dto.setFkEmployee(command.getEmployee() != null ? command.getEmployee().getId() : null);
+        dto.setStatus(command.getStatus());
+        return dto;
     }
 
     public static List<CommandResponseDTO> toListDtos(List<Command> entities) {

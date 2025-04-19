@@ -35,7 +35,18 @@ public class TaskMapper {
     }
 
     public static TaskResponseDTO toDTO(Task task) {
-        return new TaskResponseDTO(task);
+        if (task == null) {
+            return null;
+        }
+        TaskResponseDTO dto = new TaskResponseDTO();
+        dto.setId(task.getId());
+        dto.setTitle(task.getTitle());
+        dto.setDescription(task.getDescription());
+        dto.setStartDate(task.getStartDate());
+        dto.setLimitDate(task.getLimitDate());
+        dto.setStatus(task.getStatus());
+        dto.setFkEmployee(task.getEmployee() != null ? task.getEmployee().getId() : null);
+        return dto;
     }
 
     public static List<TaskResponseDTO> toListDtos(List<Task> entities) {

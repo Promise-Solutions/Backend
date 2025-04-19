@@ -585,3 +585,6 @@ SELECT * FROM CLIENTE FUNCIONARIO FUNCIONARIO [42000-232]
 2025-04-12 21:20:46.280155-03:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]SFUNCIONARIO ELECT * FROM FUNCIONARIO"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
 SFUNCIONARIO ELECT * FROM FUNCIONARIO [42001-232]
+2025-04-19 01:21:27.133302-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT @[*]@character_set_database, @@sql_mode"; expected "identifier"; SQL statement:
+SELECT @@character_set_database, @@sql_mode [42001-232]
