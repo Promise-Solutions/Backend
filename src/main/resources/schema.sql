@@ -88,7 +88,7 @@ CREATE TABLE comanda (
 
 -- COMANDA PRODUTO
 CREATE TABLE comanda_produto (
-    id_comanda_produto INT NOT NULL,
+    id_comanda_produto INT NOT NULL AUTO_INCREMENT,
     fk_produto INT NOT NULL,
     fk_comanda INT NOT NULL,
     qtd_produto INT NOT NULL,

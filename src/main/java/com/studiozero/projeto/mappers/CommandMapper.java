@@ -25,8 +25,13 @@ public class CommandMapper {
 
     public Command toEntity(CommandRequestDTO dto) {
         Command command = new Command();
-        Client client = clientRepository.findById(dto.getFkClient())
-                .orElse(null);
+
+        if (dto.getFkClient() != null) {
+            Client client = clientRepository.findById(dto.getFkClient()).orElse(null);
+            command.setClient(client);
+
+        }
+
         Employee employee = employeeRepository.findById(dto.getFkEmployee())
                 .orElseThrow(() -> new NotFoundException("FkEmployee not found"));
 
@@ -34,7 +39,6 @@ public class CommandMapper {
         command.setClosingDateTime(dto.getClosingDateTime());
         command.setDiscount(dto.getDiscount());
         command.setTotalValue(dto.getTotalValue());
-        command.setClient(client);
         command.setEmployee(employee);
         command.setStatus(dto.getStatus());
         return command;

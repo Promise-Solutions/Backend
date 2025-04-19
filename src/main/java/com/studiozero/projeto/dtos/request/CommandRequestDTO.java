@@ -3,7 +3,7 @@ package com.studiozero.projeto.dtos.request;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.enums.Status;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +28,7 @@ public class CommandRequestDTO {
     @NotNull(message = "Total value is mandatory")
     private Double totalValue;
 
+    @Nullable
     private UUID fkClient;
 
     @NotNull(message = "Employee ID is mandatory")

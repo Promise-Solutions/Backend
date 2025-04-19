@@ -30,13 +30,17 @@ public class CommandService {
     private final CommandProductRepository commandProductRepository;
 
     public Command createCommand(CommandRequestDTO commanddto) {
-        Client client = clientRepository.findById(commanddto.getFkClient()).orElse(null);
         Employee employee = employeeRepository.findById(commanddto.getFkEmployee())
                 .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
 
         Command command = commandMapper.toEntity(commanddto);
         command.setEmployee(employee);
-        command.setClient(client);
+
+        if (commanddto.getFkClient() != null) {
+            Client client = clientRepository.findById(commanddto.getFkClient()).orElse(null);
+            command.setClient(client);
+
+        }
 
         return commandRepository.save(command);
     }
@@ -65,6 +69,11 @@ public class CommandService {
             double discount = (totalValue * command.getDiscount()) / 100;
             totalValue -= discount;
         }
+
+        if (command.getStatus() != Status.CLOSED && command.getDiscount() > 0) {
+            throw new UnauthorizedException("Discount just can be applied in closed commands!");
+        }
+
 
         command.setTotalValue(totalValue);
         return commandRepository.save(command);
