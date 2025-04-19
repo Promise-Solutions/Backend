@@ -52,7 +52,7 @@ public class TaskController {
 
         List<TaskResponseDTO> taskDtos = TaskMapper.toListDtos(tasks);
 
-        return ResponseEntity.status(302).body(taskDtos);
+        return ResponseEntity.status(200).body(taskDtos);
     }
 
     @Operation(

@@ -6,6 +6,7 @@ import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.exceptions.UnauthorizedException;
 import com.studiozero.projeto.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,8 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     public Employee createEmployee(Employee employee) {
         if (employeeRepository.existsByCpf(employee.getCpf())) {
             throw new ConflictException("Employee with this CPF already exists");
@@ -26,6 +29,8 @@ public class EmployeeService {
             throw new ConflictException("Employee with this email already exists");
         }
 
+        String hashedPassword = passwordEncoder.encode(employee.getPassword());
+        employee.setPassword(hashedPassword);
         employee.setId(UUID.randomUUID());
         return employeeRepository.save(employee);
     }

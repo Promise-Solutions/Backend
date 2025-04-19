@@ -33,9 +33,6 @@ public class Employee {
     @Column(name = "senha", nullable = false)
     private String password;
 
-    @Column(name = "token", nullable = false)
-    private String token;
-
     @Column(name = "ativo", nullable = false)
     private Boolean active;
 }

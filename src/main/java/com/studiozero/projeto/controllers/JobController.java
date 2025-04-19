@@ -66,7 +66,7 @@ public class JobController {
 
         List<JobResponseDTO> jobDtos = JobMapper.toListDtos(jobs);
 
-        return ResponseEntity.status(302).body(jobDtos);
+        return ResponseEntity.status(200).body(jobDtos);
     }
 
     @Operation(

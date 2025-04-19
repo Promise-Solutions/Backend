@@ -28,7 +28,6 @@ public class EmployeeResponseDTO {
         this.email = email;
         this.contact = contact;
         this.password = password;
-        this.token = token;
         this.active = active;
     }
 }

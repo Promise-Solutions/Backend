@@ -18,7 +18,6 @@ public class EmployeeMapper {
         employee.setContact(dto.getContact());
         employee.setCpf(dto.getCpf());
         employee.setPassword(dto.getPassword());
-        employee.setToken(dto.getToken());
         employee.setActive(dto.getActive());
         return employee;
     }
@@ -48,7 +47,6 @@ public class EmployeeMapper {
                 dto.getContact(),
                 dto.getCpf(),
                 dto.getPassword(),
-                dto.getToken(),
                 dto.getActive()
         );
     }

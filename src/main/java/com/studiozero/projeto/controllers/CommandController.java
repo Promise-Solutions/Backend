@@ -65,7 +65,7 @@ public class CommandController {
 
         List<CommandResponseDTO> commandDtos = CommandMapper.toListDtos(commands);
 
-        return ResponseEntity.status(302).body(commandDtos);
+        return ResponseEntity.status(200).body(commandDtos);
     }
 
     @Operation(

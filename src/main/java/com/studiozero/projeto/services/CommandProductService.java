@@ -4,6 +4,7 @@ import com.studiozero.projeto.dtos.request.CommandProductRequestDTO;
 import com.studiozero.projeto.entities.Command;
 import com.studiozero.projeto.entities.CommandProduct;
 import com.studiozero.projeto.entities.Product;
+import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.CommandProductMapper;
 import com.studiozero.projeto.repositories.CommandProductRepository;
@@ -21,7 +22,6 @@ public class CommandProductService {
     private final CommandRepository commandRepository;
     private final CommandProductMapper commandProductMapper;
     private final ProductService productService;
-    private final CommandService commandService;
 
     public CommandProduct createCommandProduct(CommandProductRequestDTO dto) {
         Command command = commandRepository.findById(dto.getFkCommand())
@@ -36,7 +36,7 @@ public class CommandProductService {
         commandProduct.setProduct(product);
 
         productService.updateProduct(product);
-        commandService.updateCommand(command);
+        updateCommand(command);
 
         return commandProductRepository.save(commandProduct);
     }
@@ -79,7 +79,7 @@ public class CommandProductService {
         updated.setCommand(current.getCommand());
         updated.setProduct(newProduct);
 
-        commandService.updateCommand(current.getCommand());
+        updateCommand(current.getCommand());
 
         return commandProductRepository.save(updated);
     }
@@ -93,6 +93,26 @@ public class CommandProductService {
         productService.updateProduct(product);
 
         commandProductRepository.deleteById(id);
-        commandService.updateCommand(commandProduct.getCommand());
+        updateCommand(commandProduct.getCommand());
+    }
+
+    public Command updateCommand(Command command) {
+        if (!commandRepository.existsById(command.getId())) {
+            throw new NotFoundException("Comanda não encontrada");
+        }
+
+        List<CommandProduct> commandProducts = commandProductRepository.findAllByCommand_Id(command.getId());
+
+        double totalValue = commandProducts.stream()
+                .mapToDouble(cp -> cp.getUnitValue() * cp.getProductQuantity())
+                .sum();
+
+        if (command.getStatus() == Status.CLOSED && Double.compare(command.getDiscount(), 0.0) != 0) {
+            double discount = (totalValue * command.getDiscount()) / 100;
+            totalValue -= discount;
+        }
+
+        command.setTotalValue(totalValue);
+        return commandRepository.save(command);
     }
 }

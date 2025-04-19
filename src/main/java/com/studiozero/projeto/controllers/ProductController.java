@@ -65,7 +65,7 @@ public class ProductController {
         List<ProductResponseDTO> dtos = ProductMapper.toListDtos(products);
 
 
-        return ResponseEntity.status(302).body(dtos);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @Operation(

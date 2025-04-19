@@ -2,18 +2,24 @@ package com.studiozero.projeto.dtos.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.studiozero.projeto.entities.Employee;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-public class EmployeeRequestDTO {
+public class EmployeeRequestDTO implements UserDetails {
 
     @NotBlank(message = "Name value is mandatory")
     private String name;
@@ -34,8 +40,45 @@ public class EmployeeRequestDTO {
     @NotBlank(message = "Password value is mandatory")
     private String password;
 
-    private String token;
-
     @NotNull(message = "Active value is mandatory")
     private Boolean active = true;
+
+    public EmployeeRequestDTO(Employee employee) {
+        this.name = employee.getName();
+        this.email = employee.getEmail();
+        this.contact = employee.getContact();
+        this.cpf = employee.getCpf();
+        this.password = employee.getPassword();
+        this.active = employee.getActive();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

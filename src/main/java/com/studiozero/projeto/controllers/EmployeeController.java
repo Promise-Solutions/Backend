@@ -2,15 +2,20 @@ package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.EmployeeLoginRequestDTO;
 import com.studiozero.projeto.dtos.request.EmployeeRequestDTO;
+import com.studiozero.projeto.dtos.response.EmployeeLoginResponseDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.entities.Employee;
+import com.studiozero.projeto.entities.EmployeeUserDetails;
 import com.studiozero.projeto.mappers.EmployeeMapper;
 import com.studiozero.projeto.services.EmployeeService;
+import com.studiozero.projeto.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +28,8 @@ import java.util.UUID;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     @Operation(
             summary = "Create a employee",
@@ -43,14 +50,20 @@ public class EmployeeController {
             description = "This method is responsible for login a employee."
     )
     @PostMapping("/login")
-    public ResponseEntity<EmployeeResponseDTO> loginEmployee(
+    public ResponseEntity<EmployeeLoginResponseDTO> loginEmployee(
             @RequestBody @Valid EmployeeLoginRequestDTO employeeDto
     ) {
-        Employee employee = employeeService.login(employeeDto.getEmail(), employeeDto.getPassword());
+        var usernamePassword = new UsernamePasswordAuthenticationToken(
+                employeeDto.getEmail(),
+                employeeDto.getPassword()
+        );
 
-        EmployeeResponseDTO employeeDtoLogin = EmployeeMapper.toDTO(employee);
+        var auth = authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok(employeeDtoLogin);
+        var employeeUserDetails = (EmployeeUserDetails) auth.getPrincipal();
+        var token = tokenService.generateToken(employeeUserDetails.getEmployee());
+
+        return ResponseEntity.ok(new EmployeeLoginResponseDTO(token));
     }
 
     @Operation(

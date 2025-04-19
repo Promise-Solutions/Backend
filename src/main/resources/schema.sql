@@ -6,7 +6,6 @@ CREATE TABLE funcionario (
     contato VARCHAR(15) NOT NULL,
     cpf CHAR(14) NOT NULL,
     senha VARCHAR(45) NOT NULL,
-    token VARCHAR(45) NOT NULL,
     ativo BOOLEAN NOT NULL
 );
 

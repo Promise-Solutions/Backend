@@ -67,7 +67,7 @@ public class CommandProductController {
 
         List<CommandProductResponseDTO> commandProductsDtos = CommandProductMapper.toListDtos(commandProducts);
 
-        return ResponseEntity.status(302).body(commandProductsDtos);
+        return ResponseEntity.status(200).body(commandProductsDtos);
     }
 
     @Operation(

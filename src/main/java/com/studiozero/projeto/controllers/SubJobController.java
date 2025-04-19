@@ -65,7 +65,7 @@ public class SubJobController {
         }
 
         List<SubJobResponseDTO> subJobDtos = SubJobMapper.toListDtos(subJobs);
-        return ResponseEntity.status(302).body(subJobDtos);
+        return ResponseEntity.status(200).body(subJobDtos);
     }
 
     @Operation(
