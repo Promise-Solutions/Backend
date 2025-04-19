@@ -17,8 +17,6 @@ public class EmployeeResponseDTO {
     private String cpf;
     private String email;
     private String contact;
-    private String password;
-    private String token;
     private Boolean active;
 
     public EmployeeResponseDTO(Employee employee) {
@@ -27,7 +25,6 @@ public class EmployeeResponseDTO {
         this.cpf = cpf;
         this.email = email;
         this.contact = contact;
-        this.password = password;
         this.active = active;
     }
 }

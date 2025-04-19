@@ -23,7 +23,15 @@ public class EmployeeMapper {
     }
 
     public static EmployeeResponseDTO toDTO(Employee employee) {
-        return new EmployeeResponseDTO(employee);
+        EmployeeResponseDTO dto = new EmployeeResponseDTO();
+        dto.setId(employee.getId());
+        dto.setName(employee.getName());
+        dto.setCpf(employee.getCpf());
+        dto.setEmail(employee.getEmail());
+        dto.setContact(employee.getContact());
+        dto.setActive(employee.getActive());
+
+        return dto;
     }
 
     public static List<EmployeeResponseDTO> toListDtos(List<Employee> entities) {
