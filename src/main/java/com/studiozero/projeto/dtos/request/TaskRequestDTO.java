@@ -3,6 +3,7 @@ package com.studiozero.projeto.dtos.request;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.enums.Status;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ public class TaskRequestDTO {
     @NotBlank(message = "Limit date value is mandatory")
     private LocalDate limitDate;
 
+    @Nullable
     private UUID fkEmployee;
 
     @NotBlank(message = "Status value is mandatory")
