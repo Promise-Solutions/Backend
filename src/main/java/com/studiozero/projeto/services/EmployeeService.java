@@ -65,7 +65,8 @@ public class EmployeeService {
     public void deleteEmployee(UUID id) {
         if (employeeRepository.existsById(id)) {
             employeeRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Employee not found");
         }
-        throw new NotFoundException("Employee not found");
     }
 }

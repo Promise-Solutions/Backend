@@ -52,7 +52,8 @@ public class SubJobService {
     public void deleteSubJob(UUID id) {
         if (subJobRepository.existsById(id)) {
             subJobRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("SubJob not found");
         }
-        throw new NotFoundException("SubJob not found");
     }
 }

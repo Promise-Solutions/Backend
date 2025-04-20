@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,16 +26,15 @@ public class TaskRequestDTO {
     @NotBlank(message = "Description value is mandatory")
     private String description;
 
-    @NotBlank(message = "Start date value is mandatory")
+    @NotNull(message = "Start date value is mandatory")
     private LocalDate startDate;
 
-    @NotBlank(message = "Limit date value is mandatory")
     private LocalDate limitDate;
 
     @Nullable
     private UUID fkEmployee;
 
-    @NotBlank(message = "Status value is mandatory")
+    @NotNull(message = "Status value is mandatory")
     @Enumerated(EnumType.STRING)
     private Status status;
 }

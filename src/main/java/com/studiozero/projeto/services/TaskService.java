@@ -22,12 +22,15 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     public Task createTask(TaskRequestDTO taskdto) {
-        Employee employee = employeeRepository.findById(taskdto.getFkEmployee())
-                .orElse(null);
-
         Task task = taskMapper.toEntity(taskdto);
+
+        if (taskdto.getFkEmployee() != null) {
+            Employee employee = employeeRepository.findById(taskdto.getFkEmployee())
+                    .orElse(null);
+            task.setEmployee(employee);
+        }
+
         task.setId(UUID.randomUUID());
-        task.setEmployee(employee);
         return taskRepository.save(task);
     }
 
@@ -51,7 +54,8 @@ public class TaskService {
     public void deleteTask(UUID id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Task not found");
         }
-        throw new NotFoundException("Task not found");
     }
 }

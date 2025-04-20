@@ -39,7 +39,8 @@ public class ProductService {
     public void deleteProduct(Integer id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Product not found");
         }
-        throw new NotFoundException("Product not found");
     }
 }

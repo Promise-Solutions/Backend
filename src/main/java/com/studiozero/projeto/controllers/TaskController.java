@@ -45,14 +45,8 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> findAllTasks() {
         List<Task> tasks = taskService.listTasks();
-
-        if (tasks.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
         List<TaskResponseDTO> taskDtos = TaskMapper.toListDtos(tasks);
-
-        return ResponseEntity.status(200).body(taskDtos);
+        return ResponseEntity.ok(taskDtos); // Sempre retorna 200, mesmo com lista vazia
     }
 
     @Operation(

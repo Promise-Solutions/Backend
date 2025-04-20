@@ -3,6 +3,7 @@ package com.studiozero.projeto.controllers;
 import com.studiozero.projeto.dtos.request.CommandRequestDTO;
 import com.studiozero.projeto.dtos.response.CommandResponseDTO;
 import com.studiozero.projeto.entities.Command;
+import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.mappers.CommandMapper;
 import com.studiozero.projeto.services.CommandService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -56,8 +58,14 @@ public class CommandController {
             description = "This method is responsible for listing all commands."
     )
     @GetMapping
-    public ResponseEntity<List<CommandResponseDTO>> listAllCommands() {
-        List<Command> commands = commandService.listCommands();
+    public ResponseEntity<List<CommandResponseDTO>> listAllCommands(@RequestParam Status status) {
+
+        List<Command> commands = new ArrayList();
+        if (status == null) {
+            commands = commandService.listCommands();
+        } else {
+            commands = commandService.listCommands(status);
+        }
 
         if (commands.isEmpty()) {
             return ResponseEntity.status(204).build();

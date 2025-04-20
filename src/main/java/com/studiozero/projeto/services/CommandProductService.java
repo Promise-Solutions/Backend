@@ -51,6 +51,10 @@ public class CommandProductService {
         return commandProductRepository.findAll();
     }
 
+    public List<CommandProduct> listCommandProducts(Integer fkComanda) {
+        return commandProductRepository.findAllByCommand_Id(fkComanda);
+    }
+
     public CommandProduct updateCommandProduct(CommandProduct updated) {
         Integer id = updated.getId();
 

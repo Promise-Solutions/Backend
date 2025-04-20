@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,8 +59,15 @@ public class CommandProductController {
             description = "This method is responsible for list all command products."
     )
     @GetMapping
-    public ResponseEntity<List<CommandProductResponseDTO>> findAllCommandProducts() {
-        List<CommandProduct> commandProducts = commandProductService.listCommandProducts();
+    public ResponseEntity<List<CommandProductResponseDTO>> findAllCommandProducts(@RequestParam Integer fkComanda) {
+        List<CommandProduct> commandProducts =new ArrayList();
+
+        if (fkComanda == null) {
+            commandProducts = commandProductService.listCommandProducts();
+
+        } else {
+            commandProducts = commandProductService.listCommandProducts(fkComanda);
+        }
 
         if (commandProducts.isEmpty()) {
             return ResponseEntity.status(204).build();

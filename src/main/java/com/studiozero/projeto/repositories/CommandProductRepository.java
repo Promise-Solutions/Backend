@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CommandProductRepository extends JpaRepository<CommandProduct, Integer> {
-    List<CommandProduct> findAllByCommand_Id(Integer commandId);
+    List<CommandProduct> findAllByCommand_Id(Integer fkComanda);
 }

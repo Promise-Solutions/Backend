@@ -20,16 +20,22 @@ public class TaskMapper {
     }
 
     public Task toEntity(TaskRequestDTO dto) {
-        Employee employee = employeeRepository.findById(dto.getFkEmployee())
-                .orElse(null);
 
         Task task = new Task();
+
+        if (dto.getFkEmployee() != null) {
+            Employee employee = employeeRepository.findById(dto.getFkEmployee())
+                .orElse(null);
+
+            task.setEmployee(employee);
+
+        }
+
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
         task.setStartDate(dto.getStartDate());
         task.setLimitDate(dto.getLimitDate());
         task.setStatus(dto.getStatus());
-        task.setEmployee(employee);
 
         return task;
     }
@@ -62,10 +68,14 @@ public class TaskMapper {
     public Task toEntity(TaskRequestDTO dto, UUID id) {
         if (dto == null) return null;
 
-        Employee employee = employeeRepository.findById(dto.getFkEmployee())
-                .orElse(null);
-
         Task task = new Task();
+
+        if (dto.getFkEmployee() != null) {
+            Employee employee = employeeRepository.findById(dto.getFkEmployee())
+                    .orElse(null);
+
+            task.setEmployee(employee);
+        }
 
         task.setId(id);
         task.setTitle(dto.getTitle());

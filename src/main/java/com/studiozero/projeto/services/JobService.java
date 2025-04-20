@@ -59,7 +59,8 @@ public class JobService {
 
         if (jobRepository.existsById(id)) {
             jobRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Job not found");
         }
-        throw new NotFoundException("Job not found");
     }
 }

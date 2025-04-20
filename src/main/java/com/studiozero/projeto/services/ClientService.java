@@ -51,7 +51,8 @@ public class ClientService {
 
         if (clientRepository.existsById(id)) {
             clientRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Client not found");
         }
-        throw new NotFoundException("Client not found");
     }
 }

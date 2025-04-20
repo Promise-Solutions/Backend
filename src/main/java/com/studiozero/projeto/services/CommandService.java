@@ -26,7 +26,6 @@ public class CommandService {
     private final ClientRepository clientRepository;
     private final EmployeeRepository employeeRepository;
     private final CommandMapper commandMapper;
-    private final CommandProductService commandProductService;
     private final CommandProductRepository commandProductRepository;
 
     public Command createCommand(CommandRequestDTO commanddto) {
@@ -52,6 +51,10 @@ public class CommandService {
 
     public List<Command> listCommands() {
         return commandRepository.findAll();
+    }
+
+    public List<Command> listCommands(Status status) {
+        return commandRepository.findAllByStatus(status);
     }
 
     public Command updateCommand(Command command) {

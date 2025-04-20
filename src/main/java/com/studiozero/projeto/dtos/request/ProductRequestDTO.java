@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Data
@@ -17,7 +18,7 @@ public class ProductRequestDTO {
     private String name;
 
     @NotNull(message = "qtdProduct value is mandatory")
-    @Positive(message = "qtdProduct must be a positive number")
+    @PositiveOrZero(message = "qtdProduct must be a positive number")
     private Integer quantity;
 
     @NotNull(message = "unitValue value is mandatory")
