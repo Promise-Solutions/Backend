@@ -36,9 +36,10 @@ public class CommandProductService {
         commandProduct.setProduct(product);
 
         productService.updateProduct(product);
-        updateCommand(command);
+        CommandProduct saved = commandProductRepository.save(commandProduct);
+        updateCommand(command); // agora sim
 
-        return commandProductRepository.save(commandProduct);
+        return saved;
     }
 
     public CommandProduct findCommandProductById(Integer id) {
@@ -79,9 +80,10 @@ public class CommandProductService {
         updated.setCommand(current.getCommand());
         updated.setProduct(newProduct);
 
-        updateCommand(current.getCommand());
+        CommandProduct saved = commandProductRepository.save(updated);
+        updateCommand(saved.getCommand());
 
-        return commandProductRepository.save(updated);
+        return saved;
     }
 
     public void deleteCommandProduct(Integer id) {
@@ -103,7 +105,7 @@ public class CommandProductService {
 
         List<CommandProduct> commandProducts = commandProductRepository.findAllByCommand_Id(command.getId());
 
-        double totalValue = commandProducts.stream()
+        Double totalValue = commandProducts.stream()
                 .mapToDouble(cp -> cp.getUnitValue() * cp.getProductQuantity())
                 .sum();
 

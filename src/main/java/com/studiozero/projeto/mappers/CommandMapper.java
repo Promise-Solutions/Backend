@@ -75,19 +75,23 @@ public class CommandMapper {
             return null;
         }
 
-        Client client = clientRepository.findById(dto.getFkClient())
-                .orElse(null);
+        Command command = new Command();
+
+        if (dto.getFkClient() != null) {
+            Client client = clientRepository.findById(dto.getFkClient()).orElse(null);
+            command.setClient(client);
+
+        }
+
         Employee employee = employeeRepository.findById(dto.getFkEmployee())
                 .orElseThrow(() -> new NotFoundException("FkEmployee not found"));
 
-        Command command = new Command();
 
         command.setId(id);
         command.setOpeningDateTime(dto.getOpeningDateTime());
         command.setClosingDateTime(dto.getClosingDateTime());
         command.setDiscount(dto.getDiscount());
         command.setTotalValue(dto.getTotalValue());
-        command.setClient(client);
         command.setEmployee(employee);
         command.setStatus(dto.getStatus());
         return command;
