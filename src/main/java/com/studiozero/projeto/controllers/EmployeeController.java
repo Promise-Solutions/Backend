@@ -92,7 +92,7 @@ public class EmployeeController {
 
         List<EmployeeResponseDTO> dtos = EmployeeMapper.toListDtos(employees);
 
-        return ResponseEntity.status(302).body(dtos);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @Operation(
