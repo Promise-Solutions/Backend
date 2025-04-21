@@ -95,7 +95,13 @@ public class CommandProductService {
                 .orElseThrow(() -> new NotFoundException("Produto da comanda não encontrado"));
 
         Product product = commandProduct.getProduct();
-        product.setQuantity(product.getQuantity() + commandProduct.getProductQuantity());
+
+        Command command = commandProduct.getCommand();
+
+        if (command.getStatus() != Status.CLOSED) {
+            product.setQuantity(product.getQuantity() + commandProduct.getProductQuantity());
+        }
+
         productService.updateProduct(product);
 
         commandProductRepository.deleteById(id);
