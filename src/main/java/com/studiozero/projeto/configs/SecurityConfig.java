@@ -29,7 +29,12 @@ public class SecurityConfig {
     private final SecurityFilter securityFilter;
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
-            new AntPathRequestMatcher("/employees/login")
+            new AntPathRequestMatcher("/employees/login"),
+            new AntPathRequestMatcher("/docs/"),
+            new AntPathRequestMatcher("/docs/*"),
+            new AntPathRequestMatcher("/docs/**"),
+            new AntPathRequestMatcher("/h2-console/**"),
+            new AntPathRequestMatcher("/h2-console/**/**")
     };
 
     @Bean
