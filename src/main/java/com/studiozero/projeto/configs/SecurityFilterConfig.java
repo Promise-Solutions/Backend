@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class SecurityFilter extends OncePerRequestFilter {
+public class SecurityFilterConfig extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final EmployeeRepository employeeRepository;
