@@ -35,7 +35,16 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/h2-console/**/**"),
             new AntPathRequestMatcher("/employees/login"),
-            new AntPathRequestMatcher("/drive")
+            new AntPathRequestMatcher("/drive"),
+            new AntPathRequestMatcher("/swagger-ui/**"),
+            new AntPathRequestMatcher("/swagger-ui.html"),
+            new AntPathRequestMatcher("/swagger-resources"),
+            new AntPathRequestMatcher("/swagger-resources/**"),
+            new AntPathRequestMatcher("/configuration/ui"),
+            new AntPathRequestMatcher("/configuration/security"),new AntPathRequestMatcher("/webjars/**"),
+            new AntPathRequestMatcher("/v3/api-docs/**"),
+            new AntPathRequestMatcher("/actuator/*"),
+            new AntPathRequestMatcher("/error/**")
     };
 
     @Bean
