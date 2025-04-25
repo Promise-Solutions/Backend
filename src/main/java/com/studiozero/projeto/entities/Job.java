@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -42,4 +43,8 @@ public class Job {
     @Column(name = "tipo_servico", nullable = false)
     @Enumerated(EnumType.STRING)
     private JobType serviceType;
+
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SubJob> subJobs;
+
 }

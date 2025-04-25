@@ -14,11 +14,13 @@ public class ProductResponseDTO {
     private String name;
     private Integer quantity;
     private Double unitValue;
+    private Double buyValue;
 
     public ProductResponseDTO(Product product) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.unitValue = unitValue;
+        this.buyValue = buyValue;
     }
 }

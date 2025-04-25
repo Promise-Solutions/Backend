@@ -21,6 +21,9 @@ public class Command {
     @Column(name = "id_comanda", nullable = false)
     private Integer id;
 
+    @Column(name = "numero_comanda", nullable = false)
+    private Integer commandNumber;
+
     @Column(name = "data_hora_abertura", nullable = false)
     private LocalDateTime openingDateTime;
 

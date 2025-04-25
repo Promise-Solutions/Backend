@@ -24,4 +24,8 @@ public class ProductRequestDTO {
     @NotNull(message = "unitValue value is mandatory")
     @Positive
     private Double unitValue;
+
+    @NotNull(message = "buyValue value is mandatory")
+    @Positive
+    private Double buyValue;
 }

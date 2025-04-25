@@ -36,6 +36,7 @@ public class CommandMapper {
                 .orElseThrow(() -> new NotFoundException("FkEmployee not found"));
 
         command.setOpeningDateTime(dto.getOpeningDateTime());
+        command.setCommandNumber(dto.getCommandNumber());
         command.setClosingDateTime(dto.getClosingDateTime());
         command.setDiscount(dto.getDiscount());
         command.setTotalValue(dto.getTotalValue());
@@ -50,6 +51,7 @@ public class CommandMapper {
         }
         CommandResponseDTO dto = new CommandResponseDTO();
         dto.setId(command.getId());
+        dto.setCommandNumber(command.getCommandNumber());
         dto.setOpeningDateTime(command.getOpeningDateTime());
         dto.setClosingDateTime(command.getClosingDateTime());
         dto.setDiscount(command.getDiscount());
@@ -88,6 +90,7 @@ public class CommandMapper {
 
 
         command.setId(id);
+        command.setCommandNumber(dto.getCommandNumber());
         command.setOpeningDateTime(dto.getOpeningDateTime());
         command.setClosingDateTime(dto.getClosingDateTime());
         command.setDiscount(dto.getDiscount());

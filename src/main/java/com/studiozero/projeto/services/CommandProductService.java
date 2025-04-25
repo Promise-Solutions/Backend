@@ -36,6 +36,7 @@ public class CommandProductService {
         commandProduct.setProduct(product);
 
         productService.updateProduct(product);
+
         CommandProduct saved = commandProductRepository.save(commandProduct);
         updateCommand(command); // agora sim
 

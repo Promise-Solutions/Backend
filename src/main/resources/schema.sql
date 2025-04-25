@@ -67,12 +67,14 @@ CREATE TABLE produto (
     id_produto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome_produto VARCHAR(45) NOT NULL,
     qtd_produto INT NOT NULL,
-    valor_unitario DOUBLE NOT NULL
+    valor_unitario DOUBLE NOT NULL,
+    valor_compra DOUBLE NOT NULL
 );
 
 -- COMANDA
 CREATE TABLE comanda (
     id_comanda INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    numero_comanda INT NOT NULL,
     data_hora_abertura DATETIME NOT NULL,
     data_hora_fechamento DATETIME,
     desconto DOUBLE,

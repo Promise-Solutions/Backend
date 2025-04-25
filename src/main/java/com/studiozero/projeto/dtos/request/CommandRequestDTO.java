@@ -18,6 +18,9 @@ import java.util.UUID;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class CommandRequestDTO {
 
+    @NotNull(message = "Command Number is mandatory")
+    private Integer commandNumber;
+
     @NotNull(message = "Opening date and time is mandatory")
     private LocalDateTime openingDateTime;
 

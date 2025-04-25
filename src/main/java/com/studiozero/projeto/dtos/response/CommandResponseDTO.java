@@ -17,6 +17,7 @@ import java.util.UUID;
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class CommandResponseDTO {
     private Integer id;
+    private Integer commandNumber;
     private LocalDateTime openingDateTime;
     private LocalDateTime closingDateTime;
     private Double discount;
@@ -27,6 +28,7 @@ public class CommandResponseDTO {
 
     public CommandResponseDTO(Command command) {
         this.id = id;
+        this.commandNumber = commandNumber;
         this.openingDateTime = openingDateTime;
         this.closingDateTime = closingDateTime;
         this.discount = discount;

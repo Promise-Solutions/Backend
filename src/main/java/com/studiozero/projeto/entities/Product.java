@@ -25,4 +25,7 @@ public class Product {
 
     @Column(name = "valor_unitario", nullable = false)
     private Double unitValue;
+
+    @Column(name = "valor_compra", nullable = false)
+    private Double buyValue;
 }
