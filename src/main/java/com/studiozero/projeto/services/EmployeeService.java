@@ -35,15 +35,15 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee login(String email, String password) {
-        Optional<Employee> optEmployee = employeeRepository.findByEmailAndPassword(email,password);
-
-        if (optEmployee.isEmpty()) {
-            throw new UnauthorizedException("Credentials not found");
-        }
-        return optEmployee.get();
-    }
-
+//    public Employee login(String email, String password) {
+//        Optional<Employee> optEmployee = employeeRepository.findByEmailAndPassword(email,password);
+//
+//        if (optEmployee.isEmpty()) {
+//            throw new UnauthorizedException("Credentials not found");
+//        }
+//        return optEmployee.get();
+//    }
+//
     public Employee findEmployeeById(UUID id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Employee not found"));

@@ -6,6 +6,7 @@ import com.studiozero.projeto.dtos.response.EmployeeLoginResponseDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.entities.EmployeeUserDetails;
+import com.studiozero.projeto.exceptions.UnauthorizedException;
 import com.studiozero.projeto.mappers.EmployeeMapper;
 import com.studiozero.projeto.services.EmployeeService;
 import com.studiozero.projeto.services.TokenService;
@@ -61,6 +62,7 @@ public class EmployeeController {
         var auth = authenticationManager.authenticate(usernamePassword);
 
         var employeeUserDetails = (EmployeeUserDetails) auth.getPrincipal();
+
         var token = tokenService.generateToken(employeeUserDetails.getEmployee());
 
         return ResponseEntity.ok(new EmployeeLoginResponseDTO(token));

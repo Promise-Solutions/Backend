@@ -27,6 +27,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final SecurityFilterConfig securityFilterConfig;
+    private final CustomAuthenticationEntryPointConfig customAuthenticationEntryPointConfig;
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/docs"),
@@ -51,6 +52,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception ->
+                        exception. authenticationEntryPoint(customAuthenticationEntryPointConfig))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(URLS_PERMITIDAS).permitAll()
