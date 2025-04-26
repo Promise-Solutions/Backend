@@ -8,6 +8,7 @@ import com.studiozero.projeto.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.util.UUID;
@@ -24,8 +25,8 @@ public class JobRequestDTO {
     @NotBlank
     private String title;
 
-    @NotBlank(message = "Total value value is mandatory")
-    @Positive
+    @NotNull(message = "Total value value is mandatory")
+    @PositiveOrZero
     private Double totalValue;
 
     @NotNull(message = "Job Category value is mandatory")

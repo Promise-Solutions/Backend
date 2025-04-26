@@ -1,9 +1,13 @@
 package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
+import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
+import com.studiozero.projeto.dtos.response.JobResponseDTO;
 import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
+import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.mappers.ClientMapper;
+import com.studiozero.projeto.mappers.JobMapper;
 import com.studiozero.projeto.mappers.SubJobMapper;
 import com.studiozero.projeto.services.SubJobService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,6 +57,24 @@ public class SubJobController {
     }
 
     @Operation(
+            summary = "List subjobs By a fkService",
+            description = "This method is responsible for listing all subjobs associated with a job."
+    )
+    @GetMapping("/job")
+    public ResponseEntity<List<SubJobResponseDTO>> listSubJobsByFkService(
+            @RequestParam @Valid UUID fkService
+    ) {
+        List<SubJob> subJobs = subJobService.listSubJobsByFkService(fkService);
+        if(subJobs.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(SubJobMapper.toListDtos(subJobs));
+    }
+
+
+
+    @Operation(
             summary = "List all sub jobs",
             description = "This method is responsible for list all sub jobs."
     )
@@ -81,6 +103,19 @@ public class SubJobController {
         SubJob updatedSubJob = subJobService.updateSubJob(subjob);
 
         return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob));
+    }
+
+    @Operation(
+            summary = "Update a sub job status",
+            description = "This method is responsible for update a sub job status"
+    )
+    @PatchMapping("/{id}/update-status")
+    public ResponseEntity<Void> updateSubJobStatus(
+        @PathVariable UUID id,
+        @RequestBody SubJobUpdateStatusRequestDTO statusDTO
+    ) {
+        subJobService.updateSubJobStatus(id, statusDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(

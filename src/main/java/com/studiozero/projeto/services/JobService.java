@@ -47,9 +47,10 @@ public class JobService {
     public Job updateJob(Job job) {
         if (jobRepository.existsById(job.getId())) {
             job.setId(job.getId());
-            jobRepository.save(job);
-        }
+            return jobRepository.save(job);
+        } else {
         throw new NotFoundException("Job not found");
+        }
     }
 
     public void deleteJob(UUID id) {
@@ -62,5 +63,9 @@ public class JobService {
         } else {
             throw new NotFoundException("Job not found");
         }
+    }
+
+    public List<Job> listJobsByFkClient(UUID fkClient) {
+        return jobRepository.findAllByClient_Id(fkClient);
     }
 }

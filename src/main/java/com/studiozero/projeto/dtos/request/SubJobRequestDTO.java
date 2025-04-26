@@ -26,7 +26,7 @@ public class SubJobRequestDTO {
     @NotBlank(message = "Description value is mandatory")
     private String description;
 
-    @NotBlank(message = "Value is mandatory")
+    @NotNull(message = "Value is mandatory")
     @Positive
     private Double value;
 
@@ -36,12 +36,11 @@ public class SubJobRequestDTO {
     @NotNull(message = "Start Time value is mandatory")
     private LocalDateTime startTime;
 
-    @NotNull(message = "End Time value is mandatory")
     private LocalDateTime endTime;
 
     @NotNull(message = "Status value is mandatory")
     private Status status;
 
-    @NotBlank(message = "fkService value is mandatory")
+    @NotNull(message = "fkService value is mandatory")
     private UUID fkService;
 }

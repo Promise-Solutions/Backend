@@ -27,6 +27,7 @@ public class JobMapper {
 
         Job job = new Job();
         job.setClient(client);
+        job.setTitle(dto.getTitle());
         job.setTotalValue(dto.getTotalValue());
         job.setCategory(dto.getCategory());
         job.setStatus(dto.getStatus());

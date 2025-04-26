@@ -1,6 +1,7 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
+import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.exceptions.NotFoundException;
@@ -55,5 +56,18 @@ public class SubJobService {
         } else {
             throw new NotFoundException("SubJob not found");
         }
+    }
+
+    public void updateSubJobStatus(UUID id, SubJobUpdateStatusRequestDTO statusDTO) {
+        SubJob subJob = subJobRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Sub job not found"));
+
+        subJob.setStatus(statusDTO.getStatus());
+        subJob.setEndTime(statusDTO.getEndTime());
+        subJobRepository.save(subJob);
+    }
+
+    public List<SubJob> listSubJobsByFkService(UUID fkService) {
+        return subJobRepository.findAllByJob_Id(fkService);
     }
 }
