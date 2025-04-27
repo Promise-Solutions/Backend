@@ -1,6 +1,7 @@
 package com.studiozero.projeto.repositories;
 
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,6 @@ import java.util.UUID;
 public interface SubJobRepository extends JpaRepository<SubJob, UUID> {
     boolean existsByJob_Id(UUID jobId);
     List<SubJob> findAllByJob_Id(UUID fkService);
+    Integer countByJob_Id(UUID jobId);
+    Integer countByJob_IdAndStatus(UUID jobId, Status status);
 }

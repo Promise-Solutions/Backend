@@ -2,16 +2,20 @@ package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
+import com.studiozero.projeto.dtos.response.SubJobDeleteResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.SubJobMapper;
 import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,6 +25,7 @@ public class SubJobService {
     private final SubJobRepository subJobRepository;
     private final JobRepository jobRepository;
     private final SubJobMapper subJobMapper;
+    private final JobService jobService;
 
     public SubJob createSubJob(SubJobRequestDTO subJobdto) {
         Job job = jobRepository.findById(subJobdto.getFkService())
@@ -50,24 +55,32 @@ public class SubJobService {
         throw new NotFoundException("Sub job not found");
     }
 
-    public void deleteSubJob(UUID id) {
-        if (subJobRepository.existsById(id)) {
-            subJobRepository.deleteById(id);
-        } else {
-            throw new NotFoundException("SubJob not found");
-        }
-    }
-
-    public void updateSubJobStatus(UUID id, SubJobUpdateStatusRequestDTO statusDTO) {
+    @Transactional
+    public SubJob updateSubJobStatus(UUID id, SubJobUpdateStatusRequestDTO statusDTO) {
         SubJob subJob = subJobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sub job not found"));
 
         subJob.setStatus(statusDTO.getStatus());
         subJob.setEndTime(statusDTO.getEndTime());
-        subJobRepository.save(subJob);
+        return subJobRepository.save(subJob);
     }
 
     public List<SubJob> listSubJobsByFkService(UUID fkService) {
         return subJobRepository.findAllByJob_Id(fkService);
+    }
+
+    public SubJobDeleteResponseDTO deleteSubJob(UUID subJobId) {
+        Optional<SubJob> subJobOptional = subJobRepository.findById(subJobId);
+
+        if (subJobOptional.isPresent()) {
+            SubJob subJob = subJobOptional.get();
+            subJobRepository.deleteById(subJobId);
+            Status jobStatus = jobService.evaluateJobStatus(subJob.getJob().getId());
+            Double totalValueJob = jobService.calculateTotalValue(subJob.getJob().getId());
+
+            return new SubJobDeleteResponseDTO(subJobId, jobStatus, totalValueJob);
+        } else {
+            throw new NotFoundException("SubJob not found");
+        }
     }
 }

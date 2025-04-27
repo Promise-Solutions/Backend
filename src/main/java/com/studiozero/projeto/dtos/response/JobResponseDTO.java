@@ -26,13 +26,13 @@ public class JobResponseDTO {
     private JobType serviceType;
 
     public JobResponseDTO(Job job) {
-        this.id = id;
-        this.fkClient = fkClient;
-        this.title = title;
-        this.totalValue = totalValue;
-        this.category = category;
-        this.status = status;
-        this.serviceType = serviceType;
+        this.id = job.getId();
+        this.fkClient = job.getClient().getId();
+        this.title = job.getTitle();
+        this.totalValue = job.getTotalValue();
+        this.category = job.getCategory();
+        this.status = job.getStatus();
+        this.serviceType = job.getServiceType();
     }
 }
 
