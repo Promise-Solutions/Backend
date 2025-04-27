@@ -3,7 +3,6 @@ package com.studiozero.projeto.dtos.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
 import lombok.AllArgsConstructor;

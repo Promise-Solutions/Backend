@@ -3,11 +3,8 @@ package com.studiozero.projeto.controllers;
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
 import com.studiozero.projeto.dtos.response.*;
-import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
-import com.studiozero.projeto.mappers.ClientMapper;
-import com.studiozero.projeto.mappers.JobMapper;
 import com.studiozero.projeto.mappers.SubJobMapper;
 import com.studiozero.projeto.services.JobService;
 import com.studiozero.projeto.services.SubJobService;
@@ -15,11 +12,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.JobImpressionsSupported;
 import java.util.List;
 import java.util.UUID;
 

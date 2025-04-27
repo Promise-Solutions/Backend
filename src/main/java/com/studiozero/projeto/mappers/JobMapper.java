@@ -1,7 +1,6 @@
 package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.JobRequestDTO;
-import com.studiozero.projeto.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.dtos.response.JobResponseDTO;
 import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Job;

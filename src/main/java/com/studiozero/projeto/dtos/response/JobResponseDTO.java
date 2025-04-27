@@ -6,7 +6,6 @@ import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.enums.JobCategory;
 import com.studiozero.projeto.enums.JobType;
 import com.studiozero.projeto.enums.Status;
-import com.studiozero.projeto.mappers.SubJobMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

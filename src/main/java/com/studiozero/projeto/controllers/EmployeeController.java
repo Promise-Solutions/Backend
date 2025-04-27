@@ -6,7 +6,6 @@ import com.studiozero.projeto.dtos.response.EmployeeLoginResponseDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.entities.EmployeeUserDetails;
-import com.studiozero.projeto.exceptions.UnauthorizedException;
 import com.studiozero.projeto.mappers.EmployeeMapper;
 import com.studiozero.projeto.services.EmployeeService;
 import com.studiozero.projeto.services.TokenService;

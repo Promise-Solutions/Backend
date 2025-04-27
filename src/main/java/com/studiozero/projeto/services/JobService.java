@@ -5,7 +5,6 @@ import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
-import com.studiozero.projeto.exceptions.BadRequestException;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.JobMapper;
