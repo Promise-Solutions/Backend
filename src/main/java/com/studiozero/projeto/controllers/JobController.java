@@ -27,7 +27,7 @@ public class JobController {
 
     @Operation(
             summary = "Create a new job",
-            description = "This method is responsible for create a new job."
+            description = "This method is responsible for creating a new job."
     )
     @PostMapping
     public ResponseEntity<JobResponseDTO> createJob(
@@ -40,7 +40,7 @@ public class JobController {
 
     @Operation(
             summary = "Search a job",
-            description = "This method is responsible for search a job."
+            description = "This method is responsible for searching a job."
     )
     @GetMapping("/{id}")
     public ResponseEntity<JobResponseDTO> findJobById(
@@ -54,7 +54,7 @@ public class JobController {
 
     @Operation(
             summary = "List all jobs",
-            description = "This method is responsible for list all jobs."
+            description = "This method is responsible for listing all jobs."
     )
     @GetMapping
     public ResponseEntity<List<JobResponseDTO>> listAllJobs() {
@@ -70,8 +70,24 @@ public class JobController {
     }
 
     @Operation(
+            summary = "List jobs By a fkClient",
+            description = "This method is responsible for listing all jobs associated with a client."
+    )
+    @GetMapping("/client")
+    public ResponseEntity<List<JobResponseDTO>> listJobsByFkClient(
+            @RequestParam @Valid UUID fkClient
+    ) {
+        List<Job> jobs = jobService.listJobsByFkClient(fkClient);
+        if(jobs.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(JobMapper.toListDtos(jobs));
+    }
+
+    @Operation(
             summary = "Update a job",
-            description = "This method is responsible for update a job."
+            description = "This method is responsible for updating a job."
     )
     @PatchMapping("/{id}")
     public ResponseEntity<JobResponseDTO> updateJob(
@@ -85,7 +101,7 @@ public class JobController {
 
     @Operation(
             summary = "Delete a job",
-            description = "This method is responsible for delete a job."
+            description = "This method is responsible for deleting a job."
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJob(

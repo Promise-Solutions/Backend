@@ -1,0 +1,26 @@
+package com.studiozero.projeto.dtos.request;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.studiozero.projeto.enums.Status;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
+public class SubJobUpdateStatusRequestDTO {
+
+    @NotBlank
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @NotNull
+    private LocalDateTime endTime;
+}

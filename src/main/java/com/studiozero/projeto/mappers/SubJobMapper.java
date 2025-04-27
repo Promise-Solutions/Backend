@@ -4,6 +4,7 @@ import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.JobRepository;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,42 @@ public class SubJobMapper {
         dto.setEndTime(subjob.getEndTime());
         dto.setStatus(subjob.getStatus());
         dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        return dto;
+    }
+    public static SubJobResponseDTO toDTO(SubJob subjob, Double jobTotalValue) {
+        if (subjob == null) {
+            return null;
+        }
+        SubJobResponseDTO dto = new SubJobResponseDTO();
+        dto.setId(subjob.getId());
+        dto.setTitle(subjob.getTitle());
+        dto.setDescription(subjob.getDescription());
+        dto.setValue(subjob.getValue());
+        dto.setDate(subjob.getDate());
+        dto.setStartTime(subjob.getStartTime());
+        dto.setEndTime(subjob.getEndTime());
+        dto.setStatus(subjob.getStatus());
+        dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        dto.setJobTotalValue(jobTotalValue);
+        return dto;
+    }
+
+    public static SubJobResponseDTO toDTO(SubJob subjob, Status jobStatus, Double jobTotalValue) {
+        if (subjob == null) {
+            return null;
+        }
+        SubJobResponseDTO dto = new SubJobResponseDTO();
+        dto.setId(subjob.getId());
+        dto.setTitle(subjob.getTitle());
+        dto.setDescription(subjob.getDescription());
+        dto.setValue(subjob.getValue());
+        dto.setDate(subjob.getDate());
+        dto.setStartTime(subjob.getStartTime());
+        dto.setEndTime(subjob.getEndTime());
+        dto.setStatus(subjob.getStatus());
+        dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        dto.setJobStatus(jobStatus);
+        dto.setJobTotalValue(jobTotalValue);
         return dto;
     }
 

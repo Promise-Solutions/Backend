@@ -1,10 +1,15 @@
 package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
-import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
+import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
+import com.studiozero.projeto.dtos.response.*;
+import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.mappers.ClientMapper;
+import com.studiozero.projeto.mappers.JobMapper;
 import com.studiozero.projeto.mappers.SubJobMapper;
+import com.studiozero.projeto.services.JobService;
 import com.studiozero.projeto.services.SubJobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.JobImpressionsSupported;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +31,7 @@ public class SubJobController {
 
     private final SubJobService subJobService;
     private final SubJobMapper subJobMapper;
+    private final JobService jobService;
 
     @Operation(
             summary = "Create a new sub job",
@@ -35,8 +42,10 @@ public class SubJobController {
             @RequestBody @Valid SubJobRequestDTO subJobDto
     ) {
         SubJob savedSubJob = subJobService.createSubJob(subJobDto);
-        SubJobResponseDTO savedSubJobDto = SubJobMapper.toDTO(savedSubJob);
-        return ResponseEntity.status(201).body(savedSubJobDto);
+        Status jobStatus = jobService.evaluateJobStatus(savedSubJob.getJob().getId());
+        Double totalValueJob = jobService.calculateTotalValue(savedSubJob.getJob().getId());
+
+        return ResponseEntity.status(201).body(SubJobMapper.toDTO(savedSubJob, jobStatus, totalValueJob));
     }
 
     @Operation(
@@ -51,6 +60,24 @@ public class SubJobController {
         SubJobResponseDTO jobDto = SubJobMapper.toDTO(subJob);
         return ResponseEntity.ok(jobDto);
     }
+
+    @Operation(
+            summary = "List subjobs By a fkService",
+            description = "This method is responsible for listing all subjobs associated with a job."
+    )
+    @GetMapping("/job")
+    public ResponseEntity<List<SubJobResponseDTO>> listSubJobsByFkService(
+            @RequestParam @Valid UUID fkService
+    ) {
+        List<SubJob> subJobs = subJobService.listSubJobsByFkService(fkService);
+        if(subJobs.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(SubJobMapper.toListDtos(subJobs));
+    }
+
+
 
     @Operation(
             summary = "List all sub jobs",
@@ -80,7 +107,23 @@ public class SubJobController {
         SubJob subjob = subJobMapper.toEntity(subJobDto, id);
         SubJob updatedSubJob = subJobService.updateSubJob(subjob);
 
-        return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob));
+        Double totalValueJob = jobService.calculateTotalValue(updatedSubJob.getJob().getId());
+
+        return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, totalValueJob));
+    }
+
+    @Operation(
+            summary = "Update a sub job status",
+            description = "This method is responsible for update a sub job status"
+    )
+    @PatchMapping("/{id}/update-status")
+    public ResponseEntity<SubJobUpdateStatusResponseDTO> updateSubJobStatus(
+        @PathVariable UUID id,
+        @RequestBody SubJobUpdateStatusRequestDTO statusDTO
+    ) {
+        SubJob subJobUpdated = subJobService.updateSubJobStatus(id, statusDTO);
+        Status jobStatus = jobService.evaluateJobStatus(subJobUpdated.getJob().getId());
+        return ResponseEntity.ok().body(new SubJobUpdateStatusResponseDTO(subJobUpdated.getId(), subJobUpdated.getStatus(), jobStatus));
     }
 
     @Operation(
@@ -88,10 +131,10 @@ public class SubJobController {
             description = "This method is responsible for delete a sub job."
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubJob(
+    public ResponseEntity<SubJobDeleteResponseDTO> deleteSubJob(
             @PathVariable UUID id
     ) {
-        subJobService.deleteSubJob(id);
-        return ResponseEntity.ok().build();
+        SubJobDeleteResponseDTO dtoResponse = subJobService.deleteSubJob(id);
+        return ResponseEntity.ok().body(dtoResponse);
     }
 }
