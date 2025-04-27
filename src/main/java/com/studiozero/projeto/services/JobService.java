@@ -6,6 +6,7 @@ import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.BadRequestException;
+import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.JobMapper;
 import com.studiozero.projeto.repositories.ClientRepository;
@@ -57,7 +58,7 @@ public class JobService {
 
     public void deleteJob(UUID id) {
         if (subJobRepository.existsByJob_Id(id)) {
-            throw new BadRequestException("Cannot delete job with associated sub-jobs");
+            throw new ConflictException("Cannot delete job with associated sub-jobs");
         }
 
         if (jobRepository.existsById(id)) {
