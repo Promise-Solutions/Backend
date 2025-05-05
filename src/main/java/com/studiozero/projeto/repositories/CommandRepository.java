@@ -15,17 +15,21 @@ import java.util.UUID;
 public interface CommandRepository extends JpaRepository<Command, Integer>, JpaSpecificationExecutor<Command> {
 
     boolean existsByClient_Id(UUID clientId);
+
     List<Command> findAllByStatus(Status status);
 
     @Query(value = """
-        SELECT 
-            YEAR(c.data_hora_fechamento) AS ano,
-            MONTH(c.data_hora_fechamento) AS mes,
-            SUM(c.valor_total) AS total
-        FROM comanda c
-        WHERE c.status = 'CLOSED' AND c.data_hora_fechamento IS NOT NULL
-        GROUP BY ano, mes
-        ORDER BY ano, mes
-    """, nativeQuery = true)
+                SELECT
+                    YEAR(c.data_hora_fechamento) AS ano,
+                    MONTH(c.data_hora_fechamento) AS mes,
+                    SUM(c.valor_total) AS total
+                FROM comanda c
+                WHERE c.status = 'CLOSED' AND c.data_hora_fechamento IS NOT NULL
+                GROUP BY ano, mes
+                ORDER BY ano, mes
+            """, nativeQuery = true)
     List<MonthlyStatsProjection> findMonthlyClosedCommands();
+
+    @Query("SELECT c FROM Command c WHERE c.client.id = :clientId AND c.status = :status")
+    List<Command> findAllByClient_IdAndStatus(UUID clientId, Status status);
 }

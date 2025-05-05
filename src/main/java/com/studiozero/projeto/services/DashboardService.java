@@ -1,121 +1,95 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.response.DashboardResponseDto;
 import com.studiozero.projeto.entities.Command;
-import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
+import com.studiozero.projeto.enums.JobCategory;
 import com.studiozero.projeto.repositories.CommandRepository;
-import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.ProductRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
-import com.studiozero.projeto.specifications.CommandSpecifications;
-import com.studiozero.projeto.specifications.JobSpecifications;
-import com.studiozero.projeto.specifications.SubJobSpecifications;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
 
-    private final JobRepository jobRepository;
-    private final CommandRepository commandRepository;
-    private final ProductRepository productRepository;
-    private final SubJobRepository subJobRepository;
+        private final CommandRepository commandRepository;
+        private final ProductRepository productRepository;
+        private final SubJobRepository subJobRepository;
 
-    public DashboardResponseDto allStats() {
-        Double finReturnJob = jobRepository
-                .findAll(JobSpecifications.hasStatus(Status.CLOSED))
-                .stream()
-                .mapToDouble(Job::getTotalValue)
-                .sum();
+        public Map<JobCategory, Map<String, Double>> getGeneralStats() {
+                Map<JobCategory, Map<String, Double>> stats = new HashMap<>();
 
-        Double finReturnCommand = commandRepository
-                .findAll(CommandSpecifications.hasStatus(Status.CLOSED))
-                .stream()
-                .mapToDouble(Command::getTotalValue)
-                .sum();
+                for (JobCategory category : JobCategory.values()) {
+                        List<SubJob> subJobs = subJobRepository.findAll()
+                                        .stream()
+                                        .filter(subJob -> subJob.getJob().getCategory() == category
+                                                        && subJob.getStatus() == Status.CLOSED)
+                                        .toList();
 
-        Double finOut = productRepository
-                .findAll()
-                .stream()
-                .mapToDouble(p -> p.getQuantity() * p.getBuyValue())
-                .sum();
+                        double totalValue = subJobs.stream().mapToDouble(SubJob::getValue).sum();
+                        double frequency = subJobs.size();
 
-        Double finReturnSubJob = subJobRepository
-                .findAll()
-                .stream()
-                .filter(subJob -> subJob.getJob().getStatus() == Status.CLOSED)
-                .mapToDouble(SubJob::getValue)
-                .sum();
+                        stats.put(category, Map.of("totalValue", totalValue, "frequency", frequency));
+                }
 
-        YearMonth currentMonth = YearMonth.now();
+                return stats;
+        }
 
-        // Usando a data do SubJob (sub_servico) para determinar a frequência
-        List<UUID> activeClients = subJobRepository
-                .findAll()
-                .stream()
-                .filter(subJob -> {
-                    LocalDate subJobDate = subJob.getDate();  // Aqui usamos a data do subserviço
-                    LocalDate today = LocalDate.now();
-                    LocalDate endOfMonth = currentMonth.atEndOfMonth();
-                    return subJobDate != null && YearMonth.from(subJobDate).equals(currentMonth);
-                })
-                .map(subJob -> subJob.getJob().getClient().getId())
-                .distinct()
-                .collect(Collectors.toList());
+        public Map<String, Double> getClientStats(UUID clientId) {
 
-        Double frequency = (double) activeClients.size();
+                double frequency = 0.0;
+                double totalValue = 0.0;
+                Double totalCommandsValue = 0.0;
 
-        Double finReturn = finReturnJob + finReturnCommand + finReturnSubJob;
+                for (JobCategory category : JobCategory.values()) {
+                        List<SubJob> subJobs = subJobRepository.findAll()
+                                        .stream()
+                                        .filter(subJob -> subJob.getJob().getClient().getId().equals(clientId) &&
+                                                        subJob.getJob().getCategory() == category &&
+                                                        subJob.getStatus() == Status.CLOSED)
+                                        .toList();
 
-        return new DashboardResponseDto(frequency, finReturn, finOut);
-    }
+                        totalValue += subJobs.stream().mapToDouble(SubJob::getValue).sum();
+                        frequency += subJobs.size();
+                }
 
-    public DashboardResponseDto clientStats(UUID id) {
-        // Somar os valores dos jobs fechados
-        Double finReturnJob = jobRepository
-                .findAll(Specification.where(JobSpecifications.hasClient(id)).and(JobSpecifications.hasStatus(Status.CLOSED)))
-                .stream()
-                .mapToDouble(Job::getTotalValue)
-                .sum();
+                List<Command> closedCommands = commandRepository.findAllByClient_IdAndStatus(clientId, Status.CLOSED);
 
-        // Somar os valores das comandas fechadas
-        Double finReturnCommand = commandRepository
-                .findAll(Specification.where(CommandSpecifications.hasClient(id)).and(CommandSpecifications.hasStatus(Status.CLOSED)))
-                .stream()
-                .mapToDouble(Command::getTotalValue)
-                .sum();
+                totalCommandsValue = closedCommands.stream()
+                                .mapToDouble(Command::getTotalValue)
+                                .sum();
 
-        // Somar os valores dos subjobs fechados
-        Double finReturnSubJob = subJobRepository
-                .findAll(SubJobSpecifications.hasClient(id))
-                .stream()
-                .filter(subJob -> subJob.getJob().getStatus() == Status.CLOSED)
-                .mapToDouble(SubJob::getValue)
-                .sum();
+                return Map.of(
+                                "frequency", frequency,
+                                "totalValue", totalValue,
+                                "totalCommandsValue", totalCommandsValue);
+        }
 
-        // Total financeiro
-        Double finReturn = finReturnJob + finReturnCommand + finReturnSubJob;
+        public Map<String, Double> getBarFinances() {
+                double totalOpenCommands = commandRepository.findAll()
+                                .stream()
+                                .filter(command -> command.getStatus() == Status.OPEN)
+                                .mapToDouble(Command::getTotalValue)
+                                .sum();
 
-        YearMonth currentMonth = YearMonth.now();
+                double totalClosedCommands = commandRepository.findAll()
+                                .stream()
+                                .filter(command -> command.getStatus() == Status.CLOSED)
+                                .mapToDouble(Command::getTotalValue)
+                                .sum();
 
-        // Contagem de subjobs fechados no mês atual
-        long frequency = subJobRepository
-                .findAll(SubJobSpecifications.hasClient(id))
-                .stream()
-                .filter(subJob -> subJob.getJob().getStatus() == Status.CLOSED &&
-                        YearMonth.from(subJob.getDate()).equals(currentMonth))
-                .count();
+                double finOut = productRepository.findAll()
+                                .stream()
+                                .mapToDouble(product -> product.getBuyValue())
+                                .sum();
 
-        return new DashboardResponseDto((double) frequency, finReturn, null);
-    }
+                return Map.of(
+                                "totalOpenCommands", totalOpenCommands,
+                                "totalClosedCommands", totalClosedCommands,
+                                "finOut", finOut);
+        }
 }
