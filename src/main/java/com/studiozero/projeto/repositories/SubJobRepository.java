@@ -15,5 +15,4 @@ public interface SubJobRepository extends JpaRepository<SubJob, UUID>, JpaSpecif
     List<SubJob> findAllByJob_Id(UUID fkService);
     Integer countByJob_Id(UUID jobId);
     Integer countByJob_IdAndStatus(UUID jobId, Status status);
-    Integer countAllByStatus(Status status);
 }
