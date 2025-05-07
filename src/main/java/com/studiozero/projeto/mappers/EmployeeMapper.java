@@ -1,6 +1,7 @@
 package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.EmployeeRequestDTO;
+import com.studiozero.projeto.dtos.request.EmployeeUpdateRequestDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.entities.Employee;
 import org.springframework.stereotype.Component;
@@ -47,18 +48,22 @@ public class EmployeeMapper {
                 .toList();
     }
 
-    public static Employee toEntity(EmployeeRequestDTO dto, UUID id) {
+    public static Employee toEntity(EmployeeUpdateRequestDTO dto, UUID id) {
         if (dto == null) {
             return null;
         }
-        return new Employee(
-                id,
-                dto.getName(),
-                dto.getEmail(),
-                dto.getContact(),
-                dto.getCpf(),
-                dto.getPassword(),
-                dto.getActive()
-        );
+
+        Employee employee = new Employee();
+
+
+        employee.setId(id);
+        if (dto.getName() != null) employee.setName(dto.getName());
+        if (dto.getEmail() != null) employee.setEmail(dto.getEmail());
+        if (dto.getContact() != null) employee.setContact( dto.getContact());
+        if (dto.getCpf() != null) employee.setCpf(dto.getCpf());
+        if (dto.getPassword() != null) employee.setPassword(dto.getPassword());
+        if (dto.getActive() != null) employee.setActive(dto.getActive());
+
+        return employee;
     }
 }

@@ -2,6 +2,7 @@ package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.EmployeeLoginRequestDTO;
 import com.studiozero.projeto.dtos.request.EmployeeRequestDTO;
+import com.studiozero.projeto.dtos.request.EmployeeUpdateRequestDTO;
 import com.studiozero.projeto.dtos.response.EmployeeLoginResponseDTO;
 import com.studiozero.projeto.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.entities.Employee;
@@ -103,7 +104,7 @@ public class EmployeeController {
     @PatchMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
             @PathVariable @Valid UUID id,
-            @RequestBody @Valid EmployeeRequestDTO employeeDto
+            @RequestBody @Valid EmployeeUpdateRequestDTO employeeDto
     ) {
         Employee employee = EmployeeMapper.toEntity(employeeDto, id);
         Employee updatedEmployee = employeeService.updateEmployee(employee);

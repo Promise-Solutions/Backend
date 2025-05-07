@@ -1,6 +1,7 @@
 package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.TaskRequestDTO;
+import com.studiozero.projeto.dtos.request.TaskUpdateRequestDTO;
 import com.studiozero.projeto.dtos.response.TaskResponseDTO;
 import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.entities.Task;
@@ -65,7 +66,7 @@ public class TaskMapper {
                 .toList();
     }
 
-    public Task toEntity(TaskRequestDTO dto, UUID id) {
+    public Task toEntity(TaskUpdateRequestDTO dto, UUID id) {
         if (dto == null) return null;
 
         Task task = new Task();
@@ -78,11 +79,11 @@ public class TaskMapper {
         }
 
         task.setId(id);
-        task.setTitle(dto.getTitle());
-        task.setDescription(dto.getDescription());
-        task.setStartDate(dto.getStartDate());
-        task.setLimitDate(dto.getLimitDate());
-        task.setStatus(dto.getStatus());
+        if (dto.getTitle() != null) task.setTitle(dto.getTitle());
+        if (dto.getDescription() != null) task.setDescription(dto.getDescription());
+        if (dto.getStartDate() != null) task.setStartDate(dto.getStartDate());
+        if (dto.getLimitDate() != null) task.setLimitDate(dto.getLimitDate());
+        if (dto.getStatus() != null) task.setStatus(dto.getStatus());
 
         return task;
     }

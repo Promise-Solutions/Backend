@@ -1,6 +1,7 @@
 package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.ClientRequestDTO;
+import com.studiozero.projeto.dtos.request.ClientUpdateRequestDTO;
 import com.studiozero.projeto.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.mappers.ClientMapper;
@@ -72,7 +73,7 @@ public class ClientController {
     @PatchMapping("/{id}")
     public ResponseEntity<ClientResponseDTO> updateClient(
             @PathVariable UUID id,
-            @RequestBody @Valid ClientRequestDTO clientDto
+            @RequestBody @Valid ClientUpdateRequestDTO clientDto
     ) {
         Client client = ClientMapper.toEntity(clientDto, id);
         Client updatedClient = clientService.updateClient(client);

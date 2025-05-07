@@ -1,6 +1,7 @@
 package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.ClientRequestDTO;
+import com.studiozero.projeto.dtos.request.ClientUpdateRequestDTO;
 import com.studiozero.projeto.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.entities.Client;
 import org.springframework.stereotype.Component;
@@ -47,20 +48,21 @@ public class ClientMapper {
                 .toList();
     }
 
-    public static Client toEntity(ClientRequestDTO dto, UUID id) {
+    public static Client toEntity(ClientUpdateRequestDTO dto, UUID id) {
         if (dto == null) {
             return null;
         }
+        Client client = new Client();
 
-        return new Client(
-                id,
-                dto.getName(),
-                dto.getCpf(),
-                dto.getEmail(),
-                dto.getContact(),
-                dto.getClientType(),
-                dto.getActive()
-        );
+        client.setId(id);
+        if (dto.getName() != null) client.setName(dto.getName());
+        if (dto.getCpf() != null) client.setCpf(dto.getCpf());
+        if (dto.getEmail() != null) client.setEmail(dto.getEmail());
+        if (dto.getContact() != null) client.setContact(dto.getContact());
+        if (dto.getClientType() != null) client.setClientType(dto.getClientType());
+        if (dto.getActive() != null) client.setActive(dto.getActive());
+
+        return client;
     }
 
 }

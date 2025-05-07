@@ -1,6 +1,7 @@
 package com.studiozero.projeto.controllers;
 
 import com.studiozero.projeto.dtos.request.TaskRequestDTO;
+import com.studiozero.projeto.dtos.request.TaskUpdateRequestDTO;
 import com.studiozero.projeto.dtos.response.TaskResponseDTO;
 import com.studiozero.projeto.entities.Task;
 import com.studiozero.projeto.mappers.TaskMapper;
@@ -69,7 +70,7 @@ public class TaskController {
     @PatchMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> updateTask(
             @PathVariable @Valid UUID id,
-            @RequestBody @Valid TaskRequestDTO taskDto
+            @RequestBody @Valid TaskUpdateRequestDTO taskDto
     ) {
         Task task = taskMapper.toEntity(taskDto, id);
         Task updatedTask = taskService.updateTask(task);

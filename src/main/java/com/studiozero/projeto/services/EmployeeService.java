@@ -33,15 +33,6 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-//    public Employee login(String email, String password) {
-//        Optional<Employee> optEmployee = employeeRepository.findByEmailAndPassword(email,password);
-//
-//        if (optEmployee.isEmpty()) {
-//            throw new UnauthorizedException("Credentials not found");
-//        }
-//        return optEmployee.get();
-//    }
-//
     public Employee findEmployeeById(UUID id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Employee not found"));
@@ -52,12 +43,30 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee) {
-        if (employeeRepository.existsById(employee.getId())) {
-            employee.setId(employee.getId());
-            return employeeRepository.save(employee);
-        }
+        return employeeRepository.findById(employee.getId())
+                .map(existingEmployee -> {
+                    if (employee.getName() != null) {
+                        existingEmployee.setName(employee.getName());
+                    }
+                    if (employee.getEmail() != null) {
+                        existingEmployee.setEmail(employee.getEmail());
+                    }
+                    if (employee.getContact() != null) {
+                        existingEmployee.setContact(employee.getContact());
+                    }
+                    if (employee.getCpf() != null) {
+                        existingEmployee.setCpf(employee.getCpf());
+                    }
+                    if (employee.getPassword() != null) {
+                        existingEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
+                    }
+                    if (employee.getActive() != null) {
+                        existingEmployee.setActive(employee.getActive());
+                    }
 
-        throw new NotFoundException("Employee not found");
+                    return employeeRepository.save(existingEmployee);
+                })
+                .orElseThrow(() -> new NotFoundException("Employee not found"));
     }
 
     public void deleteEmployee(UUID id) {
