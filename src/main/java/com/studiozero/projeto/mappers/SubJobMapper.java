@@ -2,11 +2,13 @@ package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
+import com.studiozero.projeto.dtos.response.SubJobUpdateStatusResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.JobRepository;
+import com.studiozero.projeto.repositories.SubJobRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,61 +32,64 @@ public class SubJobMapper {
         subJob.setDescription(dto.getDescription());
         subJob.setValue(dto.getValue());
         subJob.setDate(dto.getDate());
+        subJob.setNeedsRoom(dto.getNeedsRoom());
         subJob.setStartTime(dto.getStartTime());
-        subJob.setEndTime(dto.getEndTime());
+        subJob.setExpectedEndTime(dto.getExpectedEndTime());
         subJob.setStatus(dto.getStatus());
         subJob.setJob(job);
         return subJob;
     }
 
-    public static SubJobResponseDTO toDTO(SubJob subjob) {
-        if (subjob == null) {
+    public static SubJobResponseDTO toDTO(SubJob subJob) {
+        if (subJob == null) {
             return null;
         }
         SubJobResponseDTO dto = new SubJobResponseDTO();
-        dto.setId(subjob.getId());
-        dto.setTitle(subjob.getTitle());
-        dto.setDescription(subjob.getDescription());
-        dto.setValue(subjob.getValue());
-        dto.setDate(subjob.getDate());
-        dto.setStartTime(subjob.getStartTime());
-        dto.setEndTime(subjob.getEndTime());
-        dto.setStatus(subjob.getStatus());
-        dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        dto.setId(subJob.getId());
+        dto.setTitle(subJob.getTitle());
+        dto.setDescription(subJob.getDescription());
+        dto.setValue(subJob.getValue());
+        dto.setDate(subJob.getDate());
+        dto.setNeedsRoom(subJob.getNeedsRoom());
+        dto.setStartTime(subJob.getStartTime());
+        dto.setExpectedEndTime(subJob.getExpectedEndTime());
+        dto.setStatus(subJob.getStatus());
+        dto.setFkService(subJob.getJob() != null ? subJob.getJob().getId() : null);
         return dto;
     }
-    public static SubJobResponseDTO toDTO(SubJob subjob, Double jobTotalValue) {
-        if (subjob == null) {
+    public static SubJobResponseDTO toDTO(SubJob subJob, Double jobTotalValue) {
+        if (subJob == null) {
             return null;
         }
         SubJobResponseDTO dto = new SubJobResponseDTO();
-        dto.setId(subjob.getId());
-        dto.setTitle(subjob.getTitle());
-        dto.setDescription(subjob.getDescription());
-        dto.setValue(subjob.getValue());
-        dto.setDate(subjob.getDate());
-        dto.setStartTime(subjob.getStartTime());
-        dto.setEndTime(subjob.getEndTime());
-        dto.setStatus(subjob.getStatus());
-        dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        dto.setId(subJob.getId());
+        dto.setTitle(subJob.getTitle());
+        dto.setDescription(subJob.getDescription());
+        dto.setValue(subJob.getValue());
+        dto.setDate(subJob.getDate());
+        dto.setNeedsRoom(subJob.getNeedsRoom());
+        dto.setStartTime(subJob.getStartTime());
+        dto.setExpectedEndTime(subJob.getExpectedEndTime());
+        dto.setStatus(subJob.getStatus());
+        dto.setFkService(subJob.getJob() != null ? subJob.getJob().getId() : null);
         dto.setJobTotalValue(jobTotalValue);
         return dto;
     }
 
-    public static SubJobResponseDTO toDTO(SubJob subjob, Status jobStatus, Double jobTotalValue) {
-        if (subjob == null) {
+    public static SubJobResponseDTO toDTO(SubJob subJob, Status jobStatus, Double jobTotalValue) {
+        if (subJob == null) {
             return null;
         }
         SubJobResponseDTO dto = new SubJobResponseDTO();
-        dto.setId(subjob.getId());
-        dto.setTitle(subjob.getTitle());
-        dto.setDescription(subjob.getDescription());
-        dto.setValue(subjob.getValue());
-        dto.setDate(subjob.getDate());
-        dto.setStartTime(subjob.getStartTime());
-        dto.setEndTime(subjob.getEndTime());
-        dto.setStatus(subjob.getStatus());
-        dto.setFkService(subjob.getJob() != null ? subjob.getJob().getId() : null);
+        dto.setId(subJob.getId());
+        dto.setTitle(subJob.getTitle());
+        dto.setDescription(subJob.getDescription());
+        dto.setValue(subJob.getValue());
+        dto.setDate(subJob.getDate());
+        dto.setStartTime(subJob.getStartTime());
+        dto.setExpectedEndTime(subJob.getExpectedEndTime());
+        dto.setStatus(subJob.getStatus());
+        dto.setFkService(subJob.getJob() != null ? subJob.getJob().getId() : null);
         dto.setJobStatus(jobStatus);
         dto.setJobTotalValue(jobTotalValue);
         return dto;
@@ -106,18 +111,19 @@ public class SubJobMapper {
         Job job = jobRepository.findById(dto.getFkService())
                 .orElseThrow(() -> new NotFoundException("FkJob not found!"));
 
-        SubJob subjob = new SubJob();
+        SubJob subJob = new SubJob();
 
-        subjob.setId(id);
-        subjob.setJob(job);
-        subjob.setTitle(dto.getTitle());
-        subjob.setDescription(dto.getDescription());
-        subjob.setDate(dto.getDate());
-        subjob.setStartTime(dto.getStartTime());
-        subjob.setEndTime(dto.getEndTime());
-        subjob.setValue(dto.getValue());
-        subjob.setStatus(dto.getStatus());
+        subJob.setId(id);
+        subJob.setJob(job);
+        subJob.setTitle(dto.getTitle());
+        subJob.setDescription(dto.getDescription());
+        subJob.setDate(dto.getDate());
+        subJob.setNeedsRoom(dto.getNeedsRoom());
+        subJob.setStartTime(dto.getStartTime());
+        subJob.setExpectedEndTime(dto.getExpectedEndTime());
+        subJob.setValue(dto.getValue());
+        subJob.setStatus(dto.getStatus());
 
-        return subjob;
+        return subJob;
     }
 }

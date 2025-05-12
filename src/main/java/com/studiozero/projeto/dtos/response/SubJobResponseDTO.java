@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 
@@ -25,21 +25,23 @@ public class SubJobResponseDTO {
     private String description;
     private Double value;
     private LocalDate date;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Boolean needsRoom;
+    private LocalTime startTime;
+    private LocalTime expectedEndTime;
     private Status status;
     private UUID fkService;
     private Status jobStatus;
     private Double jobTotalValue;
 
-    public SubJobResponseDTO(UUID id, String title, String description, Double value, LocalDate date, LocalDateTime startTime, LocalDateTime endTime, Status status, UUID fkService) {
+    public SubJobResponseDTO(UUID id, String title, String description, Double value, LocalDate date, Boolean needsRoom, LocalTime startTime, LocalTime expectedEndTime, Status status, UUID fkService) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.value = value;
         this.date = date;
+        this.needsRoom = needsRoom;
         this.startTime = startTime;
-        this.endTime = endTime;
+        this.expectedEndTime = expectedEndTime;
         this.status = status;
         this.fkService = fkService;
     }
@@ -50,8 +52,9 @@ public class SubJobResponseDTO {
         this.description = subJob.getDescription();
         this.value = subJob.getValue();
         this.date = subJob.getDate();
+        this.needsRoom = subJob.getNeedsRoom();
         this.startTime = subJob.getStartTime();
-        this.endTime = subJob.getEndTime();
+        this.expectedEndTime = subJob.getExpectedEndTime();
         this.status = subJob.getStatus();
         this.fkService = subJob.getJob().getId();
     }
@@ -62,8 +65,9 @@ public class SubJobResponseDTO {
         this.description = subJob.getDescription();
         this.value = subJob.getValue();
         this.date = subJob.getDate();
+        this.needsRoom = subJob.getNeedsRoom();
         this.startTime = subJob.getStartTime();
-        this.endTime = subJob.getEndTime();
+        this.expectedEndTime = subJob.getExpectedEndTime();
         this.status = subJob.getStatus();
         this.fkService = subJob.getJob().getId();
         this.jobTotalValue = jobTotalValue;

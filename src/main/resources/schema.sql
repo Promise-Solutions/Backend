@@ -1,4 +1,5 @@
 -- FUNCIONÁRIO
+-- FUNCIONÁRIO
 CREATE TABLE funcionario (
     id_funcionario BINARY(16) NOT NULL PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
@@ -52,8 +53,8 @@ CREATE TABLE sub_servico (
     titulo_sub_servico VARCHAR(45) NOT NULL,
     descricao_sub_servico VARCHAR(250),
     valor_sub_servico DOUBLE NOT NULL,
-    data DATE NOT NULL,
-    hora_inicio TIME NOT NULL,
+    data DATE,
+    hora_inicio TIME,
     hora_fim TIME,
     status VARCHAR(42) NOT NULL,
     fk_servico BINARY(16) NOT NULL,
@@ -62,6 +63,45 @@ CREATE TABLE sub_servico (
     FOREIGN KEY (fk_servico) REFERENCES servico_ou_pacotes (id_servico)
 );
 
+-- PRODUTO
+CREATE TABLE produto (
+    id_produto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome_produto VARCHAR(45) NOT NULL,
+    qtd_produto INT NOT NULL,
+    valor_unitario DOUBLE NOT NULL,
+    valor_compra DOUBLE NOT NULL
+);
+
+-- COMANDA
+CREATE TABLE comanda (
+    id_comanda INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    numero_comanda INT NOT NULL,
+    data_hora_abertura DATETIME NOT NULL,
+    data_hora_fechamento DATETIME,
+    desconto DOUBLE,
+    valor_total DOUBLE NOT NULL,
+    fk_cliente BINARY(16),
+    fk_funcionario BINARY(16) NOT NULL,
+    status VARCHAR(45) NOT NULL,
+    INDEX fk_cliente_idx (fk_cliente),
+    INDEX fk_funcionario_idx (fk_funcionario),
+    FOREIGN KEY (fk_cliente) REFERENCES cliente (id_cliente),
+    FOREIGN KEY (fk_funcionario) REFERENCES funcionario (id_funcionario)
+);
+
+-- COMANDA PRODUTO
+CREATE TABLE comanda_produto (
+    id_comanda_produto INT NOT NULL AUTO_INCREMENT,
+    fk_produto INT NOT NULL,
+    fk_comanda INT NOT NULL,
+    qtd_produto INT NOT NULL,
+    valor_unitario DOUBLE NOT NULL,
+    PRIMARY KEY (id_comanda_produto, fk_produto, fk_comanda),
+    INDEX fk_produto_idx (fk_produto),
+    INDEX fk_comanda_idx (fk_comanda),
+    FOREIGN KEY (fk_produto) REFERENCES produto (id_produto),
+    FOREIGN KEY (fk_comanda) REFERENCES comanda (id_comanda)
+);
 -- PRODUTO
 CREATE TABLE produto (
     id_produto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

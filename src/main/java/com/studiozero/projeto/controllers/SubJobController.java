@@ -36,7 +36,9 @@ public class SubJobController {
     public ResponseEntity<SubJobResponseDTO> createSubJob(
             @RequestBody @Valid SubJobRequestDTO subJobDto
     ) {
-        SubJob savedSubJob = subJobService.createSubJob(subJobDto);
+        SubJob subJob = subJobMapper.toEntity(subJobDto);
+        SubJob savedSubJob = subJobService.createSubJob(subJob);
+
         Status jobStatus = jobService.evaluateJobStatus(savedSubJob.getJob().getId());
         Double totalValueJob = jobService.calculateTotalValue(savedSubJob.getJob().getId());
 
@@ -57,8 +59,8 @@ public class SubJobController {
     }
 
     @Operation(
-            summary = "List subjobs By a fkService",
-            description = "This method is responsible for listing all subjobs associated with a job."
+            summary = "List subJobs By a fkService",
+            description = "This method is responsible for listing all subJobs associated with a job."
     )
     @GetMapping("/job")
     public ResponseEntity<List<SubJobResponseDTO>> listSubJobsByFkService(
@@ -99,8 +101,8 @@ public class SubJobController {
             @PathVariable UUID id,
             @RequestBody @Valid SubJobRequestDTO subJobDto
     ) {
-        SubJob subjob = subJobMapper.toEntity(subJobDto, id);
-        SubJob updatedSubJob = subJobService.updateSubJob(subjob);
+        SubJob subJob = subJobMapper.toEntity(subJobDto, id);
+        SubJob updatedSubJob = subJobService.updateSubJob(subJob);
 
         Double totalValueJob = jobService.calculateTotalValue(updatedSubJob.getJob().getId());
 
@@ -114,9 +116,9 @@ public class SubJobController {
     @PatchMapping("/{id}/update-status")
     public ResponseEntity<SubJobUpdateStatusResponseDTO> updateSubJobStatus(
         @PathVariable UUID id,
-        @RequestBody SubJobUpdateStatusRequestDTO statusDTO
+        @RequestBody @Valid SubJobUpdateStatusRequestDTO statusDTO
     ) {
-        SubJob subJobUpdated = subJobService.updateSubJobStatus(id, statusDTO);
+        SubJob subJobUpdated = subJobService.updateSubJobStatus(id, statusDTO.getStatus());
         Status jobStatus = jobService.evaluateJobStatus(subJobUpdated.getJob().getId());
         return ResponseEntity.ok().body(new SubJobUpdateStatusResponseDTO(subJobUpdated.getId(), subJobUpdated.getStatus(), jobStatus));
     }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -30,14 +31,17 @@ public class SubJob {
     @Column(name = "valor_sub_servico", nullable = false)
     private Double value;
 
-    @Column(name = "data", nullable = false)
+    @Column(name = "data")
     private LocalDate date;
 
-    @Column(name = "hora_inicio", nullable = false)
-    private LocalDateTime startTime;
+    @Column(name = "hora_inicio")
+    private LocalTime startTime;
 
     @Column(name = "hora_fim")
-    private LocalDateTime endTime;
+    private LocalTime expectedEndTime;
+
+    @Column(name = "necessita_sala", nullable = false)
+    private Boolean needsRoom;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

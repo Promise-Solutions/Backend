@@ -6,6 +6,7 @@ import com.studiozero.projeto.dtos.response.SubJobDeleteResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
+import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.SubJobMapper;
 import com.studiozero.projeto.repositories.JobRepository;
@@ -24,18 +25,20 @@ public class SubJobService {
 
     private final SubJobRepository subJobRepository;
     private final JobRepository jobRepository;
-    private final SubJobMapper subJobMapper;
     private final JobService jobService;
 
-    public SubJob createSubJob(SubJobRequestDTO subJobdto) {
-        Job job = jobRepository.findById(subJobdto.getFkService())
-                .orElseThrow(() -> new NotFoundException("Job not found"));
+    public SubJob createSubJob(SubJob subJob) {
+        if(
+           subJob.getNeedsRoom()
+            &&
+           subJobRepository.existsRoomConflict(
+                   subJob.getJob().getCategory(), subJob.getDate(), subJob.getStartTime(), subJob.getExpectedEndTime())
+            ) {
+            throw new ConflictException("There is a room usage conflict");
+        }
 
-        SubJob subjob = subJobMapper.toEntity(subJobdto);
-
-        subjob.setId(UUID.randomUUID());
-        subjob.setJob(job);
-        return subJobRepository.save(subjob);
+        subJob.setId(UUID.randomUUID());
+        return subJobRepository.save(subJob);
     }
 
     public SubJob findSubJobById(UUID id) {
@@ -47,21 +50,29 @@ public class SubJobService {
         return subJobRepository.findAll();
     }
 
-    public SubJob updateSubJob(SubJob subjob) {
-        if (subJobRepository.existsById(subjob.getId())) {
-            subjob.setId(subjob.getId());
-            return subJobRepository.save(subjob);
+    public SubJob updateSubJob(SubJob subJob) {
+        if (subJobRepository.existsById(subJob.getId())) {
+            subJob.setId(subJob.getId());
+
+            if(
+                subJob.getNeedsRoom()
+                &&
+                subJobRepository.existsRoomConflict(
+                        subJob.getJob().getCategory(), subJob.getDate(), subJob.getStartTime(), subJob.getExpectedEndTime(), subJob.getId())
+            ) {
+                throw new ConflictException("There is a room usage conflict");
+            }
+            return subJobRepository.save(subJob);
         }
         throw new NotFoundException("Sub job not found");
     }
 
     @Transactional
-    public SubJob updateSubJobStatus(UUID id, SubJobUpdateStatusRequestDTO statusDTO) {
+    public SubJob updateSubJobStatus(UUID id, Status status) {
         SubJob subJob = subJobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sub job not found"));
 
-        subJob.setStatus(statusDTO.getStatus());
-        subJob.setEndTime(statusDTO.getEndTime());
+        subJob.setStatus(status);
         return subJobRepository.save(subJob);
     }
 

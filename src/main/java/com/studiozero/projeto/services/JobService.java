@@ -27,13 +27,8 @@ public class JobService {
     private final ClientRepository clientRepository;
 
     final
-    public Job createJob(JobRequestDTO jobdto) {
-        Client client = clientRepository.findById(jobdto.getFkClient())
-                .orElseThrow(() -> new NotFoundException("Client not found!"));
-
-        Job job = jobMapper.toEntity(jobdto);
+    public Job createJob(Job job) {
         job.setId(UUID.randomUUID());
-        job.setClient(client);
         return jobRepository.save(job);
     }
 

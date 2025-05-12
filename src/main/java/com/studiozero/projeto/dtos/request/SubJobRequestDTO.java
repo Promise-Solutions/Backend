@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -30,13 +31,14 @@ public class SubJobRequestDTO {
     @Positive
     private Double value;
 
-    @NotNull(message = "Date value is mandatory")
     private LocalDate date;
 
-    @NotNull(message = "Start Time value is mandatory")
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
-    private LocalDateTime endTime;
+    @NotNull(message = "Needs Room value is mandatory")
+    private Boolean needsRoom;
+
+    private LocalTime expectedEndTime;
 
     @NotNull(message = "Status value is mandatory")
     private Status status;

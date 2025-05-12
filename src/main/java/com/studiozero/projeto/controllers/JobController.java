@@ -32,7 +32,8 @@ public class JobController {
     public ResponseEntity<JobResponseDTO> createJob(
             @RequestBody @Valid JobRequestDTO jobDto
     ) {
-        Job savedJob = jobService.createJob(jobDto);
+        Job job = jobMapper.toEntity(jobDto);
+        Job savedJob = jobService.createJob(job);
         JobResponseDTO savedDto = JobMapper.toDTO(savedJob);
         return ResponseEntity.status(201).body(savedDto);
     }
