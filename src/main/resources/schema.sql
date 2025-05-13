@@ -1,5 +1,4 @@
 -- FUNCIONÁRIO
--- FUNCIONÁRIO
 CREATE TABLE funcionario (
     id_funcionario BINARY(16) NOT NULL PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
@@ -57,6 +56,7 @@ CREATE TABLE sub_servico (
     hora_inicio TIME,
     hora_fim TIME,
     status VARCHAR(42) NOT NULL,
+    necessita_sala BOOLEAN NOT NULL,
     fk_servico BINARY(16) NOT NULL,
     PRIMARY KEY (id_sub_servico, fk_servico),
     INDEX fk_servico_idx (fk_servico),
