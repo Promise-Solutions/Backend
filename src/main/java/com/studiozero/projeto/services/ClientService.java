@@ -9,6 +9,7 @@ import com.studiozero.projeto.repositories.CommandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public class ClientService {
             throw new ConflictException("Client with this CPF already exists");
         }
         client.setId(UUID.randomUUID());
+        client.setCreatedDate(LocalDate.now());
         return clientRepository.save(client);
     }
 

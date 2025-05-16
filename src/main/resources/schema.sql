@@ -17,7 +17,8 @@ CREATE TABLE cliente (
     contato VARCHAR(15) NOT NULL,
     cpf CHAR(14) NOT NULL,
     tipo_cliente VARCHAR(45) NOT NULL,
-    ativo BOOLEAN NOT NULL
+    ativo BOOLEAN NOT NULL,
+    data_criacao DATE NOT NULL
 );
 
 -- SERVIÇO OU PACOTES

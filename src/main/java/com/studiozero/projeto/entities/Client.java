@@ -3,6 +3,8 @@ package com.studiozero.projeto.entities;
 import com.studiozero.projeto.enums.ClientType;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -34,4 +36,7 @@ public class Client {
 
     @Column(name = "ativo", nullable = false)
     private Boolean active;
+
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDate createdDate;
 }
