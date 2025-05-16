@@ -6,6 +6,7 @@ import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.enums.ClientType;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -20,6 +21,7 @@ public class ClientResponseDTO {
     private String contact;
     private ClientType clientType;
     private Boolean active;
+    private LocalDate createdDate;
 
     public ClientResponseDTO(Client client) {
         this.id = id;
@@ -29,5 +31,6 @@ public class ClientResponseDTO {
         this.contact = contact;
         this.clientType = clientType;
         this.active = active;
+        this.createdDate = createdDate;
     }
 }
