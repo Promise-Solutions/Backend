@@ -1,3 +1,7 @@
+-- CRIAÇÃO DA DATABASE
+CREATE DATABASE studiozero;
+USE studiozero;
+
 -- FUNCIONÁRIO
 CREATE TABLE funcionario (
     id_funcionario BINARY(16) NOT NULL PRIMARY KEY,
