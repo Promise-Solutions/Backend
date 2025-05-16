@@ -14,6 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,4 +37,6 @@ public class ClientUpdateRequestDTO {
     private ClientType clientType;
 
     private Boolean active = true;
+
+    private LocalDate createdDate;
 }

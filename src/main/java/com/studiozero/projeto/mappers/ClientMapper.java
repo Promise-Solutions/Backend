@@ -62,6 +62,7 @@ public class ClientMapper {
         if (dto.getContact() != null) client.setContact(dto.getContact());
         if (dto.getClientType() != null) client.setClientType(dto.getClientType());
         if (dto.getActive() != null) client.setActive(dto.getActive());
+        if (dto.getCreatedDate() != null) client.setCreatedDate(dto.getCreatedDate());
 
         return client;
     }
