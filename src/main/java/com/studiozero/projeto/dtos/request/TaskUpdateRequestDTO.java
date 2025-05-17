@@ -30,6 +30,8 @@ public class TaskUpdateRequestDTO {
 
     private UUID fkEmployee;
 
+    private UUID fkAssigned;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 }

@@ -46,6 +46,7 @@ CREATE TABLE tarefa (
     data_inicio DATE,
     data_limite DATE,
     fk_funcionario BINARY(16),
+    fk_autor BINARY(16),
     status VARCHAR(45) NOT NULL,
     INDEX fk_funcionario_idx (fk_funcionario),
     FOREIGN KEY (fk_funcionario) REFERENCES funcionario (id_funcionario)

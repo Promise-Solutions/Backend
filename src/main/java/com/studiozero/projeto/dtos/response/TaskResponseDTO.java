@@ -22,6 +22,7 @@ public class TaskResponseDTO {
     private LocalDate startDate;
     private LocalDate limitDate;
     private UUID fkEmployee;
+    private UUID fkAssigned;
     private Status status;
 
     public TaskResponseDTO(Task task) {
@@ -31,6 +32,7 @@ public class TaskResponseDTO {
         this.startDate = startDate;
         this.limitDate = limitDate;
         this.fkEmployee = fkEmployee;
+        this.fkAssigned = fkAssigned;
         this.status = status;
     }
 }
