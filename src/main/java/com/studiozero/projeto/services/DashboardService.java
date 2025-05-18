@@ -2,8 +2,11 @@ package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.entities.Command;
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.ClientType;
+import com.studiozero.projeto.enums.JobType;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.enums.JobCategory;
+import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.CommandRepository;
 import com.studiozero.projeto.repositories.ProductRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
@@ -19,25 +22,7 @@ public class DashboardService {
         private final CommandRepository commandRepository;
         private final ProductRepository productRepository;
         private final SubJobRepository subJobRepository;
-
-        public Map<JobCategory, Map<String, Double>> getGeneralStats() {
-                Map<JobCategory, Map<String, Double>> stats = new HashMap<>();
-
-                for (JobCategory category : JobCategory.values()) {
-                        List<SubJob> subJobs = subJobRepository.findAll()
-                                        .stream()
-                                        .filter(subJob -> subJob.getJob().getCategory() == category
-                                                        && subJob.getStatus() == Status.CLOSED)
-                                        .toList();
-
-                        double totalValue = subJobs.stream().mapToDouble(SubJob::getValue).sum();
-                        double frequency = subJobs.size();
-
-                        stats.put(category, Map.of("totalValue", totalValue, "frequency", frequency));
-                }
-
-                return stats;
-        }
+        private final ClientRepository clientRepository;
 
         public Map<String, Double> getClientStats(UUID clientId) {
 
@@ -50,7 +35,7 @@ public class DashboardService {
                                         .stream()
                                         .filter(subJob -> subJob.getJob().getClient().getId().equals(clientId) &&
                                                         subJob.getJob().getCategory() == category &&
-                                                        subJob.getStatus() == Status.CLOSED)
+                                                        subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
                                         .toList();
 
                         totalValue += subJobs.stream().mapToDouble(SubJob::getValue).sum();
@@ -66,30 +51,60 @@ public class DashboardService {
                 return Map.of(
                                 "frequency", frequency,
                                 "totalValue", totalValue,
-                                "totalCommandsValue", totalCommandsValue);
+                                "totalCommandsValue", totalCommandsValue
+                );
         }
 
-        public Map<String, Double> getBarFinances() {
-                double totalOpenCommands = commandRepository.findAll()
-                                .stream()
-                                .filter(command -> command.getStatus() == Status.OPEN)
-                                .mapToDouble(Command::getTotalValue)
-                                .sum();
+        public Map<String, Double> getFrequencys() {
+                double frequencySingle = 0.0;
+                double frequencyMonthly = 0.0;
+                double frequencyByPc = 0.0;
+                double frequencyByMr = 0.0;
+                double frequencyByPv = 0.0;
 
-                double totalClosedCommands = commandRepository.findAll()
-                                .stream()
-                                .filter(command -> command.getStatus() == Status.CLOSED)
-                                .mapToDouble(Command::getTotalValue)
-                                .sum();
+                List<SubJob> subJobs = subJobRepository.findAll()
+                        .stream()
+                        .filter(subJob -> subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
+                        .toList();
 
-                double finOut = productRepository.findAll()
-                                .stream()
-                                .mapToDouble(product -> product.getBuyValue())
-                                .sum();
+                for (JobType type : JobType.values()) {
+                        frequencySingle += subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getServiceType() == type)
+                                .count();
+
+                        frequencyMonthly += subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getServiceType() == type)
+                                .count();
+
+                }
+
+                for (JobCategory category : JobCategory.values()) {
+                        frequencyByPc += subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getCategory() == category)
+                                .count();
+
+                        frequencyByMr += subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getCategory() == category)
+                                .count();
+
+                        frequencyByPv += subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getCategory() == category)
+                                .count();
+                }
 
                 return Map.of(
-                                "totalOpenCommands", totalOpenCommands,
-                                "totalClosedCommands", totalClosedCommands,
-                                "finOut", finOut);
+                        "frequencySingle", frequencySingle,
+                        "frequencyMonthly", frequencyMonthly,
+                        "frequencyByPc", frequencyByPc,
+                        "frequencyByMr", frequencyByMr,
+                        "frequencyByPv", frequencyByPv
+                );
+        }
+
+        public Map<String, Double> getActives() {
+                return Map.of(
+                        "monthly", clientRepository.countByActiveTrueAndClientType(ClientType.MONTHLY),
+                        "single", clientRepository.countByActiveTrueAndClientType(ClientType.SINGLE)
+                );
         }
 }
