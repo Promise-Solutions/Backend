@@ -29,6 +29,7 @@ public class Product {
     @Column(name = "valor_interno", nullable = false)
     private Double internalValue;
 
-    @Column(name = "despesa_compra", nullable = false)
-    private Double totalBuyValue;
+    // alterado com a mudança da lógica do sistema
+    //@Column(name = "despesa_compra", nullable = false)
+    //private Double totalBuyValue;
 }

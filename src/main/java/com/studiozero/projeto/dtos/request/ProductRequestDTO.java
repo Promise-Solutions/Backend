@@ -17,9 +17,10 @@ public class ProductRequestDTO {
     @NotBlank(message = "name value is mandatory")
     private String name;
 
-    @NotNull(message = "qtdProduct value is mandatory")
-    @PositiveOrZero(message = "qtdProduct must be a positive number")
-    private Integer quantity;
+//    Esse atributo não vai ser requisitado no bar, apenas no lancamento da despesa
+//    @NotNull(message = "qtdProduct value is mandatory")
+//    @PositiveOrZero(message = "qtdProduct must be a positive number")
+//    private Integer quantity;
 
     @NotNull(message = "clientValue  is mandatory")
     @Positive
@@ -29,7 +30,8 @@ public class ProductRequestDTO {
     @Positive
     private Double internalValue;
 
-    @NotNull(message = "totalBuyValue is mandatory")
-    @Positive
-    private Double totalBuyValue;
+//    essa regra vai lá para despesas
+//    @NotNull(message = "totalBuyValue is mandatory")
+//    @Positive
+//    private Double totalBuyValue;
 }

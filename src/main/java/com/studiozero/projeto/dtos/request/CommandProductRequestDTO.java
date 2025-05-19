@@ -24,6 +24,8 @@ public class CommandProductRequestDTO {
     @Positive
     private Integer productQuantity;
 
+
+// não vai ser solicitado, isInternal que vai determinar isso
 //    @NotNull(message = "unitValue is mandatory")
 //    @Positive
 //    private Double unitValue;
