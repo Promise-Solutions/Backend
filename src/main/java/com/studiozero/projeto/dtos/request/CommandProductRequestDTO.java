@@ -24,7 +24,8 @@ public class CommandProductRequestDTO {
     @Positive
     private Integer productQuantity;
 
-    @NotNull(message = "unitValue is mandatory")
-    @Positive
-    private Double unitValue;
+//    @NotNull(message = "unitValue is mandatory")
+//    @Positive
+//    private Double unitValue;
+
 }

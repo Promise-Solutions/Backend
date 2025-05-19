@@ -117,7 +117,13 @@ public class CommandProductService {
         List<CommandProduct> commandProducts = commandProductRepository.findAllByCommand_Id(command.getId());
 
         Double totalValue = commandProducts.stream()
-                .mapToDouble(cp -> cp.getUnitValue() * cp.getProductQuantity())
+                .mapToDouble(cp -> {
+                    Product product = cp.getProduct();
+                    double unitValue = Boolean.TRUE.equals(command.getIsIntenal())
+                            ? product.getInternalValue()
+                            : product.getClientValue();
+                    return unitValue * cp.getProductQuantity();
+                })
                 .sum();
 
         if (command.getStatus() == Status.CLOSED && Double.compare(command.getDiscount(), 0.0) != 0) {

@@ -21,11 +21,15 @@ public class ProductRequestDTO {
     @PositiveOrZero(message = "qtdProduct must be a positive number")
     private Integer quantity;
 
-    @NotNull(message = "unitValue value is mandatory")
+    @NotNull(message = "clientValue  is mandatory")
     @Positive
-    private Double unitValue;
+    private Double clientValue;
 
-    @NotNull(message = "buyValue value is mandatory")
+    @NotNull(message = "internalValue  is mandatory")
     @Positive
-    private Double buyValue;
+    private Double internalValue;
+
+    @NotNull(message = "totalBuyValue is mandatory")
+    @Positive
+    private Double totalBuyValue;
 }

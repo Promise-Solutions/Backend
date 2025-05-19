@@ -43,7 +43,16 @@ public class Command {
     @JoinColumn(name = "fk_funcionario")
     private Employee employee;
 
+    @Column(name = "comanda_interna", nullable = false)
+    private Boolean isIntenal;
+
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @PrePersist
+    @PreUpdate
+    private void isInternalDefinition(){
+        this.isIntenal = (this.client == null && this.employee != null);
+    }
 }

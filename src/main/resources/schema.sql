@@ -73,8 +73,8 @@ CREATE TABLE produto (
     id_produto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome_produto VARCHAR(45) NOT NULL,
     qtd_produto INT NOT NULL,
-    valor_unitario DOUBLE NOT NULL,
-    valor_compra DOUBLE NOT NULL
+    valor_cliente DOUBLE NOT NULL,
+    valor_interno DOUBLE NOT NULL
 );
 
 -- COMANDA
@@ -87,6 +87,7 @@ CREATE TABLE comanda (
     valor_total DOUBLE NOT NULL,
     fk_cliente BINARY(16),
     fk_funcionario BINARY(16) NOT NULL,
+    uso_interno BOOLEAN NOT NULL DEFAULT FALSE,
     status VARCHAR(45) NOT NULL,
     INDEX fk_cliente_idx (fk_cliente),
     INDEX fk_funcionario_idx (fk_funcionario),

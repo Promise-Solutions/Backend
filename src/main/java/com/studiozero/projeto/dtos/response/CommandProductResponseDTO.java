@@ -17,6 +17,7 @@ public class CommandProductResponseDTO {
     private Integer fkCommand;
     private Integer productQuantity;
     private Double unitValue;
+    private Double totalValue;
 
     public CommandProductResponseDTO(CommandProduct commandProduct) {
         this.id = id;
@@ -24,5 +25,6 @@ public class CommandProductResponseDTO {
         this.fkCommand = fkCommand;
         this.productQuantity = productQuantity;
         this.unitValue = unitValue;
+        this.totalValue = totalValue;
     }
 }

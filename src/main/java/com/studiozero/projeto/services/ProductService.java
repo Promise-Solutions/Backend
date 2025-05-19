@@ -15,6 +15,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Product createProduct(Product product) {
+        validateProductsValues(product);
         return productRepository.save(product);
     }
 
@@ -31,6 +32,7 @@ public class ProductService {
     public Product updateProduct(Product product) {
         if (productRepository.existsById(product.getId())) {
             product.setId(product.getId());
+            validateProductsValues(product);
             return productRepository.save(product);
         }
         throw new NotFoundException("Product not found");
@@ -41,6 +43,15 @@ public class ProductService {
             productRepository.deleteById(id);
         } else {
             throw new NotFoundException("Product not found");
+        }
+    }
+
+    private void validateProductsValues(Product product) {
+        if (product.getClientValue() == null || product.getClientValue() <= 0) {
+            throw new IllegalArgumentException("Client value should be greater than zero");
+        }
+        if (product.getInternalValue() == null || product.getInternalValue() <= 0) {
+            throw new IllegalArgumentException("Internal value should be greater than zero");
         }
     }
 }

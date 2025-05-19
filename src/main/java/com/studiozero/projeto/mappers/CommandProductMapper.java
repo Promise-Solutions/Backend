@@ -33,7 +33,6 @@ public class CommandProductMapper {
         commandProduct.setCommand(command);
         commandProduct.setProduct(product);
         commandProduct.setProductQuantity(dto.getProductQuantity());
-        commandProduct.setUnitValue(dto.getUnitValue());
         return commandProduct;
     }
 
@@ -45,6 +44,8 @@ public class CommandProductMapper {
         dto.setId(commandProduct.getId());
         dto.setProductQuantity(commandProduct.getProductQuantity());
         dto.setUnitValue(commandProduct.getUnitValue());
+        double total = commandProduct.getUnitValue() * commandProduct.getProductQuantity();
+        dto.setTotalValue(total);
         dto.setFkCommand(commandProduct.getCommand() != null ? commandProduct.getCommand().getId() : null);
         dto.setFkProduct(commandProduct.getProduct() != null ? commandProduct.getProduct().getId() : null);
         return dto;
@@ -76,7 +77,6 @@ public class CommandProductMapper {
 
         commandProduct.setId(id);
         commandProduct.setProductQuantity(dto.getProductQuantity());
-        commandProduct.setUnitValue(dto.getUnitValue());
         commandProduct.setCommand(command);
         commandProduct.setProduct(product);
         return commandProduct;
