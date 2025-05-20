@@ -22,6 +22,7 @@ CREATE TABLE cliente (
     cpf CHAR(14) NOT NULL,
     tipo_cliente VARCHAR(45) NOT NULL,
     ativo BOOLEAN NOT NULL,
+    data_nascimento DATE NOT NULL,
     data_criacao DATE NOT NULL
 );
 

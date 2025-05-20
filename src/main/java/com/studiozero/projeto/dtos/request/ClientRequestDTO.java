@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.enums.ClientType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -40,5 +40,9 @@ public class ClientRequestDTO {
 
     @NotNull(message = "Active value is mandatory")
     private Boolean active = true;
+
+    @NotNull(message = "BirthDay value is mandatory")
+    @Past
+    private LocalDate birthDay;
 
 }
