@@ -33,20 +33,21 @@ public class Expense {
     private String description;
 
     @Positive
-    @Column(name = "value", nullable = false)
+    @Column(name = "valor", nullable = false)
     private Double amountSpend;
+
+    @ManyToOne
+    @Column(name = "fk_produto", nullable = true)
+    private Product product;
 
     //como fazer a quantidade daqui ser somada lá em produto
     // se expensiveCategory != STOCK ou OTHERS, devemos travar o preenchimento do campo
-    @Column(name = "quantidade", nullable = true)
-    private Integer quantity;
+//    @Column(name = "quantidade", nullable = true)
+//    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     @Column(name= "tipo_pagamento", nullable = false)
     private PaymentType paymentType;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "fk_funcionario")
-    private Employee employee;
 
 }

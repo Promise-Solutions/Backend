@@ -22,7 +22,6 @@ public class ExpenseResponseDTO {
     private Double amountSpend;
     private Integer quantity;
     private PaymentType paymentType;
-    private Employee employee;
 
 
 }

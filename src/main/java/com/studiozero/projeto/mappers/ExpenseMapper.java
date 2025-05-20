@@ -2,6 +2,7 @@ package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.ExpenseRequestDTO;
 import com.studiozero.projeto.dtos.response.ExpenseResponseDTO;
+import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Expense;
 import org.springframework.stereotype.Component;
 
@@ -12,14 +13,18 @@ public class ExpenseMapper {
     public static Expense toEntity(ExpenseRequestDTO dto){
         Expense expense = new Expense();
 
+        if (dto.getFkClient() != null) {
+            Client client = clientRepository.findById(dto.getFkClient()).orElse(null);
+            command.setClient(client);
+
+        }
+
         expense.setDate((dto.getDate()));
         expense.setExpenseCategory(dto.getExpenseCategory());
         expense.setDescription((dto.getDescription()));
         expense.setAmountSpend(dto.getAmountExpend());
-        expense.setQuantity(dto.getQuantity());
         expense.setPaymentType(dto.getPaymentType());
-//        expense.setEmployee(dto.getEmployee);
-
+        expense.setProduct(dto.getIdProduto());
         return expense;
     }
 
@@ -29,9 +34,7 @@ public class ExpenseMapper {
         dto.setExpenseCategory(expense.getExpenseCategory());
         dto.setDescription(expense.getDescription());
         dto.setAmountSpend(expense.getAmountSpend());
-        dto.setQuantity(expense.getQuantity());
         dto.setPaymentType(expense.getPaymentType());
-        dto.setEmployee(expense.getEmployee());
 
         return dto;
 
