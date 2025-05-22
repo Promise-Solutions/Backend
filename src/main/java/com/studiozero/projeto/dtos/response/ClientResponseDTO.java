@@ -21,6 +21,7 @@ public class ClientResponseDTO {
     private String contact;
     private ClientType clientType;
     private Boolean active;
+    private LocalDate birthDay;
     private LocalDate createdDate;
 
     public ClientResponseDTO(Client client) {
@@ -31,6 +32,7 @@ public class ClientResponseDTO {
         this.contact = contact;
         this.clientType = clientType;
         this.active = active;
+        this.birthDay = birthDay;
         this.createdDate = createdDate;
     }
 }
