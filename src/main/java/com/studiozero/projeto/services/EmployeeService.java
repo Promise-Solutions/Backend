@@ -2,7 +2,9 @@ package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.exceptions.ConflictException;
+import com.studiozero.projeto.exceptions.DeleteOwnUserException;
 import com.studiozero.projeto.exceptions.NotFoundException;
+import com.studiozero.projeto.exceptions.UnauthorizedException;
 import com.studiozero.projeto.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,8 +71,13 @@ public class EmployeeService {
                 .orElseThrow(() -> new NotFoundException("Employee not found"));
     }
 
-    public void deleteEmployee(UUID id) {
+    public void deleteEmployee(UUID id, UUID userLogged) {
         if (employeeRepository.existsById(id)) {
+            Employee employee = employeeRepository.findById(id).orElseThrow(
+                    () -> new NotFoundException("Employee not found"));
+            if (userLogged.equals(employee.getId())) {
+                throw new DeleteOwnUserException("You can't delete your own user");
+            }
             employeeRepository.deleteById(id);
         } else {
             throw new NotFoundException("Employee not found");

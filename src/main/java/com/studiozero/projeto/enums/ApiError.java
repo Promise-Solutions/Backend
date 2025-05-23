@@ -4,5 +4,6 @@ public enum ApiError {
     NOT_FOUND,
     BAD_REQUEST,
     CONFLICT,
-    UNAUTHORIZED
+    UNAUTHORIZED,
+    PRECONDITION_REQUIRED
 }

@@ -64,8 +64,9 @@ public class EmployeeController {
         var employeeUserDetails = (EmployeeUserDetails) auth.getPrincipal();
 
         var token = tokenService.generateToken(employeeUserDetails.getEmployee());
+        var id = employeeUserDetails.getEmployee().getId();
 
-        return ResponseEntity.ok(new EmployeeLoginResponseDTO(token));
+        return ResponseEntity.ok(new EmployeeLoginResponseDTO(token, id));
     }
 
     @Operation(
@@ -116,11 +117,12 @@ public class EmployeeController {
             summary = "Delete a employee",
             description = "This method is responsible for delete a employee."
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/{userLogged}")
     public ResponseEntity<Void> deleteEmployee(
-            @PathVariable @Valid UUID id
+            @PathVariable @Valid UUID id,
+            @PathVariable @Valid UUID userLogged
     ) {
-        employeeService.deleteEmployee(id);
+        employeeService.deleteEmployee(id, userLogged);
         return ResponseEntity.ok().build();
     }
 }

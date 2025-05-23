@@ -257,10 +257,11 @@ class EmployeeServiceTest {
     @DisplayName("should delete employee when exists")
     void shouldDeleteEmployeeWhenExists() {
         UUID id = UUID.randomUUID();
+        UUID userLogged = UUID.randomUUID();
 
         when(employeeRepository.existsById(id)).thenReturn(true);
 
-        employeeService.deleteEmployee(id);
+        employeeService.deleteEmployee(id, userLogged);
 
         verify(employeeRepository).existsById(id);
         verify(employeeRepository).deleteById(id);
@@ -270,10 +271,12 @@ class EmployeeServiceTest {
     @DisplayName("should throw NotFoundException when employee does not exist")
     void shouldNotFoundExceptionWhenEmployeeDoesNotExist() {
         UUID id = UUID.randomUUID();
+        UUID userLogged = UUID.randomUUID();
+
 
         when(employeeRepository.existsById(id)).thenReturn(false);
 
-        assertThrows(NotFoundException.class, () -> employeeService.deleteEmployee(id));
+        assertThrows(NotFoundException.class, () -> employeeService.deleteEmployee(id, userLogged));
 
         verify(employeeRepository).existsById(id);
         verify(employeeRepository, never()).deleteById(any());
