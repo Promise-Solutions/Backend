@@ -6,10 +6,7 @@ import com.studiozero.projeto.enums.ClientType;
 import com.studiozero.projeto.enums.JobType;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.enums.JobCategory;
-import com.studiozero.projeto.repositories.ClientRepository;
-import com.studiozero.projeto.repositories.CommandRepository;
-import com.studiozero.projeto.repositories.ProductRepository;
-import com.studiozero.projeto.repositories.SubJobRepository;
+import com.studiozero.projeto.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +20,7 @@ public class DashboardService {
         private final ProductRepository productRepository;
         private final SubJobRepository subJobRepository;
         private final ClientRepository clientRepository;
+        private final JobRepository jobRepository;
 
         public Map<String, Double> getClientStats(UUID clientId) {
 
@@ -102,9 +100,24 @@ public class DashboardService {
         }
 
         public Map<String, Double> getActives() {
+                double single = clientRepository.countByActiveTrueAndClientType(ClientType.SINGLE);
+                double monthly = clientRepository.countByActiveTrueAndClientType(ClientType.MONTHLY);
+
                 return Map.of(
-                        "monthly", clientRepository.countByActiveTrueAndClientType(ClientType.MONTHLY),
-                        "single", clientRepository.countByActiveTrueAndClientType(ClientType.SINGLE)
+                        "monthly", monthly,
+                        "single", single
+                );
+        }
+
+        public Map<String, Double> getBalances() {
+                double podcastBalance = jobRepository.sumTotalValueByCategory(JobCategory.PODCAST);
+                double photoVideoStudioBalance = jobRepository.sumTotalValueByCategory(JobCategory.PHOTO_VIDEO_STUDIO);
+                double musicRehearsalBalance = jobRepository.sumTotalValueByCategory(JobCategory.MUSIC_REHEARSAL);
+
+                return Map.of(
+                        "podcastBalance", podcastBalance,
+                        "photoVideoStudioBalance", photoVideoStudioBalance,
+                        "musicRehearsalBalance", musicRehearsalBalance
                 );
         }
 }
