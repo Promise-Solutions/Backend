@@ -1,5 +1,6 @@
 package com.studiozero.projeto.dtos.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.enums.ClientType;
@@ -43,6 +44,7 @@ public class ClientRequestDTO {
 
     @NotNull(message = "BirthDay value is mandatory")
     @Past
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthDay;
 
 }
