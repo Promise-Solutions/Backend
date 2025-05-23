@@ -13,6 +13,10 @@ CREATE TABLE funcionario (
     ativo BOOLEAN NOT NULL
 );
 
+-- INSERINDO CONTA PADRÃO
+    INSERT INTO funcionario VALUES (id_funcionario, nome, email, contato, cpf, senha, ativo)
+    ("d6d90bf9-6f51-4882-bc63-d443deea6b6d", "ADMIN", "143.817.928-66", "admin@admin.com", "(00) 00000-0000", "12345678", true);
+
 -- CLIENTE
 CREATE TABLE cliente (
     id_cliente BINARY(16) NOT NULL PRIMARY KEY,
