@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,5 +55,14 @@ public class DashboardController {
     @GetMapping("/balances")
     public ResponseEntity<Map<String, Double>> getBalances() {
         return ResponseEntity.ok(dashboardService.getBalances());
+    }
+
+    @Operation(
+            summary = "Get balances statistics",
+            description = "Returns balances data by job type"
+    )
+    @GetMapping("/recent-time")
+    public ResponseEntity<LocalDate> getRecentTime() {
+        return ResponseEntity.ok(dashboardService.getRecentTime());
     }
 }

@@ -69,4 +69,7 @@ public interface SubJobRepository extends JpaRepository<SubJob, UUID>, JpaSpecif
             @Param("expectedEndTime") LocalTime expectedEndTime,
             @Param("subJobId") UUID jobId
     );
+
+    @Query("SELECT MAX(s.date) FROM SubJob s")
+    LocalDate findMaxDate();
 }

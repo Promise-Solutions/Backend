@@ -8,8 +8,11 @@ import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.enums.JobCategory;
 import com.studiozero.projeto.repositories.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -119,5 +122,41 @@ public class DashboardService {
                         "photoVideoStudioBalance", photoVideoStudioBalance,
                         "musicRehearsalBalance", musicRehearsalBalance
                 );
+        }
+
+        public LocalDate getRecentTime() {
+                LocalDateTime maxOpening = commandRepository.findMaxOpeningDate();
+                LocalDateTime maxClosing = commandRepository.findMaxClosingDate();
+                LocalDate maxClient = clientRepository.findMaxCreatedDate();
+                LocalDate maxSubJob = subJobRepository.findMaxDate();
+
+                LocalDate maxOpeningDate = (maxOpening != null) ? maxOpening.toLocalDate() : null;
+                LocalDate maxClosingDate = (maxClosing != null) ? maxClosing.toLocalDate() : null;
+
+                LocalDate mostRecent = null;
+
+                if (maxOpeningDate != null) {
+                        mostRecent = maxOpeningDate;
+                }
+
+                if (maxClosingDate != null) {
+                        if (mostRecent == null || maxClosingDate.isAfter(mostRecent)) {
+                                mostRecent = maxClosingDate;
+                        }
+                }
+
+                if (maxClient != null) {
+                        if (mostRecent == null || maxClient.isAfter(mostRecent)) {
+                                mostRecent = maxClient;
+                        }
+                }
+
+                if (maxSubJob != null) {
+                        if (mostRecent == null || maxSubJob.isAfter(mostRecent)) {
+                                mostRecent = maxSubJob;
+                        }
+                }
+
+                return mostRecent;
         }
 }
