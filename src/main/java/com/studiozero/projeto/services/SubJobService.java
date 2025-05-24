@@ -5,6 +5,7 @@ import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
 import com.studiozero.projeto.dtos.response.SubJobDeleteResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
@@ -24,8 +25,8 @@ import java.util.UUID;
 public class SubJobService {
 
     private final SubJobRepository subJobRepository;
-    private final JobRepository jobRepository;
     private final JobService jobService;
+    private final TracingService tracingService;
 
     public SubJob createSubJob(SubJob subJob) {
         if(
@@ -38,6 +39,7 @@ public class SubJobService {
         }
 
         subJob.setId(UUID.randomUUID());
+        tracingService.setTracing(Context.JOB);
         return subJobRepository.save(subJob);
     }
 
@@ -62,6 +64,7 @@ public class SubJobService {
             ) {
                 throw new ConflictException("There is a room usage conflict");
             }
+            tracingService.setTracing(Context.JOB);
             return subJobRepository.save(subJob);
         }
         throw new NotFoundException("Sub job not found");
@@ -73,6 +76,7 @@ public class SubJobService {
                 .orElseThrow(() -> new NotFoundException("Sub job not found"));
 
         subJob.setStatus(status);
+        tracingService.setTracing(Context.JOB);
         return subJobRepository.save(subJob);
     }
 
@@ -85,6 +89,7 @@ public class SubJobService {
 
         if (subJobOptional.isPresent()) {
             SubJob subJob = subJobOptional.get();
+            tracingService.setTracing(Context.JOB);
             subJobRepository.deleteById(subJobId);
             Status jobStatus = jobService.evaluateJobStatus(subJob.getJob().getId());
             Double totalValueJob = jobService.calculateTotalValue(subJob.getJob().getId());

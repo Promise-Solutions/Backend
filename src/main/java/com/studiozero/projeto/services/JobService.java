@@ -4,6 +4,7 @@ import com.studiozero.projeto.dtos.request.JobRequestDTO;
 import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
@@ -23,18 +24,21 @@ public class JobService {
 
     private final JobRepository jobRepository;
     private final SubJobRepository subJobRepository;
-    private final JobMapper jobMapper;
-    private final ClientRepository clientRepository;
+    private final TracingService tracingService;
 
-    final
     public Job createJob(Job job) {
         job.setId(UUID.randomUUID());
+        tracingService.setTracing(Context.JOB);
         return jobRepository.save(job);
     }
 
     public Job findjobById(UUID id) {
-        return jobRepository.findById(id)
+        Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Job not found"));
+
+        tracingService.setTracing(Context.JOB);
+        return job;
+
     }
 
     public List<Job> listJobs() {
@@ -44,6 +48,7 @@ public class JobService {
     public Job updateJob(Job job) {
         if (jobRepository.existsById(job.getId())) {
             job.setId(job.getId());
+            tracingService.setTracing(Context.JOB);
             return jobRepository.save(job);
         } else {
         throw new NotFoundException("Job not found");
@@ -56,6 +61,7 @@ public class JobService {
         }
 
         if (jobRepository.existsById(id)) {
+            tracingService.setTracing(Context.JOB);
             jobRepository.deleteById(id);
         } else {
             throw new NotFoundException("Job not found");
@@ -91,6 +97,7 @@ public class JobService {
             job.setStatus(newStatus);
             jobRepository.save(job);
         }
+        tracingService.setTracing(Context.JOB);
         return newStatus;
     }
 
@@ -110,6 +117,7 @@ public class JobService {
                 .sum());
 
         if (!job.getTotalValue().equals(prevTotalValue)) {
+            tracingService.setTracing(Context.JOB);
             jobRepository.save(job);
         }
         return job.getTotalValue();

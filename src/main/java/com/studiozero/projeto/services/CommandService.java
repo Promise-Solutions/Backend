@@ -5,6 +5,7 @@ import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Command;
 import com.studiozero.projeto.entities.CommandProduct;
 import com.studiozero.projeto.entities.Employee;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.exceptions.UnauthorizedException;
@@ -27,6 +28,7 @@ public class CommandService {
     private final EmployeeRepository employeeRepository;
     private final CommandMapper commandMapper;
     private final CommandProductRepository commandProductRepository;
+    private final TracingService tracingService;
 
     public Command createCommand(CommandRequestDTO commanddto) {
         Employee employee = employeeRepository.findById(commanddto.getFkEmployee())
@@ -40,6 +42,7 @@ public class CommandService {
             command.setClient(client);
 
         }
+        tracingService.setTracing(Context.BAR);
 
         return commandRepository.save(command);
     }
@@ -79,6 +82,7 @@ public class CommandService {
 
 
         command.setTotalValue(totalValue);
+        tracingService.setTracing(Context.BAR);
         return commandRepository.save(command);
     }
 
@@ -90,6 +94,7 @@ public class CommandService {
             throw new UnauthorizedException("A comanda deve estar fechada para ser excluída");
         }
 
+        tracingService.setTracing(Context.BAR);
         commandRepository.deleteById(id);
     }
 }

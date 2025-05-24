@@ -44,7 +44,6 @@ public class ClientRequestDTO {
 
     @NotNull(message = "BirthDay value is mandatory")
     @Past
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthDay;
 
 }

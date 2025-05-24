@@ -4,7 +4,6 @@ import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.DeleteOwnUserException;
 import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.exceptions.UnauthorizedException;
 import com.studiozero.projeto.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

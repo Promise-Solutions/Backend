@@ -4,6 +4,7 @@ import com.studiozero.projeto.dtos.request.CommandProductRequestDTO;
 import com.studiozero.projeto.entities.Command;
 import com.studiozero.projeto.entities.CommandProduct;
 import com.studiozero.projeto.entities.Product;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.CommandProductMapper;
@@ -22,6 +23,7 @@ public class CommandProductService {
     private final CommandRepository commandRepository;
     private final CommandProductMapper commandProductMapper;
     private final ProductService productService;
+    private final TracingService tracingService;
 
     public CommandProduct createCommandProduct(CommandProductRequestDTO dto) {
         Command command = commandRepository.findById(dto.getFkCommand())
@@ -39,6 +41,7 @@ public class CommandProductService {
 
         CommandProduct saved = commandProductRepository.save(commandProduct);
         updateCommand(command); // agora sim
+        tracingService.setTracing(Context.BAR);
 
         return saved;
     }
@@ -107,6 +110,7 @@ public class CommandProductService {
 
         commandProductRepository.deleteById(id);
         updateCommand(commandProduct.getCommand());
+        tracingService.setTracing(Context.BAR);
     }
 
     public Command updateCommand(Command command) {
@@ -126,6 +130,7 @@ public class CommandProductService {
         }
 
         command.setTotalValue(totalValue);
+        tracingService.setTracing(Context.BAR);
         return commandRepository.save(command);
     }
 }
