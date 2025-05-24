@@ -31,7 +31,7 @@ public class ReportService {
         DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                 .withLocale(new Locale("pt", "BR"));
 
-        String dataGeracao = LocalDateTime.now().format(formatterDataHora);
+        String dataGeracao = LocalDateTime.now().format(formatterData);
         String nomeArquivo = "Relatório Gerado em - " + dataGeracao.replace(":", "-").replace("/", "-") + ".csv";
         String tempDir = System.getProperty("java.io.tmpdir");
         File arquivoCSV = new File(tempDir, nomeArquivo);
@@ -42,8 +42,7 @@ public class ReportService {
             writer.newLine();
 
             // Atendimentos por Tipo de Cliente
-            writer.write("Atendimentos por Tipo de Cliente");
-            writer.newLine();
+            writer.write("***Atendimentos por Tipo de Cliente***");
             writer.newLine();
             writer.write("Tipo;Quantidade");
             writer.newLine();
@@ -54,10 +53,9 @@ public class ReportService {
             writer.newLine();
 
             // Atendimentos por Serviço
-            writer.write("Atendimentos por Serviço");
+            writer.write("***Atendimentos por Serviço***");
             writer.newLine();
-            writer.newLine();
-            writer.write("Tipo;Quantidade");
+            writer.write("Categoria;Quantidade");
             writer.newLine();
             writer.write("Podcast;" + atendimentos.getOrDefault("frequencyByPc", null));
             writer.newLine();
@@ -68,8 +66,7 @@ public class ReportService {
             writer.newLine();
 
             // Clientes Ativos
-            writer.write("Clientes Ativos");
-            writer.newLine();
+            writer.write("***Clientes Ativos***");
             writer.newLine();
             writer.write("Tipo;Quantidade");
             writer.newLine();
@@ -80,8 +77,7 @@ public class ReportService {
             writer.newLine();
 
             // Balanço por Categoria
-            writer.write("Entrada Financeira por Categoria de Serviço (R$)");
-            writer.newLine();
+            writer.write("***Entrada Financeira por Categoria de Serviço (R$)***");
             writer.newLine();
             writer.write("Categoria;Valor Total");
             writer.newLine();
@@ -94,7 +90,7 @@ public class ReportService {
             writer.newLine();
 
             // Data de Atividade Mais Recente
-            writer.write("Data de Atividade Mais Recente");
+            writer.write("***Data de Atividade Mais Recente***");
             writer.newLine();
             writer.newLine();
             writer.write("Data;" + (dataMaisRecente != null ? dataMaisRecente.format(formatterData) : "N/A"));
