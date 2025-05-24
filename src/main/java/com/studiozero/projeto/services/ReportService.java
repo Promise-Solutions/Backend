@@ -23,7 +23,7 @@ public class ReportService {
         Map<String, Double> atendimentos = dashboardService.getFrequencys();
         Map<String, Double> ativos = dashboardService.getActives();
         Map<String, Double> balancos = dashboardService.getBalances();
-        LocalDate dataMaisRecente = dashboardService.getRecentTime();
+        LocalDateTime dataMaisRecente = dashboardService.getRecentTime();
 
         // Formatador de data PT-BR
         DateTimeFormatter formatterDataHora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")

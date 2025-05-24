@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
@@ -62,7 +63,7 @@ public class DashboardController {
             description = "Returns balances data by job type"
     )
     @GetMapping("/recent-time")
-    public ResponseEntity<LocalDate> getRecentTime() {
+    public ResponseEntity<LocalDateTime> getRecentTime() {
         return ResponseEntity.ok(dashboardService.getRecentTime());
     }
 }

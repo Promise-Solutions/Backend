@@ -11,4 +11,6 @@ public interface TracingRepository extends JpaRepository<Tracing, Integer> {
     Optional<Tracing> findTopByOrderByIdDesc();
 
     void deleteAllByIdNot(Integer id);
+
+    Tracing findTopByOrderByDateTimeDesc();
 }
