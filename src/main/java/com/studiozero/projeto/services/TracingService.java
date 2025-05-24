@@ -6,6 +6,7 @@ import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.TracingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -13,6 +14,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,13 +43,14 @@ public class TracingService {
         return tracingRepository.findAll();
     }
 
+    @Transactional
     public void deleteAllTracings() {
-        List<Tracing> tracings = tracingRepository.findAll();
+        Optional<Tracing> lastTracing = tracingRepository.findTopByOrderByIdDesc();
 
-        if (tracings.isEmpty()) {
-            throw new NotFoundException("Tracings not found");
-        } else {
-            tracingRepository.deleteAll();
+        if (lastTracing.isEmpty()) {
+            throw new NotFoundException("No tracing records found.");
         }
+
+        tracingRepository.deleteAllByIdNot(lastTracing.get().getId());
     }
 }
