@@ -2,31 +2,40 @@ package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.ExpenseRequestDTO;
 import com.studiozero.projeto.dtos.response.ExpenseResponseDTO;
-import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Expense;
+import com.studiozero.projeto.entities.Product;
+import com.studiozero.projeto.repositories.ExpenseRepository;
+import com.studiozero.projeto.repositories.ProductRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class ExpenseMapper {
-    public static Expense toEntity(ExpenseRequestDTO dto){
-        Expense expense = new Expense();
+    private final ProductRepository productRepository;
 
-        if (dto.getFkClient() != null) {
-            Client client = clientRepository.findById(dto.getFkClient()).orElse(null);
-            command.setClient(client);
-
-        }
-
-        expense.setDate((dto.getDate()));
-        expense.setExpenseCategory(dto.getExpenseCategory());
-        expense.setDescription((dto.getDescription()));
-        expense.setAmountSpend(dto.getAmountExpend());
-        expense.setPaymentType(dto.getPaymentType());
-        expense.setProduct(dto.getIdProduto());
-        return expense;
+    public ExpenseMapper(ProductRepository productRepository, ExpenseRepository expenseRepository) {
+        this.productRepository = productRepository;
     }
+
+
+//    public Expense toEntity(ExpenseRequestDTO dto){
+//
+//        Expense expense = new Expense();
+//
+//        if (dto.getFkProduct() != null) {
+//            Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
+//            expense.setProduct(product);
+//
+//        }
+//
+//        expense.setDate((dto.getDate()));
+//        expense.setExpenseCategory(dto.getExpenseCategory());
+//        expense.setDescription((dto.getDescription()));
+//        expense.setAmountSpend(dto.getAmountExpend());
+//        expense.setPaymentType(dto.getPaymentType());
+//        return expense;
+//    }
 
     public static ExpenseResponseDTO toDTO(Expense expense){
         ExpenseResponseDTO dto = new ExpenseResponseDTO();
@@ -50,6 +59,29 @@ public class ExpenseMapper {
                 .toList();
     }
 
+    private Expense mapCommonFields(ExpenseRequestDTO dto, Expense expense) {
+        if (dto.getFkProduct() != null) {
+            Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
+            expense.setProduct(product);
+        }
+
+        expense.setDate(dto.getDate());
+        expense.setExpenseCategory(dto.getExpenseCategory());
+        expense.setDescription(dto.getDescription());
+        expense.setAmountSpend(dto.getAmountSpend());
+
+        return expense;
+    }
+
+    public Expense toEntity(ExpenseRequestDTO dto) {
+        return mapCommonFields(dto, new Expense());
+    }
+
+    public Expense toEntity(ExpenseRequestDTO dto, Integer id) {
+        Expense expense = new Expense();
+        expense.setId(id);
+        return mapCommonFields(dto, expense);
+    }
 
 
 }

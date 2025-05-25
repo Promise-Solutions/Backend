@@ -31,12 +31,12 @@ public class ExpenseRequestDTO {
     @NotBlank(message = "description is mandatory")
     private String description;
 
-    @NotBlank(message = "amountExpend is mandatory")
-    private Double amountExpend;
+    @NotBlank(message = "amountSpend is mandatory")
+    private Double amountSpend;
 
     private Integer quantity;
 
-    private Integer idProduct;
+    private Integer fkProduct;
 
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;

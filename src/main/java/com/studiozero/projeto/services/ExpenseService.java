@@ -26,7 +26,7 @@ public class ExpenseService {
     public Expense createExpense(ExpenseRequestDTO dto) {
         // SETAR NOBEXPENSE
         if (dto.getExpenseCategory() == ExpenseCategory.STOCK) {
-            Product product = productService.findProductById(dto.getIdProduct());
+            Product product = productService.findProductById(dto.getFkProduct());
             product.setQuantity(dto.getQuantity());
         }
 
