@@ -54,11 +54,13 @@ public class ExpenseService {
         throw new NotFoundException("Expense not found");
     }
 
-    public Expense deleteExpense(Integer id){
-
+    public void deleteExpense(Integer id) {
+        if (expenseRepository.existsById(id)) {
+            expenseRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("Expense not found");
+        }
     }
-
-
 
 
     /**

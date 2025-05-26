@@ -25,6 +25,7 @@ public class ExpenseController {
     private final ExpenseMapper expenseMapper;
     private final ExpenseService expenseService;
 
+
     @Operation(
             summary = "Create a new Expense", description = "This endpoint is resposable to create a new expense"
     )
@@ -84,7 +85,8 @@ public class ExpenseController {
     public ResponseEntity<Void> deleteExpense(
             @PathVariable Integer id
     ){
-        expenseService
+        expenseService.deleteExpense(id);
+        return ResponseEntity.ok().build();
     }
 
 
