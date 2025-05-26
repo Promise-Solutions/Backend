@@ -7,6 +7,7 @@ import com.studiozero.projeto.entities.Product;
 import com.studiozero.projeto.enums.ExpenseCategory;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
+import com.studiozero.projeto.mappers.ExpenseMapper;
 import com.studiozero.projeto.repositories.ExpenseRepository;
 import com.studiozero.projeto.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,19 @@ public class ExpenseService {
 
     private final ProductService productService;
     private final ExpenseRepository expenseRepository;
+    private ExpenseMapper expenseMapper;
 
     public Expense createExpense(ExpenseRequestDTO dto) {
-        // SETAR NOBEXPENSE
+        // SETAR NO EXPENSE
+
+        Expense expense = expenseMapper.toEntity(dto);
+
         if (dto.getExpenseCategory() == ExpenseCategory.STOCK) {
             Product product = productService.findProductById(dto.getFkProduct());
             product.setQuantity(dto.getQuantity());
         }
 
-
-        return expenseRepository.save(dto);
+        return expenseRepository.save(expense);
     }
 
     public List<Expense> expenseList() {
@@ -50,7 +54,11 @@ public class ExpenseService {
         throw new NotFoundException("Expense not found");
     }
 
-    public
+    public Expense deleteExpense(Integer id){
+
+    }
+
+
 
 
     /**
