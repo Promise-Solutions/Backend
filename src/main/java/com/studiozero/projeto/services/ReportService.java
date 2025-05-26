@@ -40,7 +40,7 @@ public class ReportService {
         List<CommandProduct> commandProducts = commandProductRepository.findAll();
 
         String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
-        File arquivoCSV = new File(System.getProperty("java.io.tmpdir"), "Relatório Gerado em: " + dataGeracao + ".csv");
+        File arquivoCSV = new File(System.getProperty("java.io.tmpdir"), "Relatório Gerado em - " + dataGeracao + ".csv");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoCSV))) {
             writer.write("Relatório Completo - Gerado em: " + dataGeracao);
@@ -184,7 +184,7 @@ public class ReportService {
         List<CommandProduct> commandProducts = commandProductRepository.findAll();
 
         String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
-        File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"), "Relatório Gerado em: " + dataGeracao + ".xlsx");
+        File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"), "Relatório Gerado em - " + dataGeracao + ".xlsx");
 
         try (Workbook workbook = new XSSFWorkbook(); FileOutputStream fos = new FileOutputStream(arquivoXLSX)) {
 
@@ -244,9 +244,9 @@ public class ReportService {
             preencherSheetComDados(cmdSheet, cmdHeaders, headerStyle, commands, (row, c) -> {
                 row.createCell(0).setCellValue(c.getId());
                 row.createCell(1).setCellValue(c.getClient() != null ? c.getClient().getName() : "Funcionário: " + c.getEmployee().getName());
-                row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "");
+                row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "-");
                 row.createCell(3).setCellValue(traduzStatus(c.getStatus().toString()));
-                row.createCell(4).setCellValue(c.getDiscount());
+                row.createCell(4).setCellValue(c.getDiscount() + "%");
                 row.createCell(5).setCellValue(c.getTotalValue());
                 row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
                 row.createCell(7).setCellValue(c.getClosingDateTime() != null ? (formatDateTime(c.getClosingDateTime())) : "-");
@@ -254,25 +254,25 @@ public class ReportService {
 
             // Produtos por Comanda
             Sheet cpSheet = workbook.createSheet("Produtos por Comanda");
-            String[] cpHeaders = {"ID", "ComandaID", "Usuário da Comanda", "Produto", "Quantidade", "Valor Total"};
+            String[] cpHeaders = {"ID", "ComandaID", "Usuário da Comanda", "Funcionário", "Produto", "Quantidade", "Valor"};
             preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (row, cp) -> {
                 row.createCell(0).setCellValue(cp.getId());
-                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : 0);
-                row.createCell(1).setCellValue(cp.getCommand().getClient().getId().equals(cp.getCommand().getEmployee().getId()) ?
-                        "Funcionário: " + cp.getCommand().getEmployee().getName() : "Cliente: " + cp.getCommand().getClient().getName());
-                row.createCell(2).setCellValue(cp.getProduct() != null ? cp.getProduct().getName() : "");
-                row.createCell(3).setCellValue(cp.getProductQuantity());
-                row.createCell(4).setCellValue(cp.getProductQuantity() * cp.getUnitValue());
+                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : null);
+                row.createCell(2).setCellValue(cp.getCommand().getClient() != null ? "Cliente: " + cp.getCommand().getClient().getName() : "Funcionário: " + cp.getCommand().getEmployee().getName());
+                row.createCell(3).setCellValue(cp.getCommand() != null ? cp.getCommand().getEmployee().getName() : "-");
+                row.createCell(4).setCellValue(cp.getProduct() != null ? cp.getProduct().getName() : "-");
+                row.createCell(5).setCellValue(cp.getProductQuantity());
+                row.createCell(6).setCellValue(cp.getProductQuantity() * cp.getUnitValue());
             });
 
             // Serviços
             Sheet jobSheet = workbook.createSheet("Serviços");
-            String[] jobHeaders = {"ID", "Tipo", "Categoria", "Título", "Valor Total", "Status"};
+            String[] jobHeaders = {"ID", "Tipo", "Categoria", "Cliente", "Título", "Valor Total", "Status"};
             preencherSheetComDados(jobSheet, jobHeaders, headerStyle, jobs, (row, j) -> {
                 row.createCell(0).setCellValue(j.getId().toString());
-                row.createCell(1).setCellValue(j.getClient().getName());
-                row.createCell(2).setCellValue(traduzTipoCliente(j.getServiceType().toString()));
-                row.createCell(3).setCellValue(traduzCategoria(j.getCategory().toString()));
+                row.createCell(1).setCellValue(traduzTipoCliente(j.getServiceType().toString()));
+                row.createCell(2).setCellValue(traduzCategoria(j.getCategory().toString()));
+                row.createCell(3).setCellValue(j.getClient().getName());
                 row.createCell(4).setCellValue(j.getTitle());
                 row.createCell(5).setCellValue(j.getTotalValue());
                 row.createCell(6).setCellValue(traduzStatus(j.getStatus().toString()));
@@ -294,15 +294,16 @@ public class ReportService {
 
             // Tarefas
             Sheet taskSheet = workbook.createSheet("Tarefas");
-            String[] taskHeaders = {"ID", "Título", "Descrição", "Responsável", "Data Inicio", "Data Limite", "Status"};
+            String[] taskHeaders = {"ID", "Título", "Descrição", "Responsável", "Autor", "Data Inicio", "Data Limite", "Status"};
             preencherSheetComDados(taskSheet, taskHeaders, headerStyle, tasks, (row, t) -> {
                 row.createCell(0).setCellValue(t.getId().toString());
                 row.createCell(1).setCellValue(t.getTitle());
                 row.createCell(2).setCellValue(t.getDescription());
-                row.createCell(3).setCellValue(t.getAssign().getName());
-                row.createCell(4).setCellValue(formatDate(t.getStartDate()));
-                row.createCell(5).setCellValue(formatDate(t.getLimitDate()));
-                row.createCell(6).setCellValue(traduzStatus(t.getStatus().toString()));
+                row.createCell(3).setCellValue(t.getEmployee().getName());
+                row.createCell(4).setCellValue(t.getAssign().getName());
+                row.createCell(5).setCellValue(formatDate(t.getStartDate()));
+                row.createCell(6).setCellValue(t.getLimitDate() != null ? formatDate(t.getLimitDate()) : "-");
+                row.createCell(7).setCellValue(traduzStatus(t.getStatus().toString()));
             });
 
             workbook.write(fos);
@@ -360,6 +361,7 @@ public class ReportService {
             case "PENDING" -> "Pendente";
             case "WORKING" -> "Em progresso";
             case "CANCELLED" -> "Cancelado";
+            case "COMPLETED" -> "Finalizado";
             default -> status;
         };
     }
