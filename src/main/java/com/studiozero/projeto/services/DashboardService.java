@@ -82,14 +82,16 @@ public class DashboardService {
                                 .mapToDouble(Command::getTotalValue)
                                 .sum();
 
-                double finOut = productRepository.findAll()
-                                .stream()
-                                .mapToDouble(product -> product.getBuyValue())
-                                .sum();
 
+//                double finOut = productRepository.findAll()
+//                                .stream()
+//                                .mapToDouble(product -> product.getBuyValue())
+//                                .sum();
+
+                //finput retirado
                 return Map.of(
                                 "totalOpenCommands", totalOpenCommands,
-                                "totalClosedCommands", totalClosedCommands,
-                                "finOut", finOut);
+                                "totalClosedCommands", totalClosedCommands
+                );
         }
 }

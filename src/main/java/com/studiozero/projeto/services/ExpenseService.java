@@ -1,21 +1,16 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.dtos.request.ExpenseRequestDTO;
-import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Expense;
 import com.studiozero.projeto.entities.Product;
 import com.studiozero.projeto.enums.ExpenseCategory;
-import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.mappers.ExpenseMapper;
 import com.studiozero.projeto.repositories.ExpenseRepository;
-import com.studiozero.projeto.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +27,8 @@ public class ExpenseService {
 
         if (dto.getExpenseCategory() == ExpenseCategory.STOCK) {
             Product product = productService.findProductById(dto.getFkProduct());
-            product.setQuantity(dto.getQuantity());
+            product.setQuantity(dto.getQuantity() + product.getQuantity());
+            productService.updateProduct(product);
         }
 
         return expenseRepository.save(expense);

@@ -16,8 +16,6 @@ public class ProductResponseDTO {
     private Double clientValue;
     private Double internalValue;
 
-    //retirada com a mudança da lógica do sistema
-   //  private Double totalBuyValue;
 
     public ProductResponseDTO(Product product) {
         this.id = id;
@@ -25,7 +23,6 @@ public class ProductResponseDTO {
         this.quantity = quantity;
         this.clientValue = clientValue;
         this.internalValue = internalValue;
-        //removido com a mudança da lógica do sistema
-     //   this.totalBuyValue = totalBuyValue;
+
     }
 }

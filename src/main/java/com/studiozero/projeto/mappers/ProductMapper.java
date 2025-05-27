@@ -16,7 +16,6 @@ public class ProductMapper {
         product.setQuantity(dto.getQuantity());
         product.setClientValue(dto.getClientValue());
         product.setInternalValue(dto.getInternalValue());
-        product.setTotalBuyValue(dto.getTotalBuyValue());
         return product;
     }
 
@@ -51,8 +50,7 @@ public class ProductMapper {
                 dto.getName(),
                 dto.getQuantity(),
                 dto.getClientValue(),
-                dto.getInternalValue(),
-                dto.getTotalBuyValue()
+                dto.getInternalValue()
         );
     }
 }

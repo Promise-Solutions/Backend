@@ -16,6 +16,7 @@ public class ProductService {
 
     public Product createProduct(Product product) {
         validateProductsValues(product);
+        product.setQuantity(0);
         return productRepository.save(product);
     }
 
@@ -29,6 +30,7 @@ public class ProductService {
     }
 
 
+    //analisar a lógica de negócio para alteração de produto
     public Product updateProduct(Product product) {
         if (productRepository.existsById(product.getId())) {
             product.setId(product.getId());
