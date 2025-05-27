@@ -99,4 +99,35 @@ public class CommandMapper {
         command.setStatus(dto.getStatus());
         return command;
     }
+
+//    private Command mapCommonFields(CommandRequestDTO dto, Command command) {
+//        if (dto.getFkClient() != null) {
+//            Client client = clientRepository.findById(dto.getFkClient()).orElse(null);
+//            command.setClient(client);
+//        }
+//
+//        Employee employee = employeeRepository.findById(dto.getFkEmployee())
+//                .orElseThrow(() -> new NotFoundException("FkEmployee not found"));
+//
+//        command.setCommandNumber(dto.getCommandNumber());
+//        command.setOpeningDateTime(dto.getOpeningDateTime());
+//        command.setClosingDateTime(dto.getClosingDateTime());
+//        command.setDiscount(dto.getDiscount());
+//        command.setTotalValue(dto.getTotalValue());
+//        command.setEmployee(employee);
+//        command.setStatus(dto.getStatus());
+//
+//        return command;
+//    }
+//
+//    public Command toEntity(CommandRequestDTO dto) {
+//        return mapCommonFields(dto, new Command());
+//    }
+//
+//    public Command toEntity(CommandRequestDTO dto, Integer id) {
+//        Command command = new Command();
+//        command.setId(id);
+//        return mapCommonFields(dto, command);
+//    }
+
 }

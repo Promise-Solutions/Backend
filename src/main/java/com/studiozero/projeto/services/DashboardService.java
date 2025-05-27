@@ -62,7 +62,7 @@ public class DashboardService {
                 double frequencyByPc = 0.0;
                 double frequencyByMr = 0.0;
                 double frequencyByPv = 0.0;
-        
+
                 List<SubJob> subJobs = subJobRepository.findAll()
                         .stream()
                         .filter(subJob -> subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
@@ -105,6 +105,18 @@ public class DashboardService {
         public Map<String, Double> getActives() {
                 double single = clientRepository.countByActiveTrueAndClientType(ClientType.SINGLE);
                 double monthly = clientRepository.countByActiveTrueAndClientType(ClientType.MONTHLY);
+        public Map<String, Double> getBarFinances() {
+                double totalOpenCommands = commandRepository.findAll()
+                                .stream()
+                                .filter(command -> command.getStatus() == Status.OPEN)
+                                .mapToDouble(Command::getTotalValue)
+                                .sum();
+
+                double totalClosedCommands = commandRepository.findAll()
+                                .stream()
+                                .filter(command -> command.getStatus() == Status.CLOSED)
+                                .mapToDouble(Command::getTotalValue)
+                                .sum();
 
                 return Map.of(
                         "monthly", monthly,
@@ -133,5 +145,8 @@ public class DashboardService {
         public LocalDateTime getRecentTime() {
                 Tracing lastTracing = tracingRepository.findTopByOrderByDateTimeDesc();
                 return lastTracing.getDateTime();
+                                "totalOpenCommands", totalOpenCommands,
+                                "totalClosedCommands", totalClosedCommands
+                );
         }
 }

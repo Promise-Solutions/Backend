@@ -14,8 +14,8 @@ public class ProductMapper {
         Product product = new Product();
         product.setName(dto.getName());
         product.setQuantity(dto.getQuantity());
-        product.setUnitValue(dto.getUnitValue());
-        product.setBuyValue(dto.getBuyValue());
+        product.setClientValue(dto.getClientValue());
+        product.setInternalValue(dto.getInternalValue());
         return product;
     }
 
@@ -27,8 +27,8 @@ public class ProductMapper {
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setQuantity(product.getQuantity());
-        dto.setUnitValue(product.getUnitValue());
-        dto.setBuyValue(product.getBuyValue());
+        dto.setClientValue(product.getClientValue());
+        dto.setInternalValue(product.getInternalValue());
         return dto;
     }
 
@@ -49,8 +49,8 @@ public class ProductMapper {
                 id,
                 dto.getName(),
                 dto.getQuantity(),
-                dto.getUnitValue(),
-                dto.getBuyValue()
+                dto.getClientValue(),
+                dto.getInternalValue()
         );
     }
 }

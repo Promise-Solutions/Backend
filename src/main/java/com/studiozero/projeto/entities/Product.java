@@ -23,9 +23,13 @@ public class Product {
     @Column(name = "qtd_produto", nullable = false)
     private Integer quantity;
 
-    @Column(name = "valor_unitario", nullable = false)
-    private Double unitValue;
+    @Column(name = "valor_cliente", nullable = false)
+    private Double clientValue;
 
-    @Column(name = "valor_compra", nullable = false)
-    private Double buyValue;
+    @Column(name = "valor_interno", nullable = false)
+    private Double internalValue;
+
+    // alterado com a mudança da lógica do sistema
+    //@Column(name = "despesa_compra", nullable = false)
+    //private Double totalBuyValue;
 }

@@ -98,6 +98,7 @@ CREATE TABLE comanda
     valor_total DOUBLE NOT NULL,
     fk_cliente           BINARY(16),
     fk_funcionario       BINARY(16) NOT NULL,
+    uso_interno BOOLEAN NOT NULL DEFAULT FALSE,
     status               VARCHAR(45) NOT NULL,
     INDEX                fk_cliente_idx (fk_cliente),
     INDEX                fk_funcionario_idx (fk_funcionario),
@@ -124,4 +125,22 @@ CREATE TABLE rastreio
     id_rastreio INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     contexto    VARCHAR(45),
     data_hora   DATETIME
+);
+
+-- DESPESAS
+CREATE TABLE despesa (
+    id_despesa INT AUTO_INCREMENT PRIMARY KEY,
+    data DATE NOT NULL,
+    tipo VARCHAR(255) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor DOUBLE NOT NULL CHECK (valor > 0),
+    tipo_pagamento VARCHAR(255) NOT NULL
+    fk_produto INT,
+    CONSTRAINT fk_despesa_produto FOREIGN KEY (fk_produto) REFERENCES produto(id_produto)
+);
+
+--META
+CREATE TABLE meta(
+    id_meta INT AUTO_INCREMENT PRIMARY KEY,
+    meta DOUBLE NOT NULL CHECK (valor > 0)
 );
