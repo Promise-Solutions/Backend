@@ -48,7 +48,6 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/error/**"),
             new AntPathRequestMatcher("/employees/**"),
-
     };
 
     @Bean

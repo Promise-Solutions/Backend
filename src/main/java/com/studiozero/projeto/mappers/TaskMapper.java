@@ -32,6 +32,14 @@ public class TaskMapper {
 
         }
 
+        if (dto.getFkAssigned() != null) {
+            Employee assigned = employeeRepository.findById(dto.getFkAssigned())
+                .orElse(null);
+
+            task.setAssign(assigned);
+
+        }
+
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
         task.setStartDate(dto.getStartDate());
@@ -53,6 +61,7 @@ public class TaskMapper {
         dto.setLimitDate(task.getLimitDate());
         dto.setStatus(task.getStatus());
         dto.setFkEmployee(task.getEmployee() != null ? task.getEmployee().getId() : null);
+        dto.setFkAssigned(task.getAssign() != null ? task.getAssign().getId() : null);
         return dto;
     }
 
@@ -76,6 +85,12 @@ public class TaskMapper {
                     .orElse(null);
 
             task.setEmployee(employee);
+        }
+        if (dto.getFkAssigned() != null) {
+            Employee assign = employeeRepository.findById(dto.getFkAssigned())
+                    .orElse(null);
+
+            task.setAssign(assign);
         }
 
         task.setId(id);

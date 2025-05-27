@@ -39,4 +39,8 @@ public class Task {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne (optional = true)
+    @JoinColumn(name = "fk_autor")
+    private Employee assign;
 }

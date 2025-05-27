@@ -49,4 +49,35 @@ public class DriveController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @Operation(
+            summary = "Delete file from drive",
+            description = "This method is responsible for deleting a file from drive by its ID."
+    )
+    @DeleteMapping("/{fileId}")
+    public ResponseEntity<String> deleteFile(@PathVariable String fileId) {
+        try {
+            driveService.deleteFile(fileId);
+            return ResponseEntity.ok("File deleted successfully! ID: " + fileId);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Delete error: " + e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "Download file from drive",
+            description = "This method is responsible for downloading a file from drive by its ID."
+    )
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
+        try {
+            byte[] fileData = driveService.downloadFile(fileId);
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=\"" + fileId + "\"")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(fileData);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

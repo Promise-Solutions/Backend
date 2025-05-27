@@ -20,6 +20,7 @@ public class ClientMapper {
         client.setContact(dto.getContact());
         client.setClientType(dto.getClientType());
         client.setActive(dto.getActive());
+        client.setBirthDay(dto.getBirthDay());
         return client;
     }
 
@@ -35,6 +36,7 @@ public class ClientMapper {
         dto.setContact(client.getContact());
         dto.setClientType(client.getClientType());
         dto.setActive(client.getActive());
+        dto.setBirthDay(client.getBirthDay());
         dto.setCreatedDate(client.getCreatedDate());
         return dto;
     }
@@ -63,6 +65,8 @@ public class ClientMapper {
         if (dto.getClientType() != null) client.setClientType(dto.getClientType());
         if (dto.getActive() != null) client.setActive(dto.getActive());
         if (dto.getCreatedDate() != null) client.setCreatedDate(dto.getCreatedDate());
+        if (dto.getBirthDay() != null) client.setBirthDay(dto.getBirthDay());
+
 
         return client;
     }

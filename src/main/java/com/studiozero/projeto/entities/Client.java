@@ -37,6 +37,9 @@ public class Client {
     @Column(name = "ativo", nullable = false)
     private Boolean active;
 
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate birthDay;
+
     @Column(name = "data_criacao", nullable = false)
     private LocalDate createdDate;
 }

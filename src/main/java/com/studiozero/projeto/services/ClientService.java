@@ -1,6 +1,7 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.entities.Client;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.exceptions.BadRequestException;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
@@ -19,6 +20,7 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
     private final CommandRepository commandRepository;
+    private final TracingService tracingService;
 
     public Client createClient(Client client) {
         if (clientRepository.existsByCpf(client.getCpf())) {
@@ -26,6 +28,7 @@ public class ClientService {
         }
         client.setId(UUID.randomUUID());
         client.setCreatedDate(LocalDate.now());
+        tracingService.setTracing(Context.USER);
         return clientRepository.save(client);
     }
 
@@ -41,6 +44,7 @@ public class ClientService {
     public Client updateClient(Client client) {
         if (clientRepository.existsById(client.getId())) {
             client.setId(client.getId());
+            tracingService.setTracing(Context.USER);
             return clientRepository.save(client);
         }
         throw new NotFoundException("Client not found");
@@ -52,6 +56,7 @@ public class ClientService {
         }
 
         if (clientRepository.existsById(id)) {
+            tracingService.setTracing(Context.USER);
             clientRepository.deleteById(id);
         } else {
             throw new NotFoundException("Client not found");

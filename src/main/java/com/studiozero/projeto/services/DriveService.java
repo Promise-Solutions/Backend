@@ -6,6 +6,7 @@ import com.google.api.services.drive.model.FileList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.ByteArrayOutputStream;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,11 +37,29 @@ public class DriveService {
 
 
     public List<File> listFiles() throws IOException {
-        FileList result = drive.files().list()
-                .setPageSize(10)
-                .setFields("files(id, name)")
-                .execute();
+        List<File> allFiles = new java.util.ArrayList<>();
+        String pageToken = null;
 
-        return result.getFiles();
+        do {
+            FileList result = drive.files().list()
+                    .setFields("nextPageToken, files(id, name)")
+                    .setPageToken(pageToken)
+                    .execute();
+
+            allFiles.addAll(result.getFiles());
+            pageToken = result.getNextPageToken();
+        } while (pageToken != null);
+
+        return allFiles;
+    }
+
+    public void deleteFile(String fileId) throws IOException {
+        drive.files().delete(fileId).execute();
+    }
+
+    public byte[] downloadFile(String fileId) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        drive.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+        return outputStream.toByteArray();
     }
 }

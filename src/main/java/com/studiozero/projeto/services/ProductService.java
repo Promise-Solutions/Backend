@@ -1,6 +1,7 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.entities.Product;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,10 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final TracingService tracingService;
 
     public Product createProduct(Product product) {
+        tracingService.setTracing(Context.BAR);
         validateProductsValues(product);
         product.setQuantity(0);
         return productRepository.save(product);
@@ -34,6 +37,7 @@ public class ProductService {
     public Product updateProduct(Product product) {
         if (productRepository.existsById(product.getId())) {
             product.setId(product.getId());
+            tracingService.setTracing(Context.BAR);
             validateProductsValues(product);
             return productRepository.save(product);
         }
@@ -42,6 +46,7 @@ public class ProductService {
 
     public void deleteProduct(Integer id) {
         if (productRepository.existsById(id)) {
+            tracingService.setTracing(Context.BAR);
             productRepository.deleteById(id);
         } else {
             throw new NotFoundException("Product not found");

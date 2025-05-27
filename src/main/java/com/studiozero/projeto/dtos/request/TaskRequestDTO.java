@@ -34,6 +34,8 @@ public class TaskRequestDTO {
     @Nullable
     private UUID fkEmployee;
 
+    private UUID fkAssigned;
+
     @NotNull(message = "Status value is mandatory")
     @Enumerated(EnumType.STRING)
     private Status status;
