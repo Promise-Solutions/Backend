@@ -19,30 +19,13 @@ public class ExpenseMapper {
     }
 
 
-//    public Expense toEntity(ExpenseRequestDTO dto){
-//
-//        Expense expense = new Expense();
-//
-//        if (dto.getFkProduct() != null) {
-//            Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
-//            expense.setProduct(product);
-//
-//        }
-//
-//        expense.setDate((dto.getDate()));
-//        expense.setExpenseCategory(dto.getExpenseCategory());
-//        expense.setDescription((dto.getDescription()));
-//        expense.setAmountSpend(dto.getAmountExpend());
-//        expense.setPaymentType(dto.getPaymentType());
-//        return expense;
-//    }
-
     public static ExpenseResponseDTO toDTO(Expense expense){
         ExpenseResponseDTO dto = new ExpenseResponseDTO();
         dto.setDate(expense.getDate());
         dto.setExpenseCategory(expense.getExpenseCategory());
         dto.setDescription(expense.getDescription());
         dto.setAmountSpend(expense.getAmountSpend());
+        dto.setQuantity(expense.getProduct().getQuantity());
         dto.setPaymentType(expense.getPaymentType());
 
         return dto;
@@ -59,7 +42,9 @@ public class ExpenseMapper {
                 .toList();
     }
 
-    private Expense mapCommonFields(ExpenseRequestDTO dto, Expense expense) {
+    public Expense toEntity(ExpenseRequestDTO dto) {
+        Expense expense = new Expense();
+
         if (dto.getFkProduct() != null) {
             Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
             expense.setProduct(product);
@@ -67,20 +52,36 @@ public class ExpenseMapper {
 
         expense.setDate(dto.getDate());
         expense.setExpenseCategory(dto.getExpenseCategory());
+        expense.setPaymentType(dto.getPaymentType());
         expense.setDescription(dto.getDescription());
         expense.setAmountSpend(dto.getAmountSpend());
 
         return expense;
     }
 
-    public Expense toEntity(ExpenseRequestDTO dto) {
-        return mapCommonFields(dto, new Expense());
-    }
 
     public Expense toEntity(ExpenseRequestDTO dto, Integer id) {
+        if (dto.getFkProduct() == null) {
+           return null;
+        }
+
         Expense expense = new Expense();
+
+
+        if (dto.getFkProduct() != null ){
+            Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
+            expense.setProduct(product);
+        }
+        Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
         expense.setId(id);
-        return mapCommonFields(dto, expense);
+        expense.setProduct(product);
+        expense.setDate(dto.getDate());
+        expense.setExpenseCategory(dto.getExpenseCategory());
+        expense.setPaymentType(dto.getPaymentType());
+        expense.setDescription(dto.getDescription());
+        expense.setAmountSpend(dto.getAmountSpend());
+
+        return expense;
     }
 
 

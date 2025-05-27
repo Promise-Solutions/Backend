@@ -9,6 +9,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,11 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.LowerCaseStrategy.class)
+//@JsonNaming(PropertyNamingStrategy.LowerCaseStrategy.class)
 public class ExpenseRequestDTO {
 
     //mostramos a data do dia na tela, mas possiblitamos que seja alterada
-    @NotBlank
+    @NotNull
     private LocalDate date;
 
     @Enumerated(EnumType.STRING)
@@ -31,7 +32,7 @@ public class ExpenseRequestDTO {
     @NotBlank(message = "description is mandatory")
     private String description;
 
-    @NotBlank(message = "amountSpend is mandatory")
+    @NotNull(message = "amountSpend is mandatory")
     private Double amountSpend;
 
     private Integer quantity;

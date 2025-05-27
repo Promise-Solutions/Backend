@@ -18,7 +18,7 @@ public class ExpenseService {
 
     private final ProductService productService;
     private final ExpenseRepository expenseRepository;
-    private ExpenseMapper expenseMapper;
+    private final ExpenseMapper expenseMapper;
 
     public Expense createExpense(ExpenseRequestDTO dto) {
         // SETAR NO EXPENSE

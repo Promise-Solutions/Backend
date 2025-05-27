@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name="despesas")
+@Table(name="despesa")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +37,7 @@ public class Expense {
     private Double amountSpend;
 
     @ManyToOne
-    @Column(name = "fk_produto", nullable = true)
+    @JoinColumn(name = "fk_produto", nullable = true)
     private Product product;
 
     //como fazer a quantidade daqui ser somada lá em produto

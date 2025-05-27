@@ -108,3 +108,21 @@ CREATE TABLE comanda_produto (
     FOREIGN KEY (fk_produto) REFERENCES produto (id_produto),
     FOREIGN KEY (fk_comanda) REFERENCES comanda (id_comanda)
 );
+
+-- DESPESAS
+CREATE TABLE despesa (
+    id_despesa INT AUTO_INCREMENT PRIMARY KEY,
+    data DATE NOT NULL,
+    tipo VARCHAR(255) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor DOUBLE NOT NULL CHECK (valor > 0),
+    tipo_pagamento VARCHAR(255) NOT NULL
+    fk_produto INT,
+    CONSTRAINT fk_despesa_produto FOREIGN KEY (fk_produto) REFERENCES produto(id_produto)
+);
+
+--META
+CREATE TABLE meta(
+    id_meta INT AUTO_INCREMENT PRIMARY KEY,
+    meta DOUBLE NOT NULL CHECK (valor > 0)
+);
