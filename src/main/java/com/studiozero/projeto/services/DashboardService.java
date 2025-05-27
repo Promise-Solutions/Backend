@@ -62,34 +62,34 @@ public class DashboardService {
                 double frequencyByPc = 0.0;
                 double frequencyByMr = 0.0;
                 double frequencyByPv = 0.0;
-
+        
                 List<SubJob> subJobs = subJobRepository.findAll()
                         .stream()
                         .filter(subJob -> subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
                         .toList();
 
                 for (JobType type : JobType.values()) {
-                        frequencySingle += subJobs.stream()
-                                .filter(subJob -> subJob.getJob().getServiceType() == type)
+                        frequencySingle = subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getServiceType() == JobType.SINGLE)
                                 .count();
 
-                        frequencyMonthly += subJobs.stream()
-                                .filter(subJob -> subJob.getJob().getServiceType() == type)
+                        frequencyMonthly = subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getServiceType() == JobType.MONTHLY)
                                 .count();
 
                 }
 
                 for (JobCategory category : JobCategory.values()) {
-                        frequencyByPc += subJobs.stream()
-                                .filter(subJob -> subJob.getJob().getCategory() == category)
+                        frequencyByPc = subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getCategory() == JobCategory.PODCAST)
                                 .count();
 
-                        frequencyByMr += subJobs.stream()
-                                .filter(subJob -> subJob.getJob().getCategory() == category)
+                        frequencyByMr = subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getCategory() == JobCategory.MUSIC_REHEARSAL)
                                 .count();
 
-                        frequencyByPv += subJobs.stream()
-                                .filter(subJob -> subJob.getJob().getCategory() == category)
+                        frequencyByPv = subJobs.stream()
+                                .filter(subJob -> subJob.getJob().getCategory() == JobCategory.PHOTO_VIDEO_STUDIO)
                                 .count();
                 }
 
