@@ -121,7 +121,7 @@ CREATE TABLE rastreio (
 -- DESPESAS
 CREATE TABLE despesa (
                          id_despesa INT AUTO_INCREMENT PRIMARY KEY,
-                         data DATE NOT NULL,
+                         data_pagamento DATE NOT NULL,
                          tipo VARCHAR(255) NOT NULL,
                          descricao VARCHAR(255) NOT NULL,
                          valor DOUBLE NOT NULL CHECK (valor > 0),
