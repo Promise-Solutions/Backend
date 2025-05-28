@@ -52,7 +52,7 @@ public class ExpenseController {
     @GetMapping
     public ResponseEntity<List<ExpenseResponseDTO>> listAllExpenses() {
 
-        List<Expense> expenses = new ArrayList<>();
+        List<Expense> expenses = expenseService.expenseList();
 
         if (expenses.isEmpty()){
             return ResponseEntity.status(204).build();

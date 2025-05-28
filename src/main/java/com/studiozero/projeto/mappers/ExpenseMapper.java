@@ -18,18 +18,17 @@ public class ExpenseMapper {
         this.productRepository = productRepository;
     }
 
-
     public static ExpenseResponseDTO toDTO(Expense expense){
         ExpenseResponseDTO dto = new ExpenseResponseDTO();
         dto.setDate(expense.getDate());
         dto.setExpenseCategory(expense.getExpenseCategory());
         dto.setDescription(expense.getDescription());
-        dto.setAmountSpend(expense.getAmountSpend());
-        dto.setQuantity(expense.getProduct().getQuantity());
+        if(expense.getProduct() != null) {
+            dto.setQuantity(expense.getProduct().getQuantity());
+        }
         dto.setPaymentType(expense.getPaymentType());
 
         return dto;
-
     }
 
     public static List<ExpenseResponseDTO> toListDtos (List<Expense> entity){
