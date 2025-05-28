@@ -23,6 +23,7 @@ public class ExpenseMapper {
         dto.setDate(expense.getDate());
         dto.setExpenseCategory(expense.getExpenseCategory());
         dto.setDescription(expense.getDescription());
+        dto.setAmountSpend(expense.getAmountSpend());
         if(expense.getProduct() != null) {
             dto.setQuantity(expense.getProduct().getQuantity());
         }
