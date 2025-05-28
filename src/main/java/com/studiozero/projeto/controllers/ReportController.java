@@ -25,18 +25,6 @@ import java.io.IOException;
 public class ReportController {
     private final ReportService reportService;
 
-    @GetMapping("/generate-csv")
-    public ResponseEntity<Resource> downloadRelatorioMax() throws IOException {
-        File csv = reportService.gerarRelatorioCSV();
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(csv));
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + csv.getName())
-                .contentType(MediaType.parseMediaType("text/csv"))
-                .contentLength(csv.length())
-                .body(resource);
-    }
-
     @GetMapping("/generate-excel")
     public ResponseEntity<Resource> gerarRelatorioCompletoExcel() {
         File arquivo = reportService.gerarRelatorioExcel();

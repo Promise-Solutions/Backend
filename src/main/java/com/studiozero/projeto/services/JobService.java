@@ -1,15 +1,11 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.request.JobRequestDTO;
-import com.studiozero.projeto.entities.Client;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.mappers.JobMapper;
-import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +39,7 @@ public class JobService {
 
     public List<Job> listJobs() {
         return jobRepository.findAll();
-}
+    }
 
     public Job updateJob(Job job) {
         if (jobRepository.existsById(job.getId())) {
@@ -51,7 +47,7 @@ public class JobService {
             tracingService.setTracing(Context.JOB);
             return jobRepository.save(job);
         } else {
-        throw new NotFoundException("Job not found");
+            throw new NotFoundException("Job not found");
         }
     }
 
@@ -74,15 +70,15 @@ public class JobService {
 
     public Status evaluateJobStatus(UUID jobId) {
         Integer totalSubJobs = subJobRepository.countByJob_Id(jobId);
-        if(totalSubJobs == 0) {
+        if (totalSubJobs == 0) {
             return Status.PENDING;
         }
         Integer totalClosed = subJobRepository.countByJob_IdAndStatus(jobId, Status.CLOSED);
 
         boolean allClosed = totalClosed.equals(totalSubJobs);
-        if(allClosed) {
+        if (allClosed) {
             return updateJobStatus(jobId, Status.CLOSED);
-        } else if(totalClosed > 0) {
+        } else if (totalClosed > 0) {
             return updateJobStatus(jobId, Status.WORKING);
         } else {
             return updateJobStatus(jobId, Status.PENDING);
@@ -93,7 +89,7 @@ public class JobService {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new NotFoundException("Job not found to evaluate"));
 
-        if(job.getStatus() != newStatus) {
+        if (job.getStatus() != newStatus) {
             job.setStatus(newStatus);
             jobRepository.save(job);
         }

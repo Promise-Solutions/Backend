@@ -2,13 +2,11 @@ package com.studiozero.projeto.mappers;
 
 import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.dtos.response.SubJobResponseDTO;
-import com.studiozero.projeto.dtos.response.SubJobUpdateStatusResponseDTO;
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.JobRepository;
-import com.studiozero.projeto.repositories.SubJobRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

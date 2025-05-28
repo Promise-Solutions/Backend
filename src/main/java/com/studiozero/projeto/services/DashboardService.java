@@ -1,17 +1,12 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.entities.Command;
-import com.studiozero.projeto.entities.SubJob;
-import com.studiozero.projeto.entities.Tracing;
-import com.studiozero.projeto.enums.ClientType;
-import com.studiozero.projeto.enums.JobType;
-import com.studiozero.projeto.enums.Status;
-import com.studiozero.projeto.enums.JobCategory;
+import com.studiozero.projeto.entities.*;
+import com.studiozero.projeto.enums.*;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -24,18 +19,18 @@ public class DashboardService {
         private final ClientRepository clientRepository;
         private final JobRepository jobRepository;
         private final TracingRepository tracingRepository;
+        private final ExpenseRepository expenseRepository;
 
         public Map<String, Double> getClientStats(UUID clientId) {
 
                 double frequency = 0.0;
                 double totalValue = 0.0;
-                Double totalCommandsValue = 0.0;
+                double totalCommandsValue = 0.0;
 
                 for (JobCategory category : JobCategory.values()) {
                         List<SubJob> subJobs = subJobRepository.findAll()
                                         .stream()
                                         .filter(subJob -> subJob.getJob().getClient().getId().equals(clientId) &&
-                                                        subJob.getJob().getCategory() == category &&
                                                         subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
                                         .toList();
 
@@ -105,26 +100,44 @@ public class DashboardService {
         public Map<String, Double> getActives() {
                 double single = clientRepository.countByActiveTrueAndClientType(ClientType.SINGLE);
                 double monthly = clientRepository.countByActiveTrueAndClientType(ClientType.MONTHLY);
-        public Map<String, Double> getBarFinances() {
-                double totalOpenCommands = commandRepository.findAll()
-                                .stream()
-                                .filter(command -> command.getStatus() == Status.OPEN)
-                                .mapToDouble(Command::getTotalValue)
-                                .sum();
+                return Map.of(
+                        "monthly", monthly,
+                        "single", single
+                );
 
-                double totalClosedCommands = commandRepository.findAll()
+        }
+
+        public Map<String, Double> getBarFinances() {
+                List<Command> commandList = commandRepository.findAll();
+                List<Expense> expenseList = expenseRepository.findAll();
+                if (commandList.isEmpty()) {
+                        throw new NotFoundException("Commands not found");
+                }if (expenseList.isEmpty()) {
+                        throw new NotFoundException("Expenses not found");
+                }
+
+                double totalClosedCommands = commandList
                                 .stream()
                                 .filter(command -> command.getStatus() == Status.CLOSED)
                                 .mapToDouble(Command::getTotalValue)
                                 .sum();
 
+                double totalExpenseProduct = expenseList
+                        .stream()
+                        .filter(expense -> expense.getExpenseCategory() == ExpenseCategory.STOCK)
+                        .mapToDouble(Expense::getAmountSpend)
+                        .sum();
+
+                double profitOrLoss = totalClosedCommands - totalExpenseProduct;
+
                 return Map.of(
-                        "monthly", monthly,
-                        "single", single
+                        "totalEntryValue", totalClosedCommands,
+                        "totalExpenseValue", totalExpenseProduct,
+                        "profitOrLoss", profitOrLoss
                 );
         }
 
-        public Map<String, Double> getBalances() {
+        public Map<String, Double> getCategoryBalances() {
                 double podcastBalance = Optional.ofNullable(
                         jobRepository.sumTotalValueByCategory(JobCategory.PODCAST)
                         ).orElse(0.0);
@@ -142,11 +155,41 @@ public class DashboardService {
                 );
         }
 
+        public Map<String, Double> getBalances() {
+                List<Command> commandList = commandRepository.findAll();
+                List<Job> jobList = jobRepository.findAll();
+                List<Expense> expenseList = expenseRepository.findAll();
+
+                double totalCommandEntryValue = commandList
+                        .stream()
+                        .filter(command -> command.getStatus() == Status.CLOSED)
+                        .mapToDouble(Command::getTotalValue)
+                        .sum();
+
+                double totalJobEntryValue = jobList
+                        .stream()
+                        .filter(job -> job.getStatus() == Status.CLOSED)
+                        .mapToDouble(Job::getTotalValue)
+                        .sum();
+
+                double totalExpenseValue = expenseList
+                        .stream()
+                        .mapToDouble(Expense::getAmountSpend)
+                        .sum();
+
+                double totalEntryValue = totalCommandEntryValue + totalJobEntryValue;
+
+                double profitOrLoss =  totalEntryValue - totalExpenseValue;
+
+                return Map.of(
+                        "totalEntryValue", totalEntryValue,
+                        "totalExpenseValue", totalExpenseValue,
+                        "profitOrLoss", profitOrLoss
+                );
+        }
+
         public LocalDateTime getRecentTime() {
                 Tracing lastTracing = tracingRepository.findTopByOrderByDateTimeDesc();
                 return lastTracing.getDateTime();
-                                "totalOpenCommands", totalOpenCommands,
-                                "totalClosedCommands", totalClosedCommands
-                );
         }
 }

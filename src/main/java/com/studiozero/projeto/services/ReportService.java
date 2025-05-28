@@ -12,8 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 @Service
@@ -28,150 +26,7 @@ public class ReportService {
     private final SubJobRepository subJobRepository;
     private final ProductRepository productRepository;
     private final TaskRepository taskRepository;
-
-    public File gerarRelatorioCSV() {
-        List<Client> clients = clientRepository.findAll();
-        List<Employee> employees = employeeRepository.findAll();
-        List<Command> commands = commandRepository.findAll();
-        List<Job> jobs = jobRepository.findAll();
-        List<SubJob> subJobs = subJobRepository.findAll();
-        List<Product> products = productRepository.findAll();
-        List<Task> tasks = taskRepository.findAll();
-        List<CommandProduct> commandProducts = commandProductRepository.findAll();
-
-        String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
-        File arquivoCSV = new File(System.getProperty("java.io.tmpdir"), "Relatório Gerado em - " + dataGeracao + ".csv");
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoCSV))) {
-            writer.write("Relatório Completo - Gerado em: " + dataGeracao);
-            writer.newLine(); writer.newLine();
-
-            // CLIENTES
-            writer.write("########## CLIENTES ##########");
-            writer.newLine();
-            writer.write("ID;Nome;CPF;Email;Contato;Tipo;Ativo;Data de Nascimento;Data de Criação");
-            writer.newLine();
-            for (Client c : clients) {
-                writer.write(String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s",
-                        c.getId(), c.getName(), c.getCpf(), c.getEmail(), c.getContact(),
-                        traduzTipoCliente(String.valueOf(c.getClientType())), traduzBoolean(c.getActive()),
-                        formatDate(c.getBirthDay()), formatDate(c.getCreatedDate())));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // FUNCIONÁRIOS
-            writer.write("########## FUNCIONÁRIOS ##########");
-            writer.newLine();
-            writer.write("ID;Nome;CPF;Email;Contato;Ativo");
-            writer.newLine();
-            for (Employee e : employees) {
-                writer.write(String.format("%s;%s;%s;%s;%s;%s",
-                        e.getId(), e.getName(), e.getCpf(), e.getEmail(), e.getContact(), traduzBoolean(e.getActive())));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // PRODUTOS
-            writer.write("########## PRODUTOS ##########");
-            writer.newLine();
-            writer.write("ID;Nome;Quantidade;Valor Unitário;Valor de Compra");
-            writer.newLine();
-            for (Product p : products) {
-                writer.write(String.format("%d;%s;%d;%.2f;%.2f",
-                        p.getId(), p.getName(), p.getQuantity(), p.getUnitValue(), p.getBuyValue()));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // COMANDAS
-            writer.write("########## COMANDAS ##########");
-            writer.newLine();
-            writer.write("ID;Cliente;Funcionário;Status;Desconto;Valor Total;Data de Criação;Data de Fechamento");
-            writer.newLine();
-            for (Command cmd : commands) {
-                writer.write(String.format("%d;%s;%s;%s;%.2f;%.2f;%s;%s",
-                        cmd.getId(),
-                        cmd.getClient() != null ? cmd.getClient().getName() : "",
-                        cmd.getEmployee() != null ? cmd.getEmployee().getName() : "",
-                        traduzStatus(String.valueOf(cmd.getStatus())),
-                        cmd.getDiscount(),
-                        cmd.getTotalValue(),
-                        formatDateTime(cmd.getOpeningDateTime()),
-                        formatDateTime(cmd.getClosingDateTime())));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // COMANDAS - PRODUTOS
-            writer.write("########## PRODUTOS POR COMANDA ##########");
-            writer.newLine();
-            writer.write("ID;ComandaID;Produto;Quantidade;Valor Total");
-            writer.newLine();
-            for (CommandProduct cp : commandProducts) {
-                writer.write(String.format("%d;%d;%s;%d;%.2f",
-                        cp.getId(),
-                        cp.getCommand() != null ? cp.getCommand().getId() : 0,
-                        cp.getProduct() != null ? cp.getProduct().getName() : "",
-                        cp.getProductQuantity(),
-                        cp.getUnitValue() * cp.getProductQuantity()));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // SERVIÇOS
-            writer.write("########## SERVIÇOS ##########");
-            writer.newLine();
-            writer.write("ID;Tipo;Categoria;Título;Valor Total;Status");
-            writer.newLine();
-            for (Job j : jobs) {
-                writer.write(String.format("%s;%s;%s;%s;%.2f;%s",
-                        j.getId(),
-                        traduzTipoCliente(String.valueOf(j.getServiceType())),
-                        traduzCategoria(String.valueOf(j.getCategory())),
-                        j.getTitle(),
-                        j.getTotalValue(),
-                        traduzStatus(String.valueOf(j.getStatus()))));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // SUBSERVIÇOS
-            writer.write("########## SUBSERVIÇOS ##########");
-            writer.newLine();
-            writer.write("ID;ServiçoID;Título;Valor Total;Data;Usou Sala?;Status");
-            writer.newLine();
-            for (SubJob sj : subJobs) {
-                writer.write(String.format("%s;%s;%s;%.2f;%s;%s;%s",
-                        sj.getId(),
-                        sj.getJob() != null ? sj.getJob().getId() : 0,
-                        sj.getTitle(),
-                        sj.getValue(),
-                        formatDate(sj.getDate()),
-                        traduzBoolean(sj.getNeedsRoom()),
-                        traduzStatus(String.valueOf(sj.getStatus()))));
-                writer.newLine();
-            }
-            writer.newLine();
-
-            // TAREFAS
-            writer.write("########## TAREFAS ##########");
-            writer.newLine();
-            writer.write("ID;Título;Status");
-            writer.newLine();
-            for (Task t : tasks) {
-                writer.write(String.format("%s;%s;%s",
-                        t.getId(), t.getTitle(), traduzStatus(String.valueOf(t.getStatus()))));
-                writer.newLine();
-            }
-
-            writer.flush();
-            return arquivoCSV;
-
-        } catch (IOException e) {
-            throw new RuntimeException("Erro ao gerar relatório completo", e);
-        }
-    }
+    private final ExpenseRepository expenseRepository;
 
     public File gerarRelatorioExcel() {
         List<Client> clients = clientRepository.findAll();
@@ -182,9 +37,11 @@ public class ReportService {
         List<Product> products = productRepository.findAll();
         List<Task> tasks = taskRepository.findAll();
         List<CommandProduct> commandProducts = commandProductRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll();
 
         String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
-        File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"), "Relatório Gerado em - " + dataGeracao + ".xlsx");
+        File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"),
+                "Relatório Gerado em - " + dataGeracao + ".xlsx");
 
         try (Workbook workbook = new XSSFWorkbook(); FileOutputStream fos = new FileOutputStream(arquivoXLSX)) {
 
@@ -200,9 +57,139 @@ public class ReportService {
             headerStyle.setBorderLeft(BorderStyle.THIN);
             headerStyle.setBorderRight(BorderStyle.THIN);
 
+            // FINANÇAS
+            Sheet financesSheet = workbook.createSheet("Finanças");
+            String[] financesHeaders = { "Entrada", "Saída", "Lucro ou Perda" };
+            // Calcula os valores conforme DashboardService.getBalances()
+            double totalCommandEntryValue = commands
+                    .stream()
+                    .filter(command -> "CLOSED".equals(command.getStatus().toString()))
+                    .mapToDouble(Command::getTotalValue)
+                    .sum();
+
+            double totalJobEntryValue = jobs
+                    .stream()
+                    .filter(job -> "CLOSED".equals(job.getStatus().toString()))
+                    .mapToDouble(Job::getTotalValue)
+                    .sum();
+
+            double totalExpenseValue = expenses
+                    .stream()
+                    .mapToDouble(Expense::getAmountSpend)
+                    .sum();
+
+            double totalEntryValue = totalCommandEntryValue + totalJobEntryValue;
+            double profitOrLoss = totalEntryValue - totalExpenseValue;
+
+            // Preenche a sheet de Finanças
+            Row financesHeaderRow = financesSheet.createRow(0);
+            for (int i = 0; i < financesHeaders.length; i++) {
+                Cell cell = financesHeaderRow.createCell(i);
+                cell.setCellValue(financesHeaders[i]);
+                cell.setCellStyle(headerStyle);
+            }
+            Row financesRow = financesSheet.createRow(1);
+            financesRow.createCell(0).setCellValue(totalEntryValue);
+            financesRow.createCell(1).setCellValue(totalExpenseValue);
+            financesRow.createCell(2).setCellValue(profitOrLoss);
+
+            for (int i = 0; i < financesHeaders.length; i++) {
+                financesSheet.autoSizeColumn(i);
+            }
+
+            // DESPESAS
+            Sheet expenseSheet = workbook.createSheet("Despesas");
+            String[] expenseHeader = { "ID", "Data de Pagamento", "Tipo de Despesa", "Descrição", "Valor Pago",
+                    "Produto", "Tipo de Pagamento" };
+            preencherSheetComDados(expenseSheet, expenseHeader, headerStyle, expenses, (row, e) -> {
+                row.createCell(0).setCellValue(e.getId().toString());
+                row.createCell(1).setCellValue(formatDate(e.getDate()));
+                row.createCell(2).setCellValue(traduzCategoria(e.getExpenseCategory().toString()));
+                row.createCell(3).setCellValue(e.getDescription());
+                row.createCell(4).setCellValue(e.getAmountSpend());
+                row.createCell(5).setCellValue(e.getProduct().getName());
+                row.createCell(6).setCellValue(traduzTipoPagamento(e.getPaymentType().toString()));
+            });
+
+            // SERVIÇOS
+            Sheet jobSheet = workbook.createSheet("Serviços");
+            String[] jobHeaders = { "ID", "Tipo", "Categoria", "Cliente", "Título", "Valor Total", "Status" };
+            preencherSheetComDados(jobSheet, jobHeaders, headerStyle, jobs, (row, j) -> {
+                row.createCell(0).setCellValue(j.getId().toString());
+                row.createCell(1).setCellValue(traduzTipoCliente(j.getServiceType().toString()));
+                row.createCell(2).setCellValue(traduzCategoria(j.getCategory().toString()));
+                row.createCell(3).setCellValue(j.getClient().getName());
+                row.createCell(4).setCellValue(j.getTitle());
+                row.createCell(5).setCellValue(j.getTotalValue());
+                row.createCell(6).setCellValue(traduzStatus(j.getStatus().toString()));
+            });
+
+            // SUBSERVIÇOS
+            Sheet subJobSheet = workbook.createSheet("Sub-serviços");
+            String[] subJobHeaders = { "ID", "ServiçoID", "Cliente", "Título", "Valor Total", "Data", "Usou Sala?",
+                    "Status" };
+            preencherSheetComDados(subJobSheet, subJobHeaders, headerStyle, subJobs, (row, sj) -> {
+                row.createCell(0).setCellValue(sj.getId().toString());
+                row.createCell(1).setCellValue(sj.getJob() != null ? sj.getJob().getId().toString() : "");
+                row.createCell(2).setCellValue(sj.getJob().getClient().getName());
+                row.createCell(3).setCellValue(sj.getTitle());
+                row.createCell(4).setCellValue(sj.getValue());
+                row.createCell(5).setCellValue(formatDate(sj.getDate()));
+                row.createCell(6).setCellValue(traduzBoolean(sj.getNeedsRoom()));
+                row.createCell(7).setCellValue(traduzStatus(sj.getStatus().toString()));
+            });
+
+            // PRODUTOS
+            Sheet prodSheet = workbook.createSheet("Produtos");
+            String[] prodHeaders = { "ID", "Nome", "Quantidade", "Valor Cliente", "Valor Funcionário" };
+            preencherSheetComDados(prodSheet, prodHeaders, headerStyle, products, (row, p) -> {
+                row.createCell(0).setCellValue(p.getId());
+                row.createCell(1).setCellValue(p.getName());
+                row.createCell(2).setCellValue(p.getQuantity());
+                row.createCell(3).setCellValue(p.getClientValue());
+                row.createCell(4).setCellValue(p.getInternalValue());
+            });
+
+            // COMANDAS
+            Sheet cmdSheet = workbook.createSheet("Comandas");
+            String[] cmdHeaders = { "ID", "Cliente", "Funcionário", "Status", "Desconto (%)", "Valor Total", "Abertura",
+                    "Fechamento" };
+            preencherSheetComDados(cmdSheet, cmdHeaders, headerStyle, commands, (row, c) -> {
+                row.createCell(0).setCellValue(c.getId());
+                row.createCell(1).setCellValue(
+                        c.getClient() != null ? c.getClient().getName() : "Funcionário: " + c.getEmployee().getName());
+                row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "-");
+                row.createCell(3).setCellValue(traduzStatus(c.getStatus().toString()));
+                // Desconto como número (ex: 10 para 10%)
+                row.createCell(4).setCellValue(c.getDiscount());
+                // Valor Total como número
+                row.createCell(5).setCellValue(c.getTotalValue());
+                row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
+                row.createCell(7)
+                        .setCellValue(c.getClosingDateTime() != null ? (formatDateTime(c.getClosingDateTime())) : "-");
+            });
+
+            // PRODUTOS POR COMANDA
+            Sheet cpSheet = workbook.createSheet("Produtos por Comanda");
+            String[] cpHeaders = { "ID", "ComandaID", "Usuário da Comanda", "Funcionário", "Produto", "Quantidade",
+                    "Valor" };
+            preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (row, cp) -> {
+                row.createCell(0).setCellValue(cp.getId());
+                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : null);
+                row.createCell(2)
+                        .setCellValue(cp.getCommand().getClient() != null
+                                ? "Cliente: " + cp.getCommand().getClient().getName()
+                                : "Funcionário: " + cp.getCommand().getEmployee().getName());
+                row.createCell(3).setCellValue(cp.getCommand() != null ? cp.getCommand().getEmployee().getName() : "-");
+                row.createCell(4).setCellValue(cp.getProduct() != null ? cp.getProduct().getName() : "-");
+                row.createCell(5).setCellValue(cp.getProductQuantity());
+                row.createCell(6).setCellValue(cp.getProductQuantity() * cp.getUnitValue());
+            });
+
             // CLIENTES
             Sheet clientesSheet = workbook.createSheet("Clientes");
-            String[] clienteHeaders = {"ID", "Nome", "CPF", "Email", "Contato", "Tipo", "Ativo", "Nascimento", "Criação"};
+            String[] clienteHeaders = { "ID", "Nome", "CPF", "Email", "Contato", "Tipo", "Ativo", "Nascimento",
+                    "Criação" };
             preencherSheetComDados(clientesSheet, clienteHeaders, headerStyle, clients, (row, c) -> {
                 row.createCell(0).setCellValue(c.getId().toString());
                 row.createCell(1).setCellValue(c.getName());
@@ -217,7 +204,7 @@ public class ReportService {
 
             // FUNCIONÁRIOS
             Sheet empSheet = workbook.createSheet("Funcionarios");
-            String[] empHeaders = {"ID", "Nome", "CPF", "Email", "Contato", "Ativo"};
+            String[] empHeaders = { "ID", "Nome", "CPF", "Email", "Contato", "Ativo" };
             preencherSheetComDados(empSheet, empHeaders, headerStyle, employees, (row, e) -> {
                 row.createCell(0).setCellValue(e.getId().toString());
                 row.createCell(1).setCellValue(e.getName());
@@ -227,74 +214,10 @@ public class ReportService {
                 row.createCell(5).setCellValue(traduzBoolean(e.getActive()));
             });
 
-            // Produtos
-            Sheet prodSheet = workbook.createSheet("Produtos");
-            String[] prodHeaders = {"ID", "Nome", "Quantidade", "Valor Unitário", "Valor de Compra"};
-            preencherSheetComDados(prodSheet, prodHeaders, headerStyle, products, (row, p) -> {
-                row.createCell(0).setCellValue(p.getId());
-                row.createCell(1).setCellValue(p.getName());
-                row.createCell(2).setCellValue(p.getQuantity());
-                row.createCell(3).setCellValue(p.getUnitValue());
-                row.createCell(4).setCellValue(p.getBuyValue());
-            });
-
-            // Comandas
-            Sheet cmdSheet = workbook.createSheet("Comandas");
-            String[] cmdHeaders = {"ID", "Cliente", "Funcionário", "Status", "Desconto", "Valor Total", "Abertura", "Fechamento"};
-            preencherSheetComDados(cmdSheet, cmdHeaders, headerStyle, commands, (row, c) -> {
-                row.createCell(0).setCellValue(c.getId());
-                row.createCell(1).setCellValue(c.getClient() != null ? c.getClient().getName() : "Funcionário: " + c.getEmployee().getName());
-                row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "-");
-                row.createCell(3).setCellValue(traduzStatus(c.getStatus().toString()));
-                row.createCell(4).setCellValue(c.getDiscount() + "%");
-                row.createCell(5).setCellValue(c.getTotalValue());
-                row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
-                row.createCell(7).setCellValue(c.getClosingDateTime() != null ? (formatDateTime(c.getClosingDateTime())) : "-");
-            });
-
-            // Produtos por Comanda
-            Sheet cpSheet = workbook.createSheet("Produtos por Comanda");
-            String[] cpHeaders = {"ID", "ComandaID", "Usuário da Comanda", "Funcionário", "Produto", "Quantidade", "Valor"};
-            preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (row, cp) -> {
-                row.createCell(0).setCellValue(cp.getId());
-                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : null);
-                row.createCell(2).setCellValue(cp.getCommand().getClient() != null ? "Cliente: " + cp.getCommand().getClient().getName() : "Funcionário: " + cp.getCommand().getEmployee().getName());
-                row.createCell(3).setCellValue(cp.getCommand() != null ? cp.getCommand().getEmployee().getName() : "-");
-                row.createCell(4).setCellValue(cp.getProduct() != null ? cp.getProduct().getName() : "-");
-                row.createCell(5).setCellValue(cp.getProductQuantity());
-                row.createCell(6).setCellValue(cp.getProductQuantity() * cp.getUnitValue());
-            });
-
-            // Serviços
-            Sheet jobSheet = workbook.createSheet("Serviços");
-            String[] jobHeaders = {"ID", "Tipo", "Categoria", "Cliente", "Título", "Valor Total", "Status"};
-            preencherSheetComDados(jobSheet, jobHeaders, headerStyle, jobs, (row, j) -> {
-                row.createCell(0).setCellValue(j.getId().toString());
-                row.createCell(1).setCellValue(traduzTipoCliente(j.getServiceType().toString()));
-                row.createCell(2).setCellValue(traduzCategoria(j.getCategory().toString()));
-                row.createCell(3).setCellValue(j.getClient().getName());
-                row.createCell(4).setCellValue(j.getTitle());
-                row.createCell(5).setCellValue(j.getTotalValue());
-                row.createCell(6).setCellValue(traduzStatus(j.getStatus().toString()));
-            });
-
-            // Subserviços
-            Sheet subJobSheet = workbook.createSheet("Subserviços");
-            String[] subJobHeaders = {"ID", "ServiçoID", "Cliente", "Título", "Valor Total", "Data", "Usou Sala?", "Status"};
-            preencherSheetComDados(subJobSheet, subJobHeaders, headerStyle, subJobs, (row, sj) -> {
-                row.createCell(0).setCellValue(sj.getId().toString());
-                row.createCell(1).setCellValue(sj.getJob() != null ? sj.getJob().getId().toString() : "");
-                row.createCell(2).setCellValue(sj.getJob().getClient().getName());
-                row.createCell(3).setCellValue(sj.getTitle());
-                row.createCell(4).setCellValue(sj.getValue());
-                row.createCell(5).setCellValue(formatDate(sj.getDate()));
-                row.createCell(6).setCellValue(traduzBoolean(sj.getNeedsRoom()));
-                row.createCell(7).setCellValue(traduzStatus(sj.getStatus().toString()));
-            });
-
-            // Tarefas
+            // TAREFAS
             Sheet taskSheet = workbook.createSheet("Tarefas");
-            String[] taskHeaders = {"ID", "Título", "Descrição", "Responsável", "Autor", "Data Inicio", "Data Limite", "Status"};
+            String[] taskHeaders = { "ID", "Título", "Descrição", "Responsável", "Autor", "Data Inicio", "Data Limite",
+                    "Status" };
             preencherSheetComDados(taskSheet, taskHeaders, headerStyle, tasks, (row, t) -> {
                 row.createCell(0).setCellValue(t.getId().toString());
                 row.createCell(1).setCellValue(t.getTitle());
@@ -315,7 +238,8 @@ public class ReportService {
     }
 
     // Método genérico para preencher sheets
-    private <T> void preencherSheetComDados(Sheet sheet, String[] headers, CellStyle headerStyle, List<T> data, BiConsumer<Row, T> rowFiller) {
+    private <T> void preencherSheetComDados(Sheet sheet, String[] headers, CellStyle headerStyle, List<T> data,
+            BiConsumer<Row, T> rowFiller) {
         Row header = sheet.createRow(0);
         for (int i = 0; i < headers.length; i++) {
             Cell cell = header.createCell(i);
@@ -368,10 +292,26 @@ public class ReportService {
 
     private String traduzCategoria(String categoria) {
         return switch (categoria) {
-            case"PODCAST" -> "Podcast";
+            case "PODCAST" -> "Podcast";
             case "PHOTO_VIDEO_STUDIO" -> "Estúdio Fotográfico";
             case "MUSIC_REHEARSAL" -> "Ensaio Musical";
+            case "BILLS" -> "Contas";
+            case "STOCK" -> "Estoque";
+            case "MAINTENANCE" -> "Manutenção";
+            case "OTHERS" -> "Outros";
             default -> categoria;
+        };
+    }
+
+    private String traduzTipoPagamento(String tipo) {
+        return switch (tipo) {
+            case "CREDIT_CARD" -> "Cartão de Crédito";
+            case "DEBIT_CARD" -> "Cartão de Débito";
+            case "BILLET" -> "Boleto";
+            case "MONEY" -> "Dinheiro";
+            case "PIX" -> "Pix";
+            case "TRANSFER" -> "Transferência Bancária";
+            default -> tipo;
         };
     }
 }

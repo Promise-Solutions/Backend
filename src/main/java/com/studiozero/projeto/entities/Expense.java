@@ -22,7 +22,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "data", nullable = false)
+    @Column(name = "data_pagamento", nullable = false)
     private LocalDate date;
 
     @Enumerated(EnumType.STRING)
@@ -39,11 +39,6 @@ public class Expense {
     @ManyToOne
     @JoinColumn(name = "fk_produto", nullable = true)
     private Product product;
-
-    //como fazer a quantidade daqui ser somada lá em produto
-    // se expensiveCategory != STOCK ou OTHERS, devemos travar o preenchimento do campo
-//    @Column(name = "quantidade", nullable = true)
-//    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     @Column(name= "tipo_pagamento", nullable = false)
