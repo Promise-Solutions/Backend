@@ -1,7 +1,11 @@
 package com.studiozero.projeto.controllers;
 
+import com.studiozero.projeto.dtos.request.GoalRequestDTO;
+import com.studiozero.projeto.dtos.response.GoalResponseDTO;
 import com.studiozero.projeto.entities.Goal;
+import com.studiozero.projeto.mappers.GoalMapper;
 import com.studiozero.projeto.services.GoalService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,28 +19,38 @@ public class GoalController {
 
     private final GoalService goalService;
 
+    @PostMapping()
+    public ResponseEntity<GoalResponseDTO> createGoal(@Valid @RequestBody GoalRequestDTO dto) {
+
+        Goal goal = GoalMapper.toEntity(dto);
+        goalService.createGoal(goal);
+
+        return ResponseEntity.ok(GoalMapper.toDTO(goal));
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Goal> getGoalById(@PathVariable Integer id) {
+    public ResponseEntity<GoalResponseDTO> getGoalById(@PathVariable Integer id) {
         Goal goal = goalService.findGoalById(id);
-        return ResponseEntity.ok(goal);
+        return ResponseEntity.ok(GoalMapper.toDTO(goal));
     }
 
     @GetMapping
-    public ResponseEntity<List<Goal>> listGoals() {
+    public ResponseEntity<List<GoalResponseDTO>> listGoals() {
         List<Goal> goals = goalService.listGoals();
-        return ResponseEntity.ok(goals);
+        List<GoalResponseDTO> goalsDtos = GoalMapper.toListDtos(goals);
+        return ResponseEntity.ok(goalsDtos);
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<Goal> getMostRecentGoal() {
+    public ResponseEntity<GoalResponseDTO> getMostRecentGoal() {
         Goal goal = goalService.findMostRecentGoal();
-        return ResponseEntity.ok(goal);
+        return ResponseEntity.ok(GoalMapper.toDTO(goal));
     }
 
     @PutMapping
-    public ResponseEntity<Goal> updateGoal(@RequestBody Goal goal) {
+    public ResponseEntity<GoalResponseDTO> updateGoal(@RequestBody Goal goal) {
         Goal updatedGoal = goalService.updateGoal(goal);
-        return ResponseEntity.ok(updatedGoal);
+        return ResponseEntity.ok(GoalMapper.toDTO(updatedGoal));
     }
 
     @DeleteMapping("/{id}")

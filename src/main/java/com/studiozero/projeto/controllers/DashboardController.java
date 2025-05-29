@@ -58,6 +58,15 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getCategoryBalances());
     }
     @Operation(
+            summary = "Get bar balances statistics",
+            description = "Returns bar balances"
+    )
+    @GetMapping("/bar-balances")
+    public ResponseEntity<Map<String, Double>> getBarBalances() {
+        return ResponseEntity.ok(dashboardService.getBarFinances());
+    }
+
+    @Operation(
             summary = "Get balances statistics",
             description = "Returns balances"
     )
