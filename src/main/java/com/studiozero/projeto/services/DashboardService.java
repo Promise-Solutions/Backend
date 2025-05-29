@@ -34,8 +34,8 @@ public class DashboardService {
                                                         subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
                                         .toList();
 
-                        totalValue += subJobs.stream().mapToDouble(SubJob::getValue).sum();
-                        frequency += subJobs.size();
+                        totalValue = subJobs.stream().mapToDouble(SubJob::getValue).sum();
+                        frequency = subJobs.size();
                 }
 
                 List<Command> closedCommands = commandRepository.findAllByClient_IdAndStatus(clientId, Status.CLOSED);
@@ -44,10 +44,13 @@ public class DashboardService {
                                 .mapToDouble(Command::getTotalValue)
                                 .sum();
 
+                Double ticket = (totalValue + totalCommandsValue) / frequency;
+
                 return Map.of(
                                 "frequency", frequency,
                                 "totalValue", totalValue,
-                                "totalCommandsValue", totalCommandsValue
+                                "totalCommandsValue", totalCommandsValue,
+                                "ticket", ticket
                 );
         }
 
