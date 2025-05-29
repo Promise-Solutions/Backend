@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiConsumer;
 
 @Service
@@ -83,6 +85,9 @@ public class ReportService {
             double totalEntryValue = totalCommandEntryValue + totalJobEntryValue;
             double profitOrLoss = totalEntryValue - totalExpenseValue;
 
+            // Formatação monetária
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
             // Preenche a sheet de Finanças
             Row financesHeaderRow = financesSheet.createRow(0);
             for (int i = 0; i < financesHeaders.length; i++) {
@@ -91,10 +96,9 @@ public class ReportService {
                 cell.setCellStyle(headerStyle);
             }
             Row financesRow = financesSheet.createRow(1);
-            financesRow.createCell(0).setCellValue(totalEntryValue);
-            financesRow.createCell(1).setCellValue(totalExpenseValue);
-            financesRow.createCell(2).setCellValue(profitOrLoss);
-
+            financesRow.createCell(0).setCellValue(currencyFormat.format(totalEntryValue));
+            financesRow.createCell(1).setCellValue(currencyFormat.format(totalExpenseValue));
+            financesRow.createCell(2).setCellValue(currencyFormat.format(profitOrLoss));
             for (int i = 0; i < financesHeaders.length; i++) {
                 financesSheet.autoSizeColumn(i);
             }
@@ -278,7 +282,8 @@ public class ReportService {
     }
 
     private String formatDateTime(LocalDateTime dateTime) {
-        return dateTime != null ? dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "";
+        // Retorna apenas a data no formato dd/MM/yyyy
+        return dateTime != null ? dateTime.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
 
     private String traduzBoolean(Boolean valor) {

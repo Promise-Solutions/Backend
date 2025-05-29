@@ -20,7 +20,7 @@ public class DriveService {
     private final Drive drive;
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String folderId = "1TA3cV-P-lzcgwRiIZuqoEunEPF32dGQa?usp=sharing"; // ID da pasta no Google Drive (trocar para a
+        String folderId = "1TA3cV-P-lzcgwRiIZuqoEunEPF32dGQa"; // ID da pasta no Google Drive (trocar para a
                                                                            // do cliente)
 
         File fileMetadata = new File();
@@ -39,7 +39,7 @@ public class DriveService {
 
     public String uploadFileStream(String fileName, String contentType, java.io.InputStream inputStream)
             throws IOException {
-        String folderId = "1TA3cV-P-lzcgwRiIZuqoEunEPF32dGQa?usp=sharing"; // ID da pasta no Google Drive
+        String folderId = "1TA3cV-P-lzcgwRiIZuqoEunEPF32dGQa"; // ID da pasta no Google Drive
 
         File fileMetadata = new File();
         fileMetadata.setName(fileName);
