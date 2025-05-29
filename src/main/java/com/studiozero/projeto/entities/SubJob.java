@@ -31,7 +31,7 @@ public class SubJob {
     @Column(name = "valor_sub_servico", nullable = false)
     private Double value;
 
-    @Column(name = "data")
+    @Column(name = "data", nullable = false)
     private LocalDate date;
 
     @Column(name = "hora_inicio")

@@ -31,6 +31,7 @@ public class SubJobRequestDTO {
     @Positive
     private Double value;
 
+    @NotNull(message = "Date is mandatory")
     private LocalDate date;
 
     private LocalTime startTime;
