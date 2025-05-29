@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class ReportService {
     private final ProductRepository productRepository;
     private final TaskRepository taskRepository;
     private final ExpenseRepository expenseRepository;
+    private final DriveService driveService;
 
     public File gerarRelatorioExcel() {
         List<Client> clients = clientRepository.findAll();
@@ -121,7 +123,7 @@ public class ReportService {
                 row.createCell(3).setCellValue(j.getClient().getName());
                 row.createCell(4).setCellValue(j.getTitle());
                 row.createCell(5).setCellValue(j.getTotalValue());
-                row.createCell(6).setCellValue(traduzStatus(j.getStatus().toString()));
+                row.createCell(6).setCellValue(j.getStatus().toString());
             });
 
             // SUBSERVIÇOS
@@ -175,7 +177,7 @@ public class ReportService {
                     "Valor" };
             preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (row, cp) -> {
                 row.createCell(0).setCellValue(cp.getId());
-                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : null);
+                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : '-');
                 row.createCell(2)
                         .setCellValue(cp.getCommand().getClient() != null
                                 ? "Cliente: " + cp.getCommand().getClient().getName()
@@ -230,10 +232,23 @@ public class ReportService {
             });
 
             workbook.write(fos);
+            fos.flush();
+            // Após gerar o arquivo, envia para o Google Drive sem MockMultipartFile
+            enviarRelatorioParaDrive(arquivoXLSX);
             return arquivoXLSX;
-
         } catch (IOException e) {
             throw new RuntimeException("Erro ao gerar relatório Excel", e);
+        }
+    }
+
+    private void enviarRelatorioParaDrive(File arquivo) {
+        try (FileInputStream fis = new FileInputStream(arquivo)) {
+            driveService.uploadFileStream(
+                    arquivo.getName(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fis);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao enviar relatório para o Google Drive", e);
         }
     }
 
