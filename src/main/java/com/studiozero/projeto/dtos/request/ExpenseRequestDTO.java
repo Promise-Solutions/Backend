@@ -23,9 +23,10 @@ import java.time.LocalDate;
 public class ExpenseRequestDTO {
 
     //mostramos a data do dia na tela, mas possiblitamos que seja alterada
-    @NotNull
+    @NotNull(message = "date must not be null")
     private LocalDate date;
 
+    @NotNull(message = "expenseCategory must not be null")
     @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
 
@@ -39,6 +40,7 @@ public class ExpenseRequestDTO {
 
     private Integer fkProduct;
 
+    @NotNull(message = "paymentType must not be null")
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 

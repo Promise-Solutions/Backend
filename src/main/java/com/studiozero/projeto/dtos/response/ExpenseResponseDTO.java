@@ -16,14 +16,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class ExpenseResponseDTO {
+    private Integer id;
     private LocalDate date;
     private ExpenseCategory expenseCategory;
     private String description;
     private Double amountSpend;
-    private Integer quantity;
     private PaymentType paymentType;
-
-
+    private Integer fkProduct;
 }
 
 

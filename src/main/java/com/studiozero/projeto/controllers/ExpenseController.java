@@ -69,8 +69,10 @@ public class ExpenseController {
             summary = "Update an expense", description = "This method is responsable to update a specific expense"
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<ExpenseResponseDTO> updateExpense(@PathVariable Integer id, @RequestBody @Valid ExpenseRequestDTO expenseRequestDTO){
-
+    public ResponseEntity<ExpenseResponseDTO> updateExpense(
+            @PathVariable Integer id,
+            @RequestBody @Valid ExpenseRequestDTO expenseRequestDTO
+    ){
         Expense expense = expenseMapper.toEntity(expenseRequestDTO, id);
         Expense updatedExpense = expenseService.updateExpense(expense);
 

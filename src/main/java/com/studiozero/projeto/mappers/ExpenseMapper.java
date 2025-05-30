@@ -4,6 +4,8 @@ import com.studiozero.projeto.dtos.request.ExpenseRequestDTO;
 import com.studiozero.projeto.dtos.response.ExpenseResponseDTO;
 import com.studiozero.projeto.entities.Expense;
 import com.studiozero.projeto.entities.Product;
+import com.studiozero.projeto.enums.ExpenseCategory;
+import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.ExpenseRepository;
 import com.studiozero.projeto.repositories.ProductRepository;
 import org.springframework.stereotype.Component;
@@ -20,12 +22,13 @@ public class ExpenseMapper {
 
     public static ExpenseResponseDTO toDTO(Expense expense){
         ExpenseResponseDTO dto = new ExpenseResponseDTO();
+        dto.setId(expense.getId());
         dto.setDate(expense.getDate());
         dto.setExpenseCategory(expense.getExpenseCategory());
         dto.setDescription(expense.getDescription());
         dto.setAmountSpend(expense.getAmountSpend());
         if(expense.getProduct() != null) {
-            dto.setQuantity(expense.getProduct().getQuantity());
+            dto.setFkProduct(expense.getProduct().getId());
         }
         dto.setPaymentType(expense.getPaymentType());
 
@@ -45,7 +48,7 @@ public class ExpenseMapper {
     public Expense toEntity(ExpenseRequestDTO dto) {
         Expense expense = new Expense();
 
-        if (dto.getFkProduct() != null) {
+        if (dto.getExpenseCategory() == ExpenseCategory.STOCK && dto.getFkProduct() != null) {
             Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
             expense.setProduct(product);
         }
@@ -58,23 +61,16 @@ public class ExpenseMapper {
 
         return expense;
     }
-
 
     public Expense toEntity(ExpenseRequestDTO dto, Integer id) {
-        if (dto.getFkProduct() == null) {
-           return null;
-        }
-
         Expense expense = new Expense();
 
-
-        if (dto.getFkProduct() != null ){
-            Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
+        if (dto.getExpenseCategory() == ExpenseCategory.STOCK && dto.getFkProduct() != null) {
+            Product product = productRepository.findById(dto.getFkProduct()).orElseThrow(() -> new NotFoundException("Produto não encontrado!"));
             expense.setProduct(product);
+            product.setQuantity(dto.getQuantity() + product.getQuantity());
         }
-        Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
         expense.setId(id);
-        expense.setProduct(product);
         expense.setDate(dto.getDate());
         expense.setExpenseCategory(dto.getExpenseCategory());
         expense.setPaymentType(dto.getPaymentType());
@@ -83,6 +79,4 @@ public class ExpenseMapper {
 
         return expense;
     }
-
-
 }

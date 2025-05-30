@@ -18,11 +18,11 @@ public class ProductResponseDTO {
 
 
     public ProductResponseDTO(Product product) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.clientValue = clientValue;
-        this.internalValue = internalValue;
+        this.id = product.getId();
+        this.name = product.getName();
+        this.quantity = product.getQuantity();
+        this.clientValue = product.getClientValue();
+        this.internalValue = product.getInternalValue();
 
     }
 }

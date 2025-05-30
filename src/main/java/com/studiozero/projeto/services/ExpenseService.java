@@ -44,6 +44,9 @@ public class ExpenseService {
 
     public Expense updateExpense(Expense expense) {
         if (expenseRepository.existsById(expense.getId())) {
+            if (expense.getExpenseCategory() == ExpenseCategory.STOCK) {
+
+            }
             expense.setId(expense.getId());
             return expenseRepository.save(expense);
         }

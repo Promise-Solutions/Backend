@@ -44,6 +44,4 @@ public class Expense {
     @Enumerated(EnumType.STRING)
     @Column(name= "tipo_pagamento", nullable = false)
     private PaymentType paymentType;
-
-
 }
