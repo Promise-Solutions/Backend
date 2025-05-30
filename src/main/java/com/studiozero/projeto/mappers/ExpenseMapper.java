@@ -49,7 +49,7 @@ public class ExpenseMapper {
         Expense expense = new Expense();
 
         if (dto.getExpenseCategory() == ExpenseCategory.STOCK && dto.getFkProduct() != null) {
-            Product product = productRepository.findById(dto.getFkProduct()).orElse(null);
+            Product product = productRepository.findById(dto.getFkProduct()).orElseThrow(() -> new NotFoundException("Produto não encontrado!"));
             expense.setProduct(product);
         }
 
@@ -68,7 +68,6 @@ public class ExpenseMapper {
         if (dto.getExpenseCategory() == ExpenseCategory.STOCK && dto.getFkProduct() != null) {
             Product product = productRepository.findById(dto.getFkProduct()).orElseThrow(() -> new NotFoundException("Produto não encontrado!"));
             expense.setProduct(product);
-            product.setQuantity(dto.getQuantity() + product.getQuantity());
         }
         expense.setId(id);
         expense.setDate(dto.getDate());
