@@ -2,7 +2,6 @@ package com.studiozero.projeto.dtos.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.enums.ExpenseCategory;
 import com.studiozero.projeto.enums.PaymentType;
 import lombok.AllArgsConstructor;

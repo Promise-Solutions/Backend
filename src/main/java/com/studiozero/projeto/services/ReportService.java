@@ -6,12 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiConsumer;
 
 @Service
@@ -27,6 +30,7 @@ public class ReportService {
     private final ProductRepository productRepository;
     private final TaskRepository taskRepository;
     private final ExpenseRepository expenseRepository;
+    private final DriveService driveService;
 
     public File gerarRelatorioExcel() {
         List<Client> clients = clientRepository.findAll();
@@ -81,6 +85,9 @@ public class ReportService {
             double totalEntryValue = totalCommandEntryValue + totalJobEntryValue;
             double profitOrLoss = totalEntryValue - totalExpenseValue;
 
+            // Formatação monetária
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
             // Preenche a sheet de Finanças
             Row financesHeaderRow = financesSheet.createRow(0);
             for (int i = 0; i < financesHeaders.length; i++) {
@@ -89,10 +96,9 @@ public class ReportService {
                 cell.setCellStyle(headerStyle);
             }
             Row financesRow = financesSheet.createRow(1);
-            financesRow.createCell(0).setCellValue(totalEntryValue);
-            financesRow.createCell(1).setCellValue(totalExpenseValue);
-            financesRow.createCell(2).setCellValue(profitOrLoss);
-
+            financesRow.createCell(0).setCellValue(currencyFormat.format(totalEntryValue));
+            financesRow.createCell(1).setCellValue(currencyFormat.format(totalExpenseValue));
+            financesRow.createCell(2).setCellValue(currencyFormat.format(profitOrLoss));
             for (int i = 0; i < financesHeaders.length; i++) {
                 financesSheet.autoSizeColumn(i);
             }
@@ -121,7 +127,7 @@ public class ReportService {
                 row.createCell(3).setCellValue(j.getClient().getName());
                 row.createCell(4).setCellValue(j.getTitle());
                 row.createCell(5).setCellValue(j.getTotalValue());
-                row.createCell(6).setCellValue(traduzStatus(j.getStatus().toString()));
+                row.createCell(6).setCellValue(j.getStatus().toString());
             });
 
             // SUBSERVIÇOS
@@ -175,7 +181,7 @@ public class ReportService {
                     "Valor" };
             preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (row, cp) -> {
                 row.createCell(0).setCellValue(cp.getId());
-                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : null);
+                row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : '-');
                 row.createCell(2)
                         .setCellValue(cp.getCommand().getClient() != null
                                 ? "Cliente: " + cp.getCommand().getClient().getName()
@@ -230,10 +236,23 @@ public class ReportService {
             });
 
             workbook.write(fos);
+            fos.flush();
+            // Após gerar o arquivo, envia para o Google Drive sem MockMultipartFile
+            enviarRelatorioParaDrive(arquivoXLSX);
             return arquivoXLSX;
-
         } catch (IOException e) {
             throw new RuntimeException("Erro ao gerar relatório Excel", e);
+        }
+    }
+
+    private void enviarRelatorioParaDrive(File arquivo) {
+        try (FileInputStream fis = new FileInputStream(arquivo)) {
+            driveService.uploadFileStream(
+                    arquivo.getName(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fis);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao enviar relatório para o Google Drive", e);
         }
     }
 
@@ -263,7 +282,8 @@ public class ReportService {
     }
 
     private String formatDateTime(LocalDateTime dateTime) {
-        return dateTime != null ? dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "";
+        // Retorna apenas a data no formato dd/MM/yyyy
+        return dateTime != null ? dateTime.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
 
     private String traduzBoolean(Boolean valor) {

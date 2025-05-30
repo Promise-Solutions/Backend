@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
@@ -57,6 +56,15 @@ public class DashboardController {
     public ResponseEntity<Map<String, Double>> getCategoryBalances() {
         return ResponseEntity.ok(dashboardService.getCategoryBalances());
     }
+    @Operation(
+            summary = "Get bar balances statistics",
+            description = "Returns bar balances"
+    )
+    @GetMapping("/bar-balances")
+    public ResponseEntity<Map<String, Double>> getBarBalances() {
+        return ResponseEntity.ok(dashboardService.getBarFinances());
+    }
+
     @Operation(
             summary = "Get balances statistics",
             description = "Returns balances"

@@ -1,16 +1,11 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.request.SubJobRequestDTO;
-import com.studiozero.projeto.dtos.request.SubJobUpdateStatusRequestDTO;
 import com.studiozero.projeto.dtos.response.SubJobDeleteResponseDTO;
-import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.entities.SubJob;
 import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.enums.Status;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.mappers.SubJobMapper;
-import com.studiozero.projeto.repositories.JobRepository;
 import com.studiozero.projeto.repositories.SubJobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

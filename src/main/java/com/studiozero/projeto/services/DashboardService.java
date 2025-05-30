@@ -34,8 +34,8 @@ public class DashboardService {
                                                         subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
                                         .toList();
 
-                        totalValue += subJobs.stream().mapToDouble(SubJob::getValue).sum();
-                        frequency += subJobs.size();
+                        totalValue = subJobs.stream().mapToDouble(SubJob::getValue).sum();
+                        frequency = subJobs.size();
                 }
 
                 List<Command> closedCommands = commandRepository.findAllByClient_IdAndStatus(clientId, Status.CLOSED);
@@ -44,10 +44,13 @@ public class DashboardService {
                                 .mapToDouble(Command::getTotalValue)
                                 .sum();
 
+                Double ticket = (totalValue + totalCommandsValue) / frequency;
+
                 return Map.of(
                                 "frequency", frequency,
                                 "totalValue", totalValue,
-                                "totalCommandsValue", totalCommandsValue
+                                "totalCommandsValue", totalCommandsValue,
+                                "ticket", ticket
                 );
         }
 
@@ -110,25 +113,23 @@ public class DashboardService {
         public Map<String, Double> getBarFinances() {
                 List<Command> commandList = commandRepository.findAll();
                 List<Expense> expenseList = expenseRepository.findAll();
-                if (commandList.isEmpty()) {
-                        throw new NotFoundException("Commands not found");
-                }if (expenseList.isEmpty()) {
-                        throw new NotFoundException("Expenses not found");
-                }
+                double totalClosedCommands = 0.0;
+                double totalExpenseProduct = 0.0;
+                double profitOrLoss = 0.0;
 
-                double totalClosedCommands = commandList
+                totalClosedCommands = commandList
                                 .stream()
                                 .filter(command -> command.getStatus() == Status.CLOSED)
                                 .mapToDouble(Command::getTotalValue)
                                 .sum();
 
-                double totalExpenseProduct = expenseList
+                totalExpenseProduct = expenseList
                         .stream()
                         .filter(expense -> expense.getExpenseCategory() == ExpenseCategory.STOCK)
                         .mapToDouble(Expense::getAmountSpend)
                         .sum();
 
-                double profitOrLoss = totalClosedCommands - totalExpenseProduct;
+                profitOrLoss = totalClosedCommands - totalExpenseProduct;
 
                 return Map.of(
                         "totalEntryValue", totalClosedCommands,
@@ -159,20 +160,23 @@ public class DashboardService {
                 List<Command> commandList = commandRepository.findAll();
                 List<Job> jobList = jobRepository.findAll();
                 List<Expense> expenseList = expenseRepository.findAll();
+                double totalCommandEntryValue = 0.0;
+                double totalJobEntryValue = 0.0;
+                double totalExpenseValue = 0.0;
 
-                double totalCommandEntryValue = commandList
+                totalCommandEntryValue = commandList
                         .stream()
                         .filter(command -> command.getStatus() == Status.CLOSED)
                         .mapToDouble(Command::getTotalValue)
                         .sum();
 
-                double totalJobEntryValue = jobList
+                totalJobEntryValue = jobList
                         .stream()
                         .filter(job -> job.getStatus() == Status.CLOSED)
                         .mapToDouble(Job::getTotalValue)
                         .sum();
 
-                double totalExpenseValue = expenseList
+                totalExpenseValue = expenseList
                         .stream()
                         .mapToDouble(Expense::getAmountSpend)
                         .sum();

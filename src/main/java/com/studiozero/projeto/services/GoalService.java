@@ -15,7 +15,7 @@ public class GoalService {
     private final GoalRepository goalRepository;
     private final TracingService tracingService;
 
-    private Goal createGoal(Goal goal) {
+    public Goal createGoal(Goal goal) {
         return goalRepository.save(goal);
     }
 

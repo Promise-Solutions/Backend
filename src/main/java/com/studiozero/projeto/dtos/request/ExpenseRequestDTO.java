@@ -1,13 +1,9 @@
 package com.studiozero.projeto.dtos.request;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.studiozero.projeto.entities.Product;
 import com.studiozero.projeto.enums.ExpenseCategory;
 import com.studiozero.projeto.enums.PaymentType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
