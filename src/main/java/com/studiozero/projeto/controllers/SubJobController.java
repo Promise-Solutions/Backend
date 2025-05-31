@@ -40,7 +40,7 @@ public class SubJobController {
         SubJob savedSubJob = subJobService.createSubJob(subJob);
 
         Status jobStatus = jobService.evaluateJobStatus(savedSubJob.getJob().getId());
-        Double totalValueJob = jobService.calculateTotalValue(savedSubJob.getJob().getId());
+        Double totalValueJob = jobService.calculateTotalValue(savedSubJob.getJob());
 
         return ResponseEntity.status(201).body(SubJobMapper.toDTO(savedSubJob, jobStatus, totalValueJob));
     }
@@ -104,7 +104,7 @@ public class SubJobController {
         SubJob subJob = subJobMapper.toEntity(subJobDto, id);
         SubJob updatedSubJob = subJobService.updateSubJob(subJob);
 
-        Double totalValueJob = jobService.calculateTotalValue(updatedSubJob.getJob().getId());
+        Double totalValueJob = jobService.calculateTotalValue(updatedSubJob.getJob());
 
         return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, totalValueJob));
     }

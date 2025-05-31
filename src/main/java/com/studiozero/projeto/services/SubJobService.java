@@ -87,7 +87,7 @@ public class SubJobService {
             tracingService.setTracing(Context.JOB);
             subJobRepository.deleteById(subJobId);
             Status jobStatus = jobService.evaluateJobStatus(subJob.getJob().getId());
-            Double totalValueJob = jobService.calculateTotalValue(subJob.getJob().getId());
+            Double totalValueJob = jobService.calculateTotalValue(subJob.getJob());
 
             return new SubJobDeleteResponseDTO(subJobId, jobStatus, totalValueJob);
         } else {

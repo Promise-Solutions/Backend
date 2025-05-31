@@ -97,14 +97,12 @@ public class JobService {
         return newStatus;
     }
 
-    public Double calculateTotalValue(UUID jobId) {
-        List<SubJob> allSubJobsByJobId = subJobRepository.findAllByJob_Id(jobId);
+    public Double calculateTotalValue(Job job) {
+        List<SubJob> allSubJobsByJobId = subJobRepository.findAllByJob_Id(job.getId());
         if (allSubJobsByJobId.isEmpty()) {
-            return 0.0;
+            job.setTotalValue(0.0);
+            jobRepository.save(job);
         }
-
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new NotFoundException("Job not found"));
 
         Double prevTotalValue = job.getTotalValue();
         job.setTotalValue(0.0);
