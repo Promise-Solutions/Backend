@@ -2,6 +2,7 @@ package com.studiozero.projeto.repositories;
 
 import com.studiozero.projeto.entities.Job;
 import com.studiozero.projeto.enums.JobCategory;
+import com.studiozero.projeto.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,5 @@ public interface JobRepository extends JpaRepository<Job, UUID>, JpaSpecificatio
     List<Job> findAllByClient_Id(UUID fkClient);
 
     @Query("SELECT SUM(j.totalValue) FROM Job j WHERE j.category = :category")
-    Double sumTotalValueByCategory(@Param("category") JobCategory category);
+    Double sumTotalValueByCategoryAndStatus(@Param("category") JobCategory category, Status status);
 }
