@@ -16,6 +16,7 @@ import java.util.UUID;
 public interface JobRepository extends JpaRepository<Job, UUID>, JpaSpecificationExecutor<Job> {
     List<Job> findAllByClient_Id(UUID fkClient);
 
-    @Query("SELECT SUM(j.totalValue) FROM Job j WHERE j.category = :category")
-    Double sumTotalValueByCategoryAndStatus(@Param("category") JobCategory category, Status status);
+    @Query("SELECT SUM(j.totalValue) FROM Job j WHERE j.category = :category AND j.status = :status")
+    Double sumTotalValueByCategoryAndStatus(@Param("category") JobCategory category, @Param("status") Status status);
+
 }
