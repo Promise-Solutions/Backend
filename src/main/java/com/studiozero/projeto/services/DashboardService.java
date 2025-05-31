@@ -140,13 +140,13 @@ public class DashboardService {
 
         public Map<String, Double> getCategoryBalances() {
                 double podcastBalance = Optional.ofNullable(
-                        jobRepository.sumTotalValueByCategory(JobCategory.PODCAST)
+                        jobRepository.sumTotalValueByCategoryAndStatus(JobCategory.PODCAST, Status.CLOSED)
                         ).orElse(0.0);
                 double photoVideoStudioBalance = Optional.ofNullable(
-                        jobRepository.sumTotalValueByCategory(JobCategory.PHOTO_VIDEO_STUDIO)
+                        jobRepository.sumTotalValueByCategoryAndStatus(JobCategory.PHOTO_VIDEO_STUDIO, Status.CLOSED)
                         ).orElse(0.0);
                 double musicRehearsalBalance = Optional.ofNullable(
-                        jobRepository.sumTotalValueByCategory(JobCategory.MUSIC_REHEARSAL)
+                        jobRepository.sumTotalValueByCategoryAndStatus(JobCategory.MUSIC_REHEARSAL, Status.CLOSED)
                         ).orElse(0.0);
 
                 return Map.of(
