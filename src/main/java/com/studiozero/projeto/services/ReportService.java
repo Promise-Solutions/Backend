@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.text.NumberFormat;
@@ -145,17 +144,6 @@ public class ReportService {
                 row.createCell(7).setCellValue(traduzStatus(sj.getStatus().toString()));
             });
 
-            // PRODUTOS
-            Sheet prodSheet = workbook.createSheet("Produtos");
-            String[] prodHeaders = { "ID", "Nome", "Quantidade", "Valor Cliente", "Valor Funcionário" };
-            preencherSheetComDados(prodSheet, prodHeaders, headerStyle, products, (row, p) -> {
-                row.createCell(0).setCellValue(p.getId());
-                row.createCell(1).setCellValue(p.getName());
-                row.createCell(2).setCellValue(p.getQuantity());
-                row.createCell(3).setCellValue(p.getClientValue());
-                row.createCell(4).setCellValue(p.getInternalValue());
-            });
-
             // COMANDAS
             Sheet cmdSheet = workbook.createSheet("Comandas");
             String[] cmdHeaders = { "ID", "Cliente", "Funcionário", "Status", "Desconto (%)", "Valor Total", "Abertura",
@@ -173,6 +161,17 @@ public class ReportService {
                 row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
                 row.createCell(7)
                         .setCellValue(c.getClosingDateTime() != null ? (formatDateTime(c.getClosingDateTime())) : "-");
+            });
+
+            // PRODUTOS
+            Sheet prodSheet = workbook.createSheet("Produtos");
+            String[] prodHeaders = { "ID", "Nome", "Quantidade", "Valor Cliente", "Valor Funcionário" };
+            preencherSheetComDados(prodSheet, prodHeaders, headerStyle, products, (row, p) -> {
+                row.createCell(0).setCellValue(p.getId());
+                row.createCell(1).setCellValue(p.getName());
+                row.createCell(2).setCellValue(p.getQuantity());
+                row.createCell(3).setCellValue(p.getClientValue());
+                row.createCell(4).setCellValue(p.getInternalValue());
             });
 
             // PRODUTOS POR COMANDA
