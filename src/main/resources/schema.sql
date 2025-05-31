@@ -124,6 +124,7 @@ CREATE TABLE despesa (
                          data_pagamento DATE NOT NULL,
                          tipo VARCHAR(255) NOT NULL,
                          descricao VARCHAR(255) NOT NULL,
+                         quantidade INT,
                          valor DOUBLE NOT NULL CHECK (valor > 0),
                          tipo_pagamento VARCHAR(255) NOT NULL,
                          fk_produto INT,

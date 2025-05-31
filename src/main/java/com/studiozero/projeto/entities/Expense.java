@@ -33,6 +33,9 @@ public class Expense {
     @Column(name = "descricao", nullable = false)
     private String description;
 
+    @Column(name = "quantidade")
+    private Integer quantity;
+
     @Positive
     @Column(name = "valor", nullable = false)
     private Double amountSpend;

@@ -13,7 +13,7 @@ public class GoalResponseDTO {
     private Double goal;
 
     public GoalResponseDTO(Goal entity) {
-        this.id = id;
-        this.goal = goal;
+        this.id = entity.getId();
+        this.goal = entity.getGoal();
     }
 }

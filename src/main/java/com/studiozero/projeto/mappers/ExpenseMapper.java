@@ -27,10 +27,14 @@ public class ExpenseMapper {
         dto.setExpenseCategory(expense.getExpenseCategory());
         dto.setDescription(expense.getDescription());
         dto.setAmountSpend(expense.getAmountSpend());
+        dto.setPaymentType(expense.getPaymentType());
+
         if(expense.getProduct() != null) {
             dto.setFkProduct(expense.getProduct().getId());
         }
-        dto.setPaymentType(expense.getPaymentType());
+        if(expense.getQuantity() != null) {
+            dto.setQuantity(expense.getQuantity());
+        }
 
         return dto;
     }
@@ -52,6 +56,9 @@ public class ExpenseMapper {
             Product product = productRepository.findById(dto.getFkProduct()).orElseThrow(() -> new NotFoundException("Produto não encontrado!"));
             expense.setProduct(product);
         }
+        if(dto.getQuantity() != null) {
+            expense.setQuantity(dto.getQuantity());
+        }
 
         expense.setDate(dto.getDate());
         expense.setExpenseCategory(dto.getExpenseCategory());
@@ -69,6 +76,10 @@ public class ExpenseMapper {
             Product product = productRepository.findById(dto.getFkProduct()).orElseThrow(() -> new NotFoundException("Produto não encontrado!"));
             expense.setProduct(product);
         }
+        if(dto.getQuantity() != null) {
+            expense.setQuantity(dto.getQuantity());
+        }
+
         expense.setId(id);
         expense.setDate(dto.getDate());
         expense.setExpenseCategory(dto.getExpenseCategory());

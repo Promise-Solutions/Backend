@@ -43,11 +43,25 @@ public class ExpenseService {
     }
 
     public Expense updateExpense(Expense expense) {
-        if (expenseRepository.existsById(expense.getId())) {
-            expense.setId(expense.getId());
-            return expenseRepository.save(expense);
+        if (!expenseRepository.existsById(expense.getId())) {
+            throw new NotFoundException("Expense not found");
         }
-        throw new NotFoundException("Expense not found");
+
+        if (expense.getExpenseCategory() == ExpenseCategory.STOCK) {
+            Expense prevExpense = findExpenseById(expense.getId());
+            Integer newExpenseQuantity = expense.getQuantity();
+            Integer prevExpenseQuantity = prevExpense.getQuantity() == null ? 0 : prevExpense.getQuantity();
+
+            if(!prevExpenseQuantity.equals(newExpenseQuantity)) {
+                Product product = productService.findProductById(expense.getProduct().getId());
+                Integer newProductQuantity = product.getQuantity() - prevExpenseQuantity + newExpenseQuantity;
+
+                product.setQuantity(newProductQuantity);
+                productService.updateProduct(product);
+            }
+        }
+        expense.setId(expense.getId());
+        return expenseRepository.save(expense);
     }
 
     public void deleteExpense(Integer id) {

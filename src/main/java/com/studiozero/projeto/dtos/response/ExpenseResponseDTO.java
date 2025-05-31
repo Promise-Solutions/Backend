@@ -20,6 +20,7 @@ public class ExpenseResponseDTO {
     private ExpenseCategory expenseCategory;
     private String description;
     private Double amountSpend;
+    private Integer quantity;
     private PaymentType paymentType;
     private Integer fkProduct;
 }
