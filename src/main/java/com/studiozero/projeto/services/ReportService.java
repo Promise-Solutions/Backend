@@ -42,7 +42,8 @@ public class ReportService {
         List<CommandProduct> commandProducts = commandProductRepository.findAll();
         List<Expense> expenses = expenseRepository.findAll();
 
-        String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
+        // Use '-' para o nome do arquivo para evitar problemas de path
+        String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"),
                 "Relatório Gerado em - " + dataGeracao + ".xlsx");
 
