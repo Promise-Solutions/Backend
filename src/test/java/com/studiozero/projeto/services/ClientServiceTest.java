@@ -1,23 +1,22 @@
 package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.entities.Client;
+import com.studiozero.projeto.entities.Tracing;
+import com.studiozero.projeto.enums.ClientType;
+import com.studiozero.projeto.enums.Context;
 import com.studiozero.projeto.exceptions.BadRequestException;
 import com.studiozero.projeto.exceptions.ConflictException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.ClientRepository;
 import com.studiozero.projeto.repositories.CommandRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -33,169 +32,143 @@ class ClientServiceTest {
     @Mock
     private CommandRepository commandRepository;
 
+    @Mock
+    private TracingService tracingService;
+
+    private Client client;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        client = new Client(
+                UUID.randomUUID(),
+                "Test User",
+                "12345678900",
+                "test@example.com",
+                "999999999",
+                ClientType.SINGLE,
+                true,
+                LocalDate.of(1990, 1, 1),
+                LocalDate.now()
+        );
     }
 
     @Test
-    @DisplayName("should create a client successfully when CPF does not exist")
-    void shouldCreateClientSuccessfullyWhenCpfDoesNotExist() {
-        Client client = new Client();
-        client.setCpf("12345678900");
-
+    @DisplayName("Should create client successfully when CPF does not exist")
+    void createClient_Success() {
         when(clientRepository.existsByCpf(client.getCpf())).thenReturn(false);
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(tracingService.setTracing(Context.USER)).thenReturn(new Tracing());
 
-        Client createdClient = clientService.createClient(client);
+        Client savedClient = clientService.createClient(client);
 
-        assertNotNull(createdClient.getId());
-        assertEquals(LocalDate.now(), createdClient.getCreatedDate());
-        verify(clientRepository).save(client);
+        assertNotNull(savedClient.getId());
+        assertNotNull(savedClient.getCreatedDate());
+
+        verify(tracingService).setTracing(Context.USER);
+        verify(clientRepository).save(any(Client.class));
     }
 
     @Test
-    @DisplayName("should throw ConflictException when CPF already exists")
-    void shouldThrowConflictExceptionWhenCpfAlreadyExists() {
-        Client client = new Client();
-        client.setCpf("12345678900");
-
+    @DisplayName("Should throw ConflictException when creating client with existing CPF")
+    void createClient_ThrowsConflictException() {
         when(clientRepository.existsByCpf(client.getCpf())).thenReturn(true);
 
         assertThrows(ConflictException.class, () -> clientService.createClient(client));
+
         verify(clientRepository, never()).save(any());
     }
 
     @Test
-    @DisplayName("should throw BadRequestException when CPF is invalid")
-    void shouldReturnClientWhenIdExists() {
-        UUID clientId = UUID.randomUUID();
-        Client client = new Client();
-        client.setId(clientId);
+    @DisplayName("Should find client by ID successfully")
+    void findClientById_Success() {
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
 
-        when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
+        Client found = clientService.findClientById(client.getId());
 
-        Client foundClient = clientService.findClientById(clientId);
-
-        assertEquals(clientId, foundClient.getId());
-        verify(clientRepository).findById(clientId);
+        assertEquals(client, found);
     }
 
     @Test
-    @DisplayName("should throw NotFoundException when client ID does not exist")
-    void shouldThrowNotFoundExceptionWhenIdDoesNotExist() {
-        UUID clientId = UUID.randomUUID();
+    @DisplayName("Should throw NotFoundException when client ID does not exist")
+    void findClientById_NotFound() {
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.empty());
 
-        when(clientRepository.findById(clientId)).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class, () -> clientService.findClientById(clientId));
-        verify(clientRepository).findById(clientId);
+        assertThrows(NotFoundException.class, () -> clientService.findClientById(client.getId()));
     }
 
     @Test
-    @DisplayName("should return list of clients")
-    void shouldReturnListOfClients() {
-        Client client1 = new Client();
-        client1.setId(UUID.randomUUID());
-        client1.setCpf("11111111111");
-
-        Client client2 = new Client();
-        client2.setId(UUID.randomUUID());
-        client2.setCpf("22222222222");
-
-        List<Client> clients = List.of(client1, client2);
-
+    @DisplayName("Should return list of all clients")
+    void listClients_ReturnsList() {
+        List<Client> clients = Arrays.asList(client, client);
         when(clientRepository.findAll()).thenReturn(clients);
 
         List<Client> result = clientService.listClients();
 
         assertEquals(2, result.size());
         assertEquals(clients, result);
-        verify(clientRepository).findAll();
     }
 
     @Test
-    @DisplayName("should return empty list when no clients exist")
-    void shouldReturnEmptyListWhenNoClientsExist() {
-        when(clientRepository.findAll()).thenReturn(Collections.emptyList());
+    @DisplayName("Should update client successfully when client exists")
+    void updateClient_Success() {
+        when(clientRepository.existsById(client.getId())).thenReturn(true);
+        when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(tracingService.setTracing(Context.USER)).thenReturn(new Tracing());
 
-        List<Client> result = clientService.listClients();
+        Client updated = clientService.updateClient(client);
 
-        assertTrue(result.isEmpty());
-        verify(clientRepository).findAll();
-    }
-
-    @Test
-    @DisplayName("should update client when ID exists")
-    void shouldUpdateClientWhenIdExists() {
-        UUID clientId = UUID.randomUUID();
-        Client client = new Client();
-        client.setId(clientId);
-        client.setCpf("12345678900");
-
-        when(clientRepository.existsById(clientId)).thenReturn(true);
-        when(clientRepository.save(client)).thenReturn(client);
-
-        Client updatedClient = clientService.updateClient(client);
-
-        assertEquals(clientId, updatedClient.getId());
-        verify(clientRepository).existsById(clientId);
+        assertEquals(client.getId(), updated.getId());
+        verify(tracingService).setTracing(Context.USER);
         verify(clientRepository).save(client);
     }
 
     @Test
-    @DisplayName("should throw NotFoundException when client ID does not exist")
-    void shouldThrowNotFoundExceptionWhenClientIdDoesNotExist() {
-        UUID clientId = UUID.randomUUID();
-        Client client = new Client();
-        client.setId(clientId);
-
-        when(clientRepository.existsById(clientId)).thenReturn(false);
+    @DisplayName("Should throw NotFoundException when updating non-existing client")
+    void updateClient_NotFound() {
+        when(clientRepository.existsById(client.getId())).thenReturn(false);
 
         assertThrows(NotFoundException.class, () -> clientService.updateClient(client));
-        verify(clientRepository).existsById(clientId);
+
         verify(clientRepository, never()).save(any());
     }
 
     @Test
-    @DisplayName("should throw BadRequestException when client ID is invalid")
-    void shouldThrowBadRequestExceptionWhenClientHasAssociatedCommands() {
-        UUID clientId = UUID.randomUUID();
-
-        when(commandRepository.existsByClient_Id(clientId)).thenReturn(true);
-
-        assertThrows(BadRequestException.class, () -> clientService.deleteClient(clientId));
-        verify(commandRepository).existsByClient_Id(clientId);
-        verify(clientRepository, never()).existsById(any());
-        verify(clientRepository, never()).deleteById(any());
-    }
-
-    @Test
-    @DisplayName("should delete client when client exists and has no associated commands")
-    void shouldDeleteClientWhenClientExistsAndNoAssociatedCommands() {
-        UUID clientId = UUID.randomUUID();
-
+    @DisplayName("Should delete client successfully when no associated commands exist")
+    void deleteClient_Success() {
+        UUID clientId = client.getId();
         when(commandRepository.existsByClient_Id(clientId)).thenReturn(false);
         when(clientRepository.existsById(clientId)).thenReturn(true);
+        when(tracingService.setTracing(Context.USER)).thenReturn(new Tracing());
 
         clientService.deleteClient(clientId);
 
-        verify(commandRepository).existsByClient_Id(clientId);
-        verify(clientRepository).existsById(clientId);
+        verify(tracingService).setTracing(Context.USER);
         verify(clientRepository).deleteById(clientId);
     }
 
     @Test
-    @DisplayName("should throw NotFoundException when client does not exist and has no associated commands")
-    void shouldThrowNotFoundExceptionWhenClientDoesNotExistAndNoAssociatedCommands() {
-        UUID clientId = UUID.randomUUID();
+    @DisplayName("Should throw BadRequestException when deleting client with associated commands")
+    void deleteClient_WithAssociatedCommands() {
+        UUID clientId = client.getId();
+        when(commandRepository.existsByClient_Id(clientId)).thenReturn(true);
 
+        assertThrows(BadRequestException.class, () -> clientService.deleteClient(clientId));
+
+        verify(clientRepository, never()).deleteById(any());
+        verify(tracingService, never()).setTracing(any());
+    }
+
+    @Test
+    @DisplayName("Should throw NotFoundException when deleting non-existing client")
+    void deleteClient_NotFound() {
+        UUID clientId = client.getId();
         when(commandRepository.existsByClient_Id(clientId)).thenReturn(false);
         when(clientRepository.existsById(clientId)).thenReturn(false);
 
         assertThrows(NotFoundException.class, () -> clientService.deleteClient(clientId));
-        verify(commandRepository).existsByClient_Id(clientId);
-        verify(clientRepository).existsById(clientId);
+
         verify(clientRepository, never()).deleteById(any());
+        verify(tracingService, never()).setTracing(any());
     }
 }

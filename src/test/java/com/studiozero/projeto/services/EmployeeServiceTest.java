@@ -36,7 +36,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should create employee when CPF is unique")
+    @DisplayName("Should throw ConflictException when CPF already exists")
     void shouldThrowConflictExceptionWhenCpfAlreadyExists() {
         Employee employee = new Employee();
         employee.setCpf("12345678900");
@@ -50,7 +50,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should throw ConflictException when email already exists")
+    @DisplayName("Should throw ConflictException when email already exists")
     void shouldThrowConflictExceptionWhenEmailAlreadyExists() {
         Employee employee = new Employee();
         employee.setCpf("12345678900");
@@ -66,7 +66,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should create employee when CPF and email are unique")
+    @DisplayName("Should create employee when CPF and email are unique")
     void shouldCreateEmployeeWhenCpfAndEmailAreUnique() {
         Employee employee = new Employee();
         employee.setCpf("12345678900");
@@ -86,7 +86,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should return all employees")
+    @DisplayName("Should return employee when ID exists")
     void shouldReturnEmployeeWhenIdExists() {
         UUID id = UUID.randomUUID();
         Employee employee = new Employee();
@@ -103,7 +103,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should throw NotFoundException when employee does not exist")
+    @DisplayName("Should throw NotFoundException when employee does not exist")
     void shouldThrowNotFoundExceptionWhenEmployeeDoesNotExist() {
         UUID id = UUID.randomUUID();
         when(employeeRepository.findById(id)).thenReturn(Optional.empty());
@@ -113,27 +113,11 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should update employee when employee exists")
+    @DisplayName("Should return list of employees")
     void shouldReturnListOfEmployees() {
         List<Employee> employees = List.of(
-                new Employee(
-                        UUID.randomUUID(),
-                        "João",
-                        "joao@example.com",
-                        "12345678900",
-                        "123456789",
-                        "senha123",
-                        true
-                ),
-                new Employee(
-                        UUID.randomUUID(),
-                        "Maria",
-                        "maria@example.com",
-                        "09876543211",
-                        "987654321",
-                        "senha456",
-                        true
-                )
+                new Employee(UUID.randomUUID(), "João", "joao@example.com", "12345678900", "123456789", "senha123", true),
+                new Employee(UUID.randomUUID(), "Maria", "maria@example.com", "09876543211", "987654321", "senha456", true)
         );
 
         when(employeeRepository.findAll()).thenReturn(employees);
@@ -147,7 +131,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should return empty list when no employees exist")
+    @DisplayName("Should return empty list when no employees exist")
     void shouldReturnEmptyListWhenNoEmployeesExist() {
         when(employeeRepository.findAll()).thenReturn(List.of());
 
@@ -158,7 +142,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should delete employee when employee exists")
+    @DisplayName("Should update all fields when all are non-null")
     void shouldUpdateAllFieldsWhenAllAreNonNull() {
         UUID id = UUID.randomUUID();
 
@@ -198,8 +182,8 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should update only non-null fields")
-    void shouldNotOverwriteFieldsWhenUpdateHasNulls() {
+    @DisplayName("Should update only non-null fields")
+    void shouldUpdateOnlyNonNullFields() {
         UUID id = UUID.randomUUID();
 
         Employee existing = new Employee();
@@ -238,41 +222,45 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("should throw NotFoundException when employee not found")
+    @DisplayName("Should throw NotFoundException when updating non-existent employee")
     void shouldThrowNotFoundExceptionWhenEmployeeNotFound() {
         UUID id = UUID.randomUUID();
-
         Employee update = new Employee();
         update.setId(id);
 
         when(employeeRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> employeeService.updateEmployee(update));
+
         verify(employeeRepository).findById(id);
         verify(employeeRepository, never()).save(any());
         verify(passwordEncoder, never()).encode(any());
     }
 
     @Test
-    @DisplayName("should delete employee when exists")
+    @DisplayName("Should delete employee when exists")
     void shouldDeleteEmployeeWhenExists() {
         UUID id = UUID.randomUUID();
         UUID userLogged = UUID.randomUUID();
 
+        Employee employee = new Employee();
+        employee.setId(id);
+
         when(employeeRepository.existsById(id)).thenReturn(true);
+        when(employeeRepository.findById(id)).thenReturn(Optional.of(employee));
 
         employeeService.deleteEmployee(id, userLogged);
 
         verify(employeeRepository).existsById(id);
+        verify(employeeRepository).findById(id);
         verify(employeeRepository).deleteById(id);
     }
 
     @Test
-    @DisplayName("should throw NotFoundException when employee does not exist")
-    void shouldNotFoundExceptionWhenEmployeeDoesNotExist() {
+    @DisplayName("Should throw NotFoundException when deleting non-existent employee")
+    void shouldThrowNotFoundExceptionWhenDeletingNonExistentEmployee() {
         UUID id = UUID.randomUUID();
         UUID userLogged = UUID.randomUUID();
-
 
         when(employeeRepository.existsById(id)).thenReturn(false);
 
