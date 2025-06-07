@@ -48,7 +48,7 @@ public class GoalController {
     }
 
     @PutMapping
-    public ResponseEntity<GoalResponseDTO> updateGoal(@RequestBody Goal goal) {
+    public ResponseEntity<GoalResponseDTO> updateGoal(@Valid @RequestBody Goal goal) {
         Goal updatedGoal = goalService.updateGoal(goal);
         return ResponseEntity.ok(GoalMapper.toDTO(updatedGoal));
     }

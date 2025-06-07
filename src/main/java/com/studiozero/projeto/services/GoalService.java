@@ -34,6 +34,10 @@ public class GoalService {
     }
 
     public Goal updateGoal(Goal goal) {
+        if(goal.getId() == null) {
+            return createGoal(goal);
+        }
+
         if (goalRepository.existsById(goal.getId())) {
             goal.setId(goal.getId());
             tracingService.setTracing(Context.EXPENSE);

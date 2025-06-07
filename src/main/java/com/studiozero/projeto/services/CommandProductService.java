@@ -32,8 +32,18 @@ public class CommandProductService {
         CommandProduct commandProduct = commandProductMapper.toEntity(dto);
         commandProduct.setCommand(command);
 
+
         Product product = productService.findProductById(commandProduct.getProduct().getId());
         product.setQuantity(product.getQuantity() - commandProduct.getProductQuantity());
+
+        if(commandProductRepository.existsByProduct_IdAndCommand_Id(product.getId(), command.getId())) {
+            CommandProduct commandProductFound =
+                    commandProductRepository.findByProduct_IdAndCommand_Id(product.getId(), command.getId())
+                            .orElseThrow(() -> new NotFoundException("Comanda Produto não encontrada!"));
+
+            commandProductFound.addQuantity(dto.getProductQuantity());
+            return commandProductRepository.save(commandProductFound);
+        }
 
         commandProduct.setProduct(product);
 
@@ -42,7 +52,6 @@ public class CommandProductService {
         CommandProduct saved = commandProductRepository.save(commandProduct);
         updateCommand(command); // agora sim
         tracingService.setTracing(Context.BAR);
-
         return saved;
     }
 
@@ -123,7 +132,7 @@ public class CommandProductService {
         Double totalValue = commandProducts.stream()
                 .mapToDouble(cp -> {
                     Product product = cp.getProduct();
-                    double unitValue = Boolean.TRUE.equals(command.getIsIntenal())
+                    double unitValue = Boolean.TRUE.equals(command.getIsInternal())
                             ? product.getInternalValue()
                             : product.getClientValue();
                     return unitValue * cp.getProductQuantity();
@@ -140,3 +149,4 @@ public class CommandProductService {
         return commandRepository.save(command);
     }
 }
+

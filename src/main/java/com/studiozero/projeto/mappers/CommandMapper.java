@@ -59,6 +59,7 @@ public class CommandMapper {
         dto.setFkClient(command.getClient() != null ? command.getClient().getId() : null);
         dto.setFkEmployee(command.getEmployee() != null ? command.getEmployee().getId() : null);
         dto.setStatus(command.getStatus());
+        dto.setIsInternal(command.getIsInternal());
         return dto;
     }
 

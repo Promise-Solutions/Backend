@@ -44,7 +44,7 @@ public class Command {
     private Employee employee;
 
     @Column(name = "comanda_interna", nullable = false)
-    private Boolean isIntenal;
+    private Boolean isInternal;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,6 +53,6 @@ public class Command {
     @PrePersist
     @PreUpdate
     private void isInternalDefinition(){
-        this.isIntenal = (this.client == null && this.employee != null);
+        this.isInternal = (this.client == null && this.employee != null);
     }
 }

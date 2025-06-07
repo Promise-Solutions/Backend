@@ -33,6 +33,7 @@ public class CommandProductMapper {
         commandProduct.setCommand(command);
         commandProduct.setProduct(product);
         commandProduct.setProductQuantity(dto.getProductQuantity());
+        commandProduct.setUnitValue(dto.getUnitValue());
         return commandProduct;
     }
 
@@ -79,6 +80,7 @@ public class CommandProductMapper {
         commandProduct.setProductQuantity(dto.getProductQuantity());
         commandProduct.setCommand(command);
         commandProduct.setProduct(product);
+        commandProduct.setUnitValue(dto.getUnitValue());
         return commandProduct;
     }
 }

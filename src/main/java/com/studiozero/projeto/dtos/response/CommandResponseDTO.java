@@ -25,16 +25,18 @@ public class CommandResponseDTO {
     private UUID fkClient;
     private UUID fkEmployee;
     private Status status;
+    private Boolean isInternal;
 
     public CommandResponseDTO(Command command) {
-        this.id = id;
-        this.commandNumber = commandNumber;
-        this.openingDateTime = openingDateTime;
-        this.closingDateTime = closingDateTime;
-        this.discount = discount;
-        this.totalValue = totalValue;
-        this.fkClient = fkClient;
-        this.fkEmployee = fkEmployee;
-        this.status = status;
+        this.id = command.getId();
+        this.commandNumber = command.getCommandNumber();
+        this.openingDateTime = command.getOpeningDateTime();
+        this.closingDateTime = command.getClosingDateTime();
+        this.discount = command.getDiscount();
+        this.totalValue = command.getTotalValue();
+        this.fkClient = command.getClient().getId();
+        this.fkEmployee = command.getEmployee().getId();
+        this.status = command.getStatus();
+        this.isInternal = command.getIsInternal();
     }
 }

@@ -30,4 +30,8 @@ public class CommandProduct {
 
     @Column(name = "valor_unitario", nullable = false)
     private Double unitValue;
+
+    public void addQuantity(Integer quantity) {
+        setProductQuantity(this.productQuantity + quantity);
+    }
 }

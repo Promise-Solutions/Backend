@@ -113,7 +113,7 @@ public class SubJobController {
             summary = "Update a sub job status",
             description = "This method is responsible for update a sub job status"
     )
-    @PatchMapping("/{id}/update-status")
+    @PatchMapping("/{id}/status")
     public ResponseEntity<SubJobUpdateStatusResponseDTO> updateSubJobStatus(
         @PathVariable UUID id,
         @RequestBody @Valid SubJobUpdateStatusRequestDTO statusDTO
