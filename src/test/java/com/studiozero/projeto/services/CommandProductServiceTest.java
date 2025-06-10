@@ -1,5 +1,6 @@
 package com.studiozero.projeto.services;
 
+import com.studiozero.projeto.dtos.request.CommandProductRequestDTO;
 import com.studiozero.projeto.entities.Command;
 import com.studiozero.projeto.entities.CommandProduct;
 import com.studiozero.projeto.entities.Product;
@@ -14,12 +15,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CommandProductServiceTest {
+public class CommandProductServiceTest {
 
     @InjectMocks
     private CommandProductService commandProductService;
@@ -39,6 +41,10 @@ class CommandProductServiceTest {
     @Mock
     private TracingService tracingService;
 
+    private CommandProduct existingCommandProduct;
+    private CommandProduct updatedCommandProduct;
+    private Product oldProduct;
+    private Product newProduct;
     private Command command;
     private Product product;
     private CommandProduct commandProduct;
@@ -47,21 +53,52 @@ class CommandProductServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        // Setup command once
         command = new Command();
         command.setId(1);
         command.setStatus(Status.OPEN);
+        command.setIsInternal(false);
+        command.setDiscount(0.0);
 
+        // Setup product
         product = new Product();
         product.setId(1);
         product.setQuantity(50);
         product.setClientValue(10.0);
         product.setInternalValue(5.0);
 
+        // Setup commandProduct
         commandProduct = new CommandProduct();
         commandProduct.setId(1);
         commandProduct.setCommand(command);
         commandProduct.setProduct(product);
         commandProduct.setProductQuantity(2);
+
+        // Old product for update tests
+        oldProduct = new Product();
+        oldProduct.setId(10);
+        oldProduct.setQuantity(100);
+        oldProduct.setClientValue(10.0);
+        oldProduct.setInternalValue(8.0);
+
+        // New product for update tests
+        newProduct = new Product();
+        newProduct.setId(20);
+        newProduct.setQuantity(50);
+        newProduct.setClientValue(20.0);
+        newProduct.setInternalValue(15.0);
+
+        // Existing CommandProduct
+        existingCommandProduct = new CommandProduct();
+        existingCommandProduct.setId(1);
+        existingCommandProduct.setProduct(oldProduct);
+        existingCommandProduct.setProductQuantity(5);
+        existingCommandProduct.setCommand(command);
+
+        // Updated CommandProduct placeholder
+        updatedCommandProduct = new CommandProduct();
+        updatedCommandProduct.setId(1);
+        updatedCommandProduct.setCommand(command);
     }
 
     @Test
@@ -106,7 +143,6 @@ class CommandProductServiceTest {
     @Test
     @DisplayName("Should update total command value successfully")
     void updateCommand_Success() {
-        command.setIsInternal(false);
         when(commandRepository.existsById(1)).thenReturn(true);
         when(commandProductRepository.findAllByCommand_Id(1)).thenReturn(List.of(commandProduct));
         when(commandRepository.save(any(Command.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -162,5 +198,37 @@ class CommandProductServiceTest {
         double expected = 20.0 - 2.0;
         assertEquals(expected, updated.getTotalValue());
         verify(tracingService).setTracing(Context.BAR);
+    }
+
+    @Test
+    @DisplayName("Should throw NotFoundException when Command is not found")
+    void createCommandProduct_shouldThrowNotFoundException_whenCommandNotFound() {
+        Integer commandId = 1;
+        CommandProductRequestDTO dto = new CommandProductRequestDTO();
+        dto.setFkCommand(commandId);
+
+        when(commandRepository.findById(commandId)).thenReturn(Optional.empty());
+
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> {
+            commandProductService.createCommandProduct(dto);
+        });
+
+        assertEquals("Comanda não encontrada", ex.getMessage());
+        verify(commandProductRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should throw NotFoundException when CommandProduct does not exist")
+    void testUpdateCommandProduct_NotFound() {
+        Integer id = 1;
+        when(commandProductRepository.existsById(id)).thenReturn(false);
+
+        updatedCommandProduct.setId(id);
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            commandProductService.updateCommandProduct(updatedCommandProduct);
+        });
+
+        assertEquals("Produto da comanda não encontrado", exception.getMessage());
     }
 }

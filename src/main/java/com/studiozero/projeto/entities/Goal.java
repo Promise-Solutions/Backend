@@ -19,4 +19,10 @@ public class Goal {
 
     @Column(name = "meta", nullable = false)
     private Double goal;
+
+    public void setName(String increaseRevenue) {
+    }
+
+    public void setTargetValue(double v) {
+    }
 }

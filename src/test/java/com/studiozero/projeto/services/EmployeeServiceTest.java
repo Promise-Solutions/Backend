@@ -2,6 +2,7 @@ package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.entities.Employee;
 import com.studiozero.projeto.exceptions.ConflictException;
+import com.studiozero.projeto.exceptions.DeleteOwnUserException;
 import com.studiozero.projeto.exceptions.NotFoundException;
 import com.studiozero.projeto.repositories.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -267,6 +269,59 @@ class EmployeeServiceTest {
         assertThrows(NotFoundException.class, () -> employeeService.deleteEmployee(id, userLogged));
 
         verify(employeeRepository).existsById(id);
+        verify(employeeRepository, never()).deleteById(any());
+    }
+
+    @Test
+    @DisplayName("deleteEmployee throws NotFoundException if employee does not exist")
+    void deleteEmployee_shouldThrowNotFoundException_whenEmployeeNotFound() {
+        UUID employeeId = UUID.randomUUID();
+        UUID userLogged = UUID.randomUUID();
+
+        when(employeeRepository.existsById(employeeId)).thenReturn(false);
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            employeeService.deleteEmployee(employeeId, userLogged);
+        });
+
+        assertEquals("Employee not found", exception.getMessage());
+        verify(employeeRepository, never()).findById(any());
+        verify(employeeRepository, never()).deleteById(any());
+    }
+
+    @Test
+    @DisplayName("deleteEmployee throws DeleteOwnUserException if user tries to delete themselves")
+    void deleteEmployee_shouldThrowDeleteOwnUserException_whenDeletingOwnUser() {
+        UUID employeeId = UUID.randomUUID();
+        UUID userLogged = employeeId;
+
+        Employee employee = new Employee();
+        employee.setId(employeeId);
+
+        when(employeeRepository.existsById(employeeId)).thenReturn(true);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        DeleteOwnUserException exception = assertThrows(DeleteOwnUserException.class, () -> {
+            employeeService.deleteEmployee(employeeId, userLogged);
+        });
+
+        assertEquals("You can't delete your own user", exception.getMessage());
+        verify(employeeRepository, never()).deleteById(any());
+    }
+
+    @Test
+    @DisplayName("Should throw NotFoundException when employee not found after existsById returns true")
+    void shouldThrowNotFoundExceptionIfFindByIdReturnsEmpty() {
+        UUID employeeId = UUID.randomUUID();
+        UUID userLogged = UUID.randomUUID();
+
+        when(employeeRepository.existsById(employeeId)).thenReturn(true);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employeeService.deleteEmployee(employeeId, userLogged))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Employee not found");
+
         verify(employeeRepository, never()).deleteById(any());
     }
 }
