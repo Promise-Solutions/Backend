@@ -1,10 +1,12 @@
 package com.studiozero.projeto.services;
 
 import static org.junit.jupiter.api.Assertions.*;
-import com.studiozero.projeto.entities.Tracing;
-import com.studiozero.projeto.enums.Context;
-import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.repositories.TracingRepository;
+
+import com.studiozero.projeto.application.services.TracingService;
+import com.studiozero.projeto.domain.entities.Tracing;
+import com.studiozero.projeto.application.services.enums.Context;
+import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
+import com.studiozero.projeto.domain.entities.repositories.TracingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

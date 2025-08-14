@@ -1,14 +1,17 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.response.SubJobDeleteResponseDTO;
-import com.studiozero.projeto.entities.Job;
-import com.studiozero.projeto.entities.SubJob;
-import com.studiozero.projeto.enums.Context;
-import com.studiozero.projeto.enums.JobCategory;
-import com.studiozero.projeto.enums.Status;
-import com.studiozero.projeto.exceptions.ConflictException;
-import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.repositories.SubJobRepository;
+import com.studiozero.projeto.application.services.JobService;
+import com.studiozero.projeto.application.services.SubJobService;
+import com.studiozero.projeto.application.services.TracingService;
+import com.studiozero.projeto.application.services.dtos.response.SubJobDeleteResponseDTO;
+import com.studiozero.projeto.domain.entities.Job;
+import com.studiozero.projeto.domain.entities.SubJob;
+import com.studiozero.projeto.application.services.enums.Context;
+import com.studiozero.projeto.application.services.enums.JobCategory;
+import com.studiozero.projeto.application.services.enums.Status;
+import com.studiozero.projeto.infrastructure.configs.exceptions.ConflictException;
+import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
+import com.studiozero.projeto.domain.entities.repositories.SubJobRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

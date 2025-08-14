@@ -1,12 +1,13 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.request.TaskRequestDTO;
-import com.studiozero.projeto.entities.Employee;
-import com.studiozero.projeto.entities.Task;
-import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.mappers.TaskMapper;
-import com.studiozero.projeto.repositories.EmployeeRepository;
-import com.studiozero.projeto.repositories.TaskRepository;
+import com.studiozero.projeto.application.services.TaskService;
+import com.studiozero.projeto.application.services.dtos.request.TaskRequestDTO;
+import com.studiozero.projeto.domain.entities.Employee;
+import com.studiozero.projeto.domain.entities.Task;
+import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
+import com.studiozero.projeto.web.controllers.mappers.TaskMapper;
+import com.studiozero.projeto.domain.entities.repositories.EmployeeRepository;
+import com.studiozero.projeto.domain.entities.repositories.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

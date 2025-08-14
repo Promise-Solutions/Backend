@@ -1,7 +1,11 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.entities.Employee;
-import com.studiozero.projeto.entities.SubJob;
+import com.studiozero.projeto.application.services.EmailService;
+import com.studiozero.projeto.application.services.EmployeeService;
+import com.studiozero.projeto.application.services.ScheduledTaskService;
+import com.studiozero.projeto.application.services.SubJobService;
+import com.studiozero.projeto.domain.entities.Employee;
+import com.studiozero.projeto.domain.entities.SubJob;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

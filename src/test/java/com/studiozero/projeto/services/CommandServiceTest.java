@@ -1,13 +1,21 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.dtos.request.CommandRequestDTO;
-import com.studiozero.projeto.entities.*;
-import com.studiozero.projeto.enums.Context;
-import com.studiozero.projeto.enums.Status;
-import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.exceptions.UnauthorizedException;
-import com.studiozero.projeto.mappers.CommandMapper;
-import com.studiozero.projeto.repositories.*;
+import com.studiozero.projeto.application.services.CommandService;
+import com.studiozero.projeto.application.services.TracingService;
+import com.studiozero.projeto.domain.entities.Client;
+import com.studiozero.projeto.domain.entities.Command;
+import com.studiozero.projeto.domain.entities.CommandProduct;
+import com.studiozero.projeto.domain.entities.Employee;
+import com.studiozero.projeto.domain.entities.repositories.ClientRepository;
+import com.studiozero.projeto.domain.entities.repositories.CommandProductRepository;
+import com.studiozero.projeto.domain.entities.repositories.CommandRepository;
+import com.studiozero.projeto.domain.entities.repositories.EmployeeRepository;
+import com.studiozero.projeto.application.services.dtos.request.CommandRequestDTO;
+import com.studiozero.projeto.application.services.enums.Context;
+import com.studiozero.projeto.application.services.enums.Status;
+import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
+import com.studiozero.projeto.infrastructure.configs.exceptions.UnauthorizedException;
+import com.studiozero.projeto.web.controllers.mappers.CommandMapper;
 
 import org.junit.jupiter.api.*;
 import org.mockito.*;

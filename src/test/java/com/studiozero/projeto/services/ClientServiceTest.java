@@ -1,14 +1,16 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.entities.Client;
-import com.studiozero.projeto.entities.Tracing;
-import com.studiozero.projeto.enums.ClientType;
-import com.studiozero.projeto.enums.Context;
-import com.studiozero.projeto.exceptions.BadRequestException;
-import com.studiozero.projeto.exceptions.ConflictException;
-import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.repositories.ClientRepository;
-import com.studiozero.projeto.repositories.CommandRepository;
+import com.studiozero.projeto.application.services.ClientService;
+import com.studiozero.projeto.application.services.TracingService;
+import com.studiozero.projeto.domain.entities.Client;
+import com.studiozero.projeto.domain.entities.Tracing;
+import com.studiozero.projeto.application.services.enums.ClientType;
+import com.studiozero.projeto.application.services.enums.Context;
+import com.studiozero.projeto.infrastructure.configs.exceptions.BadRequestException;
+import com.studiozero.projeto.infrastructure.configs.exceptions.ConflictException;
+import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
+import com.studiozero.projeto.domain.entities.repositories.ClientRepository;
+import com.studiozero.projeto.domain.entities.repositories.CommandRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

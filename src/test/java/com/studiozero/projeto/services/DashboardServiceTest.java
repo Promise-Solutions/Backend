@@ -2,9 +2,9 @@ package com.studiozero.projeto.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import com.studiozero.projeto.entities.*;
-import com.studiozero.projeto.enums.*;
-import com.studiozero.projeto.repositories.*;
+
+import com.studiozero.projeto.application.services.DashboardService;
+import com.studiozero.projeto.application.services.enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

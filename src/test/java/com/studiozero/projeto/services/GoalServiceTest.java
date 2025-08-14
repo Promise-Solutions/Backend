@@ -1,9 +1,11 @@
 package com.studiozero.projeto.services;
 
-import com.studiozero.projeto.entities.Goal;
-import com.studiozero.projeto.enums.Context;
-import com.studiozero.projeto.exceptions.NotFoundException;
-import com.studiozero.projeto.repositories.GoalRepository;
+import com.studiozero.projeto.application.services.GoalService;
+import com.studiozero.projeto.application.services.TracingService;
+import com.studiozero.projeto.domain.entities.Goal;
+import com.studiozero.projeto.application.services.enums.Context;
+import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
+import com.studiozero.projeto.domain.entities.repositories.GoalRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
