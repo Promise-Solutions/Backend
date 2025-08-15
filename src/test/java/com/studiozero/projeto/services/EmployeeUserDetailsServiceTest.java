@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.studiozero.projeto.application.services.EmployeeUserDetailsService;
 import com.studiozero.projeto.domain.entities.Employee;
-import com.studiozero.projeto.domain.entities.repositories.EmployeeRepository;
+import com.studiozero.projeto.domain.repositories.EmployeeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

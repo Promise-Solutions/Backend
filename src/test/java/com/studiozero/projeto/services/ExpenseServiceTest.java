@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.studiozero.projeto.application.services.ExpenseService;
 import com.studiozero.projeto.application.services.ProductService;
-import com.studiozero.projeto.application.services.dtos.request.ExpenseRequestDTO;
+import com.studiozero.projeto.application.dtos.request.ExpenseRequestDTO;
 import com.studiozero.projeto.domain.entities.Expense;
 import com.studiozero.projeto.domain.entities.Product;
-import com.studiozero.projeto.application.services.enums.ExpenseCategory;
-import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
-import com.studiozero.projeto.web.controllers.mappers.ExpenseMapper;
-import com.studiozero.projeto.domain.entities.repositories.ExpenseRepository;
+import com.studiozero.projeto.application.enums.ExpenseCategory;
+import com.studiozero.projeto.infrastructure.exceptions.NotFoundException;
+import com.studiozero.projeto.web.mappers.ExpenseMapper;
+import com.studiozero.projeto.domain.repositories.ExpenseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

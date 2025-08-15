@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.studiozero.projeto.application.services.DashboardService;
-import com.studiozero.projeto.application.services.enums.*;
+import com.studiozero.projeto.application.enums.*;
+import com.studiozero.projeto.domain.entities.*;
+import com.studiozero.projeto.domain.repositories.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

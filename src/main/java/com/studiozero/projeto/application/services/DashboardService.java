@@ -62,7 +62,7 @@ public class DashboardService {
 
                 List<SubJob> subJobs = subJobRepository.findAll()
                         .stream()
-                        .filter(subJob -> subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
+                        .filter(subJob -> subJob.getStatus() == Status.CLOSED)
                         .toList();
 
                 for (JobType type : JobType.values()) {

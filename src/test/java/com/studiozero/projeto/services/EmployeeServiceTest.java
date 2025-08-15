@@ -2,10 +2,10 @@ package com.studiozero.projeto.services;
 
 import com.studiozero.projeto.application.services.EmployeeService;
 import com.studiozero.projeto.domain.entities.Employee;
-import com.studiozero.projeto.infrastructure.configs.exceptions.ConflictException;
-import com.studiozero.projeto.infrastructure.configs.exceptions.DeleteOwnUserException;
-import com.studiozero.projeto.infrastructure.configs.exceptions.NotFoundException;
-import com.studiozero.projeto.domain.entities.repositories.EmployeeRepository;
+import com.studiozero.projeto.infrastructure.exceptions.ConflictException;
+import com.studiozero.projeto.infrastructure.exceptions.DeleteOwnUserException;
+import com.studiozero.projeto.infrastructure.exceptions.NotFoundException;
+import com.studiozero.projeto.domain.repositories.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
