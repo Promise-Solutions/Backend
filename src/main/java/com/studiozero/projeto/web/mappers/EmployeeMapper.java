@@ -1,9 +1,10 @@
 package com.studiozero.projeto.web.mappers;
 
-import com.studiozero.projeto.application.dtos.request.EmployeeRequestDTO;
-import com.studiozero.projeto.application.dtos.request.EmployeeUpdateRequestDTO;
-import com.studiozero.projeto.application.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.domain.entities.Employee;
+import com.studiozero.projeto.web.dtos.request.EmployeeRequestDTO;
+import com.studiozero.projeto.web.dtos.request.EmployeeUpdateRequestDTO;
+import com.studiozero.projeto.web.dtos.response.EmployeeResponseDTO;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,29 +14,29 @@ import java.util.UUID;
 public class EmployeeMapper {
 
     public static Employee toEntity(EmployeeRequestDTO dto) {
-        Employee employee = new Employee();
-        employee.setName(dto.getName());
-        employee.setEmail(dto.getEmail());
-        employee.setContact(dto.getContact());
-        employee.setCpf(dto.getCpf());
-        employee.setPassword(dto.getPassword());
-        employee.setActive(dto.getActive());
-        return employee;
+        if (dto == null)
+            return null;
+        return new Employee(
+                null,
+                dto.getName(),
+                dto.getEmail(),
+                dto.getContact(),
+                dto.getCpf(),
+                dto.getPassword(),
+                dto.getActive());
     }
 
     public static EmployeeResponseDTO toDTO(Employee employee) {
         if (employee == null) {
             return null;
         }
-        EmployeeResponseDTO dto = new EmployeeResponseDTO();
-        dto.setId(employee.getId());
-        dto.setName(employee.getName());
-        dto.setCpf(employee.getCpf());
-        dto.setEmail(employee.getEmail());
-        dto.setContact(employee.getContact());
-        dto.setActive(employee.getActive());
-
-        return dto;
+        return new EmployeeResponseDTO(
+                employee.getId(),
+                employee.getName(),
+                employee.getCpf(),
+                employee.getEmail(),
+                employee.getContact(),
+                employee.getActive());
     }
 
     public static List<EmployeeResponseDTO> toListDtos(List<Employee> entities) {
@@ -49,21 +50,15 @@ public class EmployeeMapper {
     }
 
     public static Employee toEntity(EmployeeUpdateRequestDTO dto, UUID id) {
-        if (dto == null) {
+        if (dto == null || id == null)
             return null;
-        }
-
-        Employee employee = new Employee();
-
-
-        employee.setId(id);
-        if (dto.getName() != null) employee.setName(dto.getName());
-        if (dto.getEmail() != null) employee.setEmail(dto.getEmail());
-        if (dto.getContact() != null) employee.setContact( dto.getContact());
-        if (dto.getCpf() != null) employee.setCpf(dto.getCpf());
-        if (dto.getPassword() != null) employee.setPassword(dto.getPassword());
-        if (dto.getActive() != null) employee.setActive(dto.getActive());
-
-        return employee;
+        return new Employee(
+                id,
+                dto.getName(),
+                dto.getEmail(),
+                dto.getContact(),
+                dto.getCpf(),
+                dto.getPassword(),
+                dto.getActive());
     }
 }

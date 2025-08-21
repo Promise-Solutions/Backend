@@ -1,7 +1,9 @@
 package com.studiozero.projeto.web.controllers;
 
-import com.google.api.services.drive.model.File;
-import com.studiozero.projeto.application.services.DriveService;
+import com.studiozero.projeto.application.usecases.drive.UploadFileUseCase;
+import com.studiozero.projeto.application.usecases.drive.ListFilesUseCase;
+import com.studiozero.projeto.application.usecases.drive.DeleteFileUseCase;
+import com.studiozero.projeto.application.usecases.drive.DownloadFileUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,60 +20,50 @@ import java.util.List;
 @Tag(name = "Google Drive API", description = "Endpoints for Google Drive")
 public class DriveController {
 
-    private final DriveService driveService;
+    private final UploadFileUseCase uploadFileUseCase;
+    private final ListFilesUseCase listFilesUseCase;
+    private final DeleteFileUseCase deleteFileUseCase;
+    private final DownloadFileUseCase downloadFileUseCase;
 
-    @Operation(
-            summary = "Sent a file to drive",
-            description = "This method is responsible for sent a file to drive."
-    )
+    @Operation(summary = "Sent a file to drive", description = "This method is responsible for sent a file to drive.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(
-            @RequestPart("file") MultipartFile file
-    ) {
+            @RequestPart("file") MultipartFile file) {
         try {
-            String fileId = driveService.uploadFile(file);
+            String fileId = uploadFileUseCase.execute(file);
             return ResponseEntity.ok("File sent successfully! ID: " + fileId);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Upload error: " + e.getMessage());
         }
     }
 
-    @Operation(
-            summary = "List files from drive",
-            description = "This method is responsible for list files from drive."
-    )
+    @Operation(summary = "List files from drive", description = "This method is responsible for list files from drive.")
     @GetMapping
-    public ResponseEntity<List<File>> listFiles() {
+    public ResponseEntity<List<Object>> listFiles() {
         try {
-            List<File> files = driveService.listFiles();
+            var files = listFilesUseCase.execute();
             return ResponseEntity.ok(files);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    @Operation(
-            summary = "Delete file from drive",
-            description = "This method is responsible for deleting a file from drive by its ID."
-    )
+    @Operation(summary = "Delete file from drive", description = "This method is responsible for deleting a file from drive by its ID.")
     @DeleteMapping("/{fileId}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileId) {
         try {
-            driveService.deleteFile(fileId);
+            deleteFileUseCase.execute(fileId);
             return ResponseEntity.ok("File deleted successfully! ID: " + fileId);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Delete error: " + e.getMessage());
         }
     }
 
-    @Operation(
-            summary = "Download file from drive",
-            description = "This method is responsible for downloading a file from drive by its ID."
-    )
+    @Operation(summary = "Download file from drive", description = "This method is responsible for downloading a file from drive by its ID.")
     @GetMapping("/download/{fileId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileId) {
         try {
-            byte[] fileData = driveService.downloadFile(fileId);
+            byte[] fileData = downloadFileUseCase.execute(fileId);
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=\"" + fileId + "\"")
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)

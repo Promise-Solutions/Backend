@@ -1,37 +1,68 @@
 package com.studiozero.projeto.domain.entities;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "produto")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_produto", nullable = false)
     private Integer id;
-
-    @Column(name = "nome_produto", nullable = false)
     private String name;
-
-    @Column(name = "qtd_produto", nullable = false)
     private Integer quantity;
-
-    @Column(name = "valor_cliente", nullable = false)
     private Double clientValue;
-
-    @Column(name = "valor_interno", nullable = false)
     private Double internalValue;
+    private Double totalBuyValue;
 
-    // alterado com a mudança da lógica do sistema
-    //@Column(name = "despesa_compra", nullable = false)
-    //private Double totalBuyValue;
+    public Product(Integer id, String name, Integer quantity, Double clientValue, Double internalValue,
+            Double totalBuyValue) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.clientValue = clientValue;
+        this.internalValue = internalValue;
+        this.totalBuyValue = totalBuyValue;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Double getClientValue() {
+        return clientValue;
+    }
+
+    public Double getInternalValue() {
+        return internalValue;
+    }
+
+    public Double getTotalBuyValue() {
+        return totalBuyValue;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setClientValue(Double clientValue) {
+        this.clientValue = clientValue;
+    }
+
+    public void setInternalValue(Double internalValue) {
+        this.internalValue = internalValue;
+    }
+
+    public void setTotalBuyValue(Double totalBuyValue) {
+        this.totalBuyValue = totalBuyValue;
+    }
 }

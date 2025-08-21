@@ -1,28 +1,34 @@
 package com.studiozero.projeto.domain.entities;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "meta")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Goal {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_meta", nullable = false)
     private Integer id;
-
-    @Column(name = "meta", nullable = false)
     private Double goal;
 
-    public void setName(String increaseRevenue) {
+    public Goal(Integer id, Double goal) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        validateGoal(goal);
+        this.id = id;
+        this.goal = goal;
     }
 
-    public void setTargetValue(double v) {
+    private void validateGoal(Double goal) {
+        if (goal == null || goal <= 0) {
+            throw new IllegalArgumentException("Goal must be greater than zero");
+        }
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Double getGoal() {
+        return goal;
+    }
+
+    public void changeGoal(Double newGoal) {
+        validateGoal(newGoal);
+        this.goal = newGoal;
     }
 }

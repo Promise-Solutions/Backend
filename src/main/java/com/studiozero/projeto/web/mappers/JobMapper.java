@@ -1,10 +1,10 @@
 package com.studiozero.projeto.web.mappers;
 
-import com.studiozero.projeto.application.dtos.request.JobRequestDTO;
-import com.studiozero.projeto.application.dtos.response.JobResponseDTO;
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.entities.Job;
-import com.studiozero.projeto.infrastructure.exceptions.NotFoundException;
+import com.studiozero.projeto.web.dtos.request.JobRequestDTO;
+import com.studiozero.projeto.web.dtos.response.JobResponseDTO;
+import com.studiozero.projeto.web.handlers.NotFoundException;
 import com.studiozero.projeto.domain.repositories.ClientRepository;
 import org.springframework.stereotype.Component;
 
@@ -21,18 +21,20 @@ public class JobMapper {
     }
 
     public Job toEntity(JobRequestDTO dto) {
-        Client client = clientRepository.findById(dto.getFkClient())
-                .orElseThrow(() -> new NotFoundException("FkClient not found"));
-
-        Job job = new Job();
-        job.setClient(client);
-        job.setTitle(dto.getTitle());
-        job.setTotalValue(dto.getTotalValue());
-        job.setCategory(dto.getCategory());
-        job.setStatus(dto.getStatus());
-        job.setServiceType(dto.getServiceType());
-
-        return job;
+        if (dto == null)
+            return null;
+        Client client = clientRepository.findById(dto.getFkClient());
+        if (client == null)
+            throw new NotFoundException("FkClient not found");
+        // Geração de id pode ser feita no use case, aqui passamos null
+        return new Job(
+                null,
+                dto.getTitle(),
+                dto.getTotalValue(),
+                dto.getCategory(),
+                dto.getStatus(),
+                client,
+                dto.getServiceType());
     }
 
     public static JobResponseDTO toDTO(Job job) {
@@ -61,23 +63,19 @@ public class JobMapper {
     }
 
     public Job toEntity(JobRequestDTO dto, UUID id) {
-        if (dto == null) return null;
-
-        Client client = clientRepository.findById(dto.getFkClient())
-                .orElseThrow(() -> new NotFoundException("FkClient not found!"));
-
-        Job job = new Job();
-
-        job.setId(id);
-        job.setTitle(dto.getTitle());
-        job.setCategory(dto.getCategory());
-        job.setServiceType(dto.getServiceType());
-        job.setTotalValue(dto.getTotalValue());
-        job.setClient(client);
-        job.setStatus(dto.getStatus());
-
-        return job;
+        if (dto == null || id == null)
+            return null;
+        Client client = clientRepository.findById(dto.getFkClient());
+        if (client == null)
+            throw new NotFoundException("FkClient not found!");
+        return new Job(
+                id,
+                dto.getTitle(),
+                dto.getTotalValue(),
+                dto.getCategory(),
+                dto.getStatus(),
+                client,
+                dto.getServiceType());
     }
 
 }
-

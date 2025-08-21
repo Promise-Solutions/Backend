@@ -1,11 +1,17 @@
 package com.studiozero.projeto.domain.repositories;
 
-import com.studiozero.projeto.domain.entities.Task;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.UUID;
 
-@Repository
-public interface TaskRepository extends JpaRepository<Task, UUID> {
+import com.studiozero.projeto.domain.entities.Task;
+
+import java.util.List;
+
+public interface TaskRepository {
+    Task findById(UUID id);
+
+    List<Task> findAll();
+
+    void save(Task task);
+
+    void deleteById(UUID id);
 }

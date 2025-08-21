@@ -1,8 +1,9 @@
 package com.studiozero.projeto.web.mappers;
 
-import com.studiozero.projeto.application.dtos.request.ProductRequestDTO;
-import com.studiozero.projeto.application.dtos.response.ProductResponseDTO;
 import com.studiozero.projeto.domain.entities.Product;
+import com.studiozero.projeto.web.dtos.request.ProductRequestDTO;
+import com.studiozero.projeto.web.dtos.response.ProductResponseDTO;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,25 +12,24 @@ import java.util.List;
 public class ProductMapper {
 
     public Product toEntity(ProductRequestDTO dto) {
-        Product product = new Product();
-        product.setName(dto.getName());
-        product.setQuantity(dto.getQuantity());
-        product.setClientValue(dto.getClientValue());
-        product.setInternalValue(dto.getInternalValue());
-        return product;
+        if (dto == null)
+            return null;
+        // id deve ser null para novo Product (banco gera)
+        return new Product(
+                null,
+                dto.getName(),
+                dto.getQuantity(),
+                dto.getClientValue(),
+                dto.getInternalValue(),
+                null // totalBuyValue pode ser calculado depois
+        );
     }
 
     public static ProductResponseDTO toDTO(Product product) {
         if (product == null) {
             return null;
         }
-        ProductResponseDTO dto = new ProductResponseDTO();
-        dto.setId(product.getId());
-        dto.setName(product.getName());
-        dto.setQuantity(product.getQuantity());
-        dto.setClientValue(product.getClientValue());
-        dto.setInternalValue(product.getInternalValue());
-        return dto;
+        return new ProductResponseDTO(product);
     }
 
     public static List<ProductResponseDTO> toListDtos(List<Product> entities) {
@@ -43,14 +43,15 @@ public class ProductMapper {
     }
 
     public Product toEntity(ProductRequestDTO dto, Integer id) {
-        if (dto == null) return null;
-
+        if (dto == null || id == null)
+            return null;
         return new Product(
                 id,
                 dto.getName(),
                 dto.getQuantity(),
                 dto.getClientValue(),
-                dto.getInternalValue()
+                dto.getInternalValue(),
+                null // totalBuyValue pode ser calculado depois
         );
     }
 }

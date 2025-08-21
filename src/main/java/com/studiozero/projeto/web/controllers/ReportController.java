@@ -1,6 +1,6 @@
 package com.studiozero.projeto.web.controllers;
 
-import com.studiozero.projeto.application.services.ReportService;
+import com.studiozero.projeto.application.usecases.report.GenerateExcelReportUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -21,11 +21,11 @@ import java.io.FileNotFoundException;
 @RequiredArgsConstructor
 @Tag(name = "Report", description = "Endpoints for Report Management")
 public class ReportController {
-    private final ReportService reportService;
+    private final GenerateExcelReportUseCase generateExcelReportUseCase;
 
     @GetMapping("/generate-excel")
     public ResponseEntity<Resource> gerarRelatorioCompletoExcel() {
-        File arquivo = reportService.gerarRelatorioExcel();
+        File arquivo = generateExcelReportUseCase.execute();
 
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(arquivo));

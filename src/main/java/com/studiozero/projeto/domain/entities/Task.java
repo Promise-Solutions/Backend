@@ -1,46 +1,93 @@
 package com.studiozero.projeto.domain.entities;
 
 import com.studiozero.projeto.application.enums.Status;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-@Table(name = "tarefa")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Task {
-
-    @Id
-    @Column(name = "id_tarefa", updatable = false, nullable = false)
-    private UUID id;
-
-    @Column(name = "titulo", nullable = false)
+    private final UUID id;
     private String title;
-
-    @Column(name = "descricao", nullable = false)
     private String description;
-
-    @Column(name = "data_inicio")
     private LocalDate startDate;
-
-    @Column(name = "data_limite")
     private LocalDate limitDate;
-
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "fk_funcionario")
     private Employee employee;
-
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
     private Status status;
-
-    @ManyToOne (optional = true)
-    @JoinColumn(name = "fk_autor")
     private Employee assign;
+
+    public Task(UUID id, String title, String description, LocalDate startDate, LocalDate limitDate, Employee employee,
+            Status status, Employee assign) {
+        if (id == null || id.toString().isEmpty()) {
+            throw new IllegalArgumentException("Id cannot be null or empty");
+        }
+        validateTitle(title);
+        validateDescription(description);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.limitDate = limitDate;
+        this.employee = employee;
+        this.status = status;
+        this.assign = assign;
+    }
+
+    private void validateTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+        if (title.length() < 2 || title.length() > 100) {
+            throw new IllegalArgumentException("Title must be between 2 and 100 characters");
+        }
+    }
+
+    private void validateDescription(String description) {
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty");
+        }
+        if (description.length() < 2 || description.length() > 500) {
+            throw new IllegalArgumentException("Description must be between 2 and 500 characters");
+        }
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getLimitDate() {
+        return limitDate;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Employee getAssign() {
+        return assign;
+    }
+
+    public void changeTitle(String newTitle) {
+        validateTitle(newTitle);
+        this.title = newTitle;
+    }
+
+    public void changeDescription(String newDescription) {
+        validateDescription(newDescription);
+        this.description = newDescription;
+    }
 }

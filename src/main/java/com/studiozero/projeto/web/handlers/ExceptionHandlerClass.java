@@ -1,6 +1,5 @@
 package com.studiozero.projeto.web.handlers;
 
-import com.studiozero.projeto.infrastructure.exceptions.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

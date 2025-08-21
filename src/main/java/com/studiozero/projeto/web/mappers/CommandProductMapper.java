@@ -3,9 +3,8 @@ package com.studiozero.projeto.web.mappers;
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.domain.entities.CommandProduct;
 import com.studiozero.projeto.domain.entities.Product;
-import com.studiozero.projeto.application.dtos.request.CommandProductRequestDTO;
-import com.studiozero.projeto.application.dtos.response.CommandProductResponseDTO;
-import com.studiozero.projeto.infrastructure.exceptions.NotFoundException;
+import com.studiozero.projeto.web.dtos.request.CommandProductRequestDTO;
+import com.studiozero.projeto.web.dtos.response.CommandProductResponseDTO;
 import com.studiozero.projeto.domain.repositories.CommandRepository;
 import com.studiozero.projeto.domain.repositories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,18 +24,20 @@ public class CommandProductMapper {
     }
 
     public CommandProduct toEntity(CommandProductRequestDTO dto) {
-        Command command = commandRepository.findById(dto.getFkCommand())
-                .orElseThrow(() -> new NotFoundException("FkCommand Not Found"));
-
-        Product product = productRepository.findById(dto.getFkProduct())
-                .orElseThrow(() -> new NotFoundException("FkProduct Not found"));
-
-        CommandProduct commandProduct = new CommandProduct();
-        commandProduct.setCommand(command);
-        commandProduct.setProduct(product);
-        commandProduct.setProductQuantity(dto.getProductQuantity());
-        commandProduct.setUnitValue(dto.getUnitValue());
-        return commandProduct;
+        if (dto == null) {
+            return null;
+        }
+        Command command = commandRepository.findById(dto.getFkCommand());
+        Product product = productRepository.findById(dto.getFkProduct());
+        if (command == null || product == null) {
+            return null;
+        }
+        return new CommandProduct(
+                null, // id será gerado pelo banco ou use case
+                product,
+                command,
+                dto.getProductQuantity(),
+                dto.getUnitValue());
     }
 
     public static CommandProductResponseDTO toDTO(CommandProduct commandProduct) {
@@ -65,24 +66,19 @@ public class CommandProductMapper {
     }
 
     public CommandProduct toEntity(CommandProductRequestDTO dto, Integer id) {
-        if (dto == null) {
+        if (dto == null || id == null) {
             return null;
         }
-
-        Command command = commandRepository.findById(dto.getFkCommand())
-                .orElseThrow(() -> new NotFoundException("FkCommand not found!"));
-
-        Product product = productRepository.findById(dto.getFkProduct())
-                .orElseThrow(() -> new NotFoundException("FkProduto not found!"));
-
-
-        CommandProduct commandProduct = new CommandProduct();
-
-        commandProduct.setId(id);
-        commandProduct.setProductQuantity(dto.getProductQuantity());
-        commandProduct.setCommand(command);
-        commandProduct.setProduct(product);
-        commandProduct.setUnitValue(dto.getUnitValue());
-        return commandProduct;
+        Command command = commandRepository.findById(dto.getFkCommand());
+        Product product = productRepository.findById(dto.getFkProduct());
+        if (command == null || product == null) {
+            return null;
+        }
+        return new CommandProduct(
+                id,
+                product,
+                command,
+                dto.getProductQuantity(),
+                dto.getUnitValue());
     }
 }
