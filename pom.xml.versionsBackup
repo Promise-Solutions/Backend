@@ -92,8 +92,8 @@
 
         <!-- Google API -->
         <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
+            <groupId>com.google.api-clientEntity</groupId>
+            <artifactId>google-api-clientEntity</artifactId>
             <version>1.34.1</version>
         </dependency>
 
@@ -104,8 +104,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.oauth-client</groupId>
-            <artifactId>google-oauth-client</artifactId>
+            <groupId>com.google.oauth-clientEntity</groupId>
+            <artifactId>google-oauth-clientEntity</artifactId>
             <version>1.34.1</version>
         </dependency>
 
@@ -116,14 +116,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.oauth-client</groupId>
-            <artifactId>google-oauth-client-jetty</artifactId>
+            <groupId>com.google.oauth-clientEntity</groupId>
+            <artifactId>google-oauth-clientEntity-jetty</artifactId>
             <version>1.34.1</version>
         </dependency>
 
         <dependency>
-            <groupId>com.google.http-client</groupId>
-            <artifactId>google-http-client-jackson2</artifactId>
+            <groupId>com.google.http-clientEntity</groupId>
+            <artifactId>google-http-clientEntity-jackson2</artifactId>
             <version>1.46.3</version>
         </dependency>
 
