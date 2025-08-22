@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  db:
+    build:
+      context: ./src/main/resources
+      dockerfile: Dockerfile
+    container_name: studiozero-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: studiozero
+      MYSQL_USER: studiozero
+      MYSQL_PASSWORD: studiozero
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
