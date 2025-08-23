@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.SubJobRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaSubJobRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,6 +49,11 @@ public class SubJobUseCaseConfig {
     @Bean
     public UpdateSubJobUseCase updateSubJobUseCase(SubJobRepository subJobRepository) {
         return new UpdateSubJobUseCase(subJobRepository);
+    }
+
+    @Bean
+    public SubJobRepositoryImpl subJobRepositoryImpl(JpaSubJobRepository jpaSubJobRepository) {
+        return new SubJobRepositoryImpl(jpaSubJobRepository);
     }
 }
 

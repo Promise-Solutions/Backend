@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.EmployeeRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaEmployeeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,5 +44,12 @@ public class EmployeeUseCaseConfig {
     public UpdateEmployeeUseCase updateEmployeeUseCase(EmployeeRepository employeeRepository) {
         return new UpdateEmployeeUseCase(employeeRepository);
     }
+
+    @Bean
+    public EmployeeRepositoryImpl employeeRepositoryImpl(JpaEmployeeRepository jpaEmployeeRepository) {
+        return new EmployeeRepositoryImpl(jpaEmployeeRepository);
+    }
+
+
 }
 

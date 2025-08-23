@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.DashboardRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,6 +55,23 @@ public class DashboardUseCaseConfig {
     @Bean
     public GetRecentTimeUseCase getRecentTimeUseCase(DashboardRepository dashboardRepository) {
         return new GetRecentTimeUseCase(dashboardRepository);
+    }
+
+    @Bean
+    public DashboardRepositoryImpl dashboardRepositoryImpl(JpaCommandRepository commandRepository,
+                                                            JpaSubJobRepository subJobRepository,
+                                                            JpaClientRepository clientRepository,
+                                                            JpaJobRepository jobRepository,
+                                                            JpaTracingRepository tracingRepository,
+                                                            JpaExpenseRepository expenseRepository) {
+        return new DashboardRepositoryImpl(
+                commandRepository,
+                subJobRepository,
+                clientRepository,
+                jobRepository,
+                tracingRepository,
+                expenseRepository);
+
     }
 }
 

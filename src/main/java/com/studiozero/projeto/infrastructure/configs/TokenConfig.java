@@ -1,5 +1,6 @@
 package com.studiozero.projeto.infrastructure.configs;
 
+import com.studiozero.projeto.application.usecases.token.GenerateTokenUseCase;
 import com.studiozero.projeto.application.usecases.token.ValidateTokenUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,5 +11,10 @@ public class TokenConfig {
     @Bean
     public ValidateTokenUseCase validateTokenUseCase(@Value("${JWT_SECRET:studio-zero-key}") String secret) {
         return new ValidateTokenUseCase(secret);
+    }
+
+    @Bean
+    public GenerateTokenUseCase generateTokenUseCase(@Value("${JWT_SECRET:studio-zero-key}") String secret) {
+        return new GenerateTokenUseCase(secret);
     }
 }

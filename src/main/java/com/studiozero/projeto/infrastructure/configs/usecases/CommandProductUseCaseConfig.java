@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.CommandProductRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaCommandProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +37,11 @@ public class CommandProductUseCaseConfig {
     @Bean
     public DeleteCommandProductUseCase deleteCommandProductUseCase(CommandProductRepository commandProductRepository) {
         return new DeleteCommandProductUseCase(commandProductRepository);
+    }
+
+    @Bean
+    public CommandProductRepositoryImpl commandProductRepositoryImpl(JpaCommandProductRepository jpaCommandProductRepository) {
+        return new CommandProductRepositoryImpl(jpaCommandProductRepository);
     }
 }
 

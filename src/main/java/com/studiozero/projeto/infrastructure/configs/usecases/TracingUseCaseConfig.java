@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.TracingRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTracingRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,6 +31,11 @@ public class TracingUseCaseConfig {
     @Bean
     public SetTracingUseCase setTracingUseCase(TracingRepository tracingRepository) {
         return new SetTracingUseCase(tracingRepository);
+    }
+
+    @Bean
+    public TracingRepositoryImpl tracingRepositoryImpl(JpaTracingRepository jpaTracingRepository) {
+        return new TracingRepositoryImpl(jpaTracingRepository);
     }
 }
 

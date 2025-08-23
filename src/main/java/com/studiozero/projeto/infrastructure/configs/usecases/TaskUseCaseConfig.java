@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.TaskRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTaskRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +37,11 @@ public class TaskUseCaseConfig {
     @Bean
     public UpdateTaskUseCase updateTaskUseCase(TaskRepository taskRepository) {
         return new UpdateTaskUseCase(taskRepository);
+    }
+
+    @Bean
+    public TaskRepositoryImpl taskRepositoryImpl(JpaTaskRepository jpaTaskRepository) {
+        return new TaskRepositoryImpl(jpaTaskRepository);
     }
 }
 

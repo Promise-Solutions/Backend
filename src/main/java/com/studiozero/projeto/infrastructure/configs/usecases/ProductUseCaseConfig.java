@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.ProductRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +37,11 @@ public class ProductUseCaseConfig {
     @Bean
     public DeleteProductUseCase deleteProductUseCase(ProductRepository productRepository) {
         return new DeleteProductUseCase(productRepository);
+    }
+
+    @Bean
+    public ProductRepositoryImpl productRepositoryImpl(JpaProductRepository jpaProductRepository) {
+        return new ProductRepositoryImpl(jpaProductRepository);
     }
 }
 

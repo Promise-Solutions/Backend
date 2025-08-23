@@ -1,6 +1,8 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
+import com.studiozero.projeto.infrastructure.repositories.Implements.JobRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaJobRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,6 +50,11 @@ public class JobUseCaseConfig {
     @Bean
     public UpdateJobUseCase updateJobUseCase(JobRepository jobRepository) {
         return new UpdateJobUseCase(jobRepository);
+    }
+
+    @Bean
+    public JobRepositoryImpl jobRepositoryImpl(JpaJobRepository jpaJobRepository) {
+        return new JobRepositoryImpl(jpaJobRepository);
     }
 }
 

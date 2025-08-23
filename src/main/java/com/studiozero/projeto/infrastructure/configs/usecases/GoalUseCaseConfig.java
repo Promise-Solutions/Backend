@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.GoalRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaGoalRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,6 +43,11 @@ public class GoalUseCaseConfig {
     @Bean
     public UpdateGoalUseCase updateGoalUseCase(GoalRepository goalRepository) {
         return new UpdateGoalUseCase(goalRepository);
+    }
+
+    @Bean
+    public GoalRepositoryImpl goalRepositoryImpl(JpaGoalRepository jpaGoalRepository) {
+        return new GoalRepositoryImpl(jpaGoalRepository);
     }
 }
 

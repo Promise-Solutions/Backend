@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.ClientRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaClientRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,6 +38,11 @@ public class ClientUseCaseConfig {
     @Bean
     public DeleteClientUseCase deleteClientUseCase(ClientRepository clientRepository, CommandRepository commandRepository) {
         return new DeleteClientUseCase(clientRepository, commandRepository);
+    }
+
+    @Bean
+    public ClientRepositoryImpl clientRepositoryImpl(JpaClientRepository jpaClientRepository) {
+        return new ClientRepositoryImpl(jpaClientRepository);
     }
 }
 

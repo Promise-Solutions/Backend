@@ -1,5 +1,7 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.ExpenseRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaExpenseRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +37,12 @@ public class ExpenseUseCaseConfig {
     @Bean
     public UpdateExpenseUseCase updateExpenseUseCase(ExpenseRepository expenseRepository) {
         return new UpdateExpenseUseCase(expenseRepository);
+    }
+
+    @Bean
+    public ExpenseRepositoryImpl expenseRepositoryImpl(JpaExpenseRepository jpaExpenseRepository) {
+        return new ExpenseRepositoryImpl(jpaExpenseRepository);
+
     }
 }
 
