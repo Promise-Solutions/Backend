@@ -1,8 +1,6 @@
 package com.studiozero.projeto.web.controllers;
 
 import com.studiozero.projeto.infrastructure.services.GenerateExcelReport;
-import com.studiozero.projeto.domain.repositories.EmailRepository;
-import com.studiozero.projeto.web.dtos.request.SendReportEmailRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
 
 @RestController
 @RequestMapping("/report")
@@ -24,7 +20,6 @@ import java.nio.file.Files;
 @Tag(name = "Report", description = "Endpoints for Report Management")
 public class ReportController {
     private final GenerateExcelReport generateExcelReport;
-    private final EmailRepository emailRepository;
 
     @GetMapping("/generate-excel")
     public ResponseEntity<Resource> generateFullExcelReport() {
@@ -44,25 +39,6 @@ public class ReportController {
                     .body(resource);
 
         } catch (FileNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping("/send-excel")
-    public ResponseEntity<Void> sendExcelReportByEmail(@RequestBody SendReportEmailRequest request) {
-        File file = generateExcelReport.execute();
-        try {
-            byte[] fileBytes = Files.readAllBytes(file.toPath());
-            String fileName = file.getName();
-            emailRepository.sendEmailWithAttachment(
-                request.getDestinatarios(),
-                "Relatório StudioZero",
-                "Segue em anexo o relatório gerado.",
-                fileName,
-                fileBytes
-            );
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
