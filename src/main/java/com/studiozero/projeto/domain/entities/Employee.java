@@ -60,10 +60,10 @@ public class Employee {
         if (cpf == null || cpf.trim().isEmpty()) {
             throw new IllegalArgumentException("CPF cannot be null or empty");
         }
-        if (cpf.length() != 11) {
-            throw new IllegalArgumentException("CPF must be 11 digits");
+        if (cpf.length() != 14) {
+            throw new IllegalArgumentException("CPF must be 14 digits");
         }
-        if (!cpf.matches("\\d{11}")) {
+        if (!cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
             throw new IllegalArgumentException("CPF must contain only digits");
         }
     }
