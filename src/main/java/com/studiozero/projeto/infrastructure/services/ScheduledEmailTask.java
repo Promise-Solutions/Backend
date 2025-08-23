@@ -1,4 +1,4 @@
-package com.studiozero.projeto.application.usecases.scheduledtask;
+package com.studiozero.projeto.infrastructure.services;
 
 import com.studiozero.projeto.domain.repositories.EmailRepository;
 import com.studiozero.projeto.domain.entities.SubJob;

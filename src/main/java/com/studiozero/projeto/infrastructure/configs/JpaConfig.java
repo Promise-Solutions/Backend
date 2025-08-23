@@ -30,7 +30,7 @@ public class JpaConfig {
         em.setDataSource(dataSource);
 
         // Pacote das suas entidades
-        em.setPackagesToScan("com.studiozero.projeto.domain.entities");
+        em.setPackagesToScan("com.studiozero.projeto.infrastructure.entities");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -38,7 +38,7 @@ public class JpaConfig {
         // Propriedades do Hibernate
         Properties props = new Properties();
         props.setProperty("hibernate.hbm2ddl.auto", "update"); // update, validate, none
-        props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         props.setProperty("hibernate.show_sql", "true");
         em.setJpaProperties(props);
 
