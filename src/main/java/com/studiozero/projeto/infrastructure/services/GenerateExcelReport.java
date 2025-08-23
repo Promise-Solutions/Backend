@@ -1,47 +1,55 @@
-package com.studiozero.projeto.application.usecases.report;
+package com.studiozero.projeto.infrastructure.services;
 
-import com.studiozero.projeto.domain.entities.Command;
-import com.studiozero.projeto.domain.entities.Expense;
-import com.studiozero.projeto.domain.entities.Job;
+import com.studiozero.projeto.domain.entities.*;
 import com.studiozero.projeto.domain.repositories.*;
+import com.studiozero.projeto.infrastructure.repositories.services.DriveServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.io.*;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+@Service
 @RequiredArgsConstructor
-public class GenerateExcelReportUseCase {
-    private final CommandRepository commandRepository;
-    private final JobRepository jobRepository;
-    private final ExpenseRepository expenseRepository;
+public class GenerateExcelReport {
     private final ClientRepository clientRepository;
     private final CommandProductRepository commandProductRepository;
     private final EmployeeRepository employeeRepository;
+    private final CommandRepository commandRepository;
+    private final JobRepository jobRepository;
     private final SubJobRepository subJobRepository;
     private final ProductRepository productRepository;
     private final TaskRepository taskRepository;
+    private final ExpenseRepository expenseRepository;
+    private final DriveServiceRepository driveService;
 
     public File execute() {
-        var commands = commandRepository.findAll();
-        var jobs = jobRepository.findAll();
-        var expenses = expenseRepository.findAll();
-        var clients = clientRepository.findAll();
-        var employees = employeeRepository.findAll();
-        var subJobs = subJobRepository.findAll();
-        var products = productRepository.findAll();
-        var tasks = taskRepository.findAll();
-        var commandProducts = commandProductRepository.findAll();
+        List<Client> clients = clientRepository.findAll();
+        List<Employee> employees = employeeRepository.findAll();
+        List<Command> commands = commandRepository.findAll();
+        List<Job> jobs = jobRepository.findAll();
+        List<SubJob> subJobs = subJobRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        List<Task> tasks = taskRepository.findAll();
+        List<CommandProduct> commandProducts = commandProductRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll();
 
+        // Use '-' para o nome do arquivo para evitar problemas de path
         String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"),
                 "Relatório Gerado em - " + dataGeracao + ".xlsx");
 
         try (Workbook workbook = new XSSFWorkbook(); FileOutputStream fos = new FileOutputStream(arquivoXLSX)) {
+
+            // Estilo de cabeçalho
             CellStyle headerStyle = workbook.createCellStyle();
             Font font = workbook.createFont();
             font.setBold(true);
@@ -56,16 +64,31 @@ public class GenerateExcelReportUseCase {
             // FINANÇAS
             Sheet financesSheet = workbook.createSheet("Finanças");
             String[] financesHeaders = { "Entrada", "Saída", "Lucro ou Perda" };
-            double totalCommandEntryValue = commands.stream()
+            // Calcula os valores conforme DashboardService.getBalances()
+            double totalCommandEntryValue = commands
+                    .stream()
                     .filter(command -> "CLOSED".equals(command.getStatus().toString()))
-                    .mapToDouble(Command::getTotalValue).sum();
-            double totalJobEntryValue = jobs.stream().filter(job -> "CLOSED".equals(job.getStatus().toString()))
-                    .mapToDouble(Job::getTotalValue).sum();
-            double totalExpenseValue = expenses.stream()
-                    .mapToDouble(Expense::getAmountSpend).sum();
+                    .mapToDouble(Command::getTotalValue)
+                    .sum();
+
+            double totalJobEntryValue = jobs
+                    .stream()
+                    .filter(job -> "CLOSED".equals(job.getStatus().toString()))
+                    .mapToDouble(Job::getTotalValue)
+                    .sum();
+
+            double totalExpenseValue = expenses
+                    .stream()
+                    .mapToDouble(Expense::getAmountSpend)
+                    .sum();
+
             double totalEntryValue = totalCommandEntryValue + totalJobEntryValue;
             double profitOrLoss = totalEntryValue - totalExpenseValue;
-            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("pt-BR"));
+
+            // Formatação monetária
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            // Preenche a sheet de Finanças
             Row financesHeaderRow = financesSheet.createRow(0);
             for (int i = 0; i < financesHeaders.length; i++) {
                 Cell cell = financesHeaderRow.createCell(i);
@@ -132,7 +155,9 @@ public class GenerateExcelReportUseCase {
                         c.getClient() != null ? c.getClient().getName() : "Funcionário: " + c.getEmployee().getName());
                 row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "-");
                 row.createCell(3).setCellValue(traduzStatus(c.getStatus().toString()));
+                // Desconto como número (ex: 10 para 10%)
                 row.createCell(4).setCellValue(c.getDiscount());
+                // Valor Total como número
                 row.createCell(5).setCellValue(c.getTotalValue());
                 row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
                 row.createCell(7)
@@ -212,38 +237,53 @@ public class GenerateExcelReportUseCase {
 
             workbook.write(fos);
             fos.flush();
+            // Após gerar o arquivo, envia para o Google Drive sem MockMultipartFile
+            enviarRelatorioParaDrive(arquivoXLSX);
             return arquivoXLSX;
         } catch (IOException e) {
             throw new RuntimeException("Erro ao gerar relatório Excel", e);
         }
     }
 
+    private void enviarRelatorioParaDrive(File arquivo) {
+        try (FileInputStream fis = new FileInputStream(arquivo)) {
+            driveService.uploadFileStream(
+                    arquivo.getName(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fis);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao enviar relatório para o Google Drive", e);
+        }
+    }
+
+    // Método genérico para preencher sheets
     private <T> void preencherSheetComDados(Sheet sheet, String[] headers, CellStyle headerStyle, List<T> data,
-            java.util.function.BiConsumer<Row, T> rowFiller) {
+                                            BiConsumer<Row, T> rowFiller) {
         Row header = sheet.createRow(0);
         for (int i = 0; i < headers.length; i++) {
             Cell cell = header.createCell(i);
             cell.setCellValue(headers[i]);
             cell.setCellStyle(headerStyle);
         }
+
         int rowIndex = 1;
         for (T item : data) {
             Row row = sheet.createRow(rowIndex++);
             rowFiller.accept(row, item);
         }
+
         for (int i = 0; i < headers.length; i++) {
             sheet.autoSizeColumn(i);
         }
     }
 
-    private String formatDate(java.time.LocalDate date) {
-        return date != null ? date.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
+    private String formatDate(LocalDate date) {
+        return date != null ? date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
 
-    private String formatDateTime(java.time.LocalDateTime dateTime) {
-        return dateTime != null
-                ? dateTime.toLocalDate().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                : "";
+    private String formatDateTime(LocalDateTime dateTime) {
+        // Retorna apenas a data no formato dd/MM/yyyy
+        return dateTime != null ? dateTime.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
 
     private String traduzBoolean(Boolean valor) {

@@ -2,7 +2,7 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
-import com.studiozero.projeto.infrastructure.repositories.JpaSubJobRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaSubJobRepository;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
 import org.springframework.stereotype.Repository;

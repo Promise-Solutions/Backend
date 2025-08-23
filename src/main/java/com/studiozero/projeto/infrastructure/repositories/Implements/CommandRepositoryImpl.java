@@ -2,7 +2,7 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.domain.repositories.CommandRepository;
-import com.studiozero.projeto.infrastructure.repositories.JpaCommandRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaCommandRepository;
 import com.studiozero.projeto.application.enums.Status;
 import org.springframework.stereotype.Repository;
 import lombok.AllArgsConstructor;

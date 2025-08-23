@@ -1,6 +1,5 @@
 package com.studiozero.projeto.infrastructure.repositories.Implements;
 
-import com.studiozero.projeto.domain.repositories.DriveRepository;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
@@ -15,10 +14,9 @@ import java.io.IOException;
 
 @Repository
 @AllArgsConstructor
-public class DriveRepositoryImpl implements DriveRepository {
+public class DriveRepositoryImpl {
     private final Drive drive;
 
-    @Override
     public String uploadFile(Object multipartFile) {
         try {
             MultipartFile file = (MultipartFile) multipartFile;
@@ -38,7 +36,6 @@ public class DriveRepositoryImpl implements DriveRepository {
         }
     }
 
-    @Override
     public String uploadFileStream(String fileName, String contentType, InputStream inputStream) {
         try {
             String folderId = "1TA3cV-P-lzcgwRiIZuqoEunEPF32dGQa";
@@ -57,7 +54,6 @@ public class DriveRepositoryImpl implements DriveRepository {
         }
     }
 
-    @Override
     public List<Object> listFiles() {
         List<Object> allFiles = new ArrayList<>();
         String pageToken = null;
@@ -76,7 +72,6 @@ public class DriveRepositoryImpl implements DriveRepository {
         return allFiles;
     }
 
-    @Override
     public void deleteFile(String fileId) {
         try {
             drive.files().delete(fileId).execute();
@@ -85,7 +80,6 @@ public class DriveRepositoryImpl implements DriveRepository {
         }
     }
 
-    @Override
     public byte[] downloadFile(String fileId) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

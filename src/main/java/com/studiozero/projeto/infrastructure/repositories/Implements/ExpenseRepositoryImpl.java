@@ -4,7 +4,7 @@ import com.studiozero.projeto.domain.entities.Expense;
 import com.studiozero.projeto.domain.repositories.ExpenseRepository;
 import com.studiozero.projeto.infrastructure.entities.ExpenseEntity;
 import com.studiozero.projeto.infrastructure.mappers.ExpenseEntityMapper;
-import com.studiozero.projeto.infrastructure.repositories.JpaExpenseRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaExpenseRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

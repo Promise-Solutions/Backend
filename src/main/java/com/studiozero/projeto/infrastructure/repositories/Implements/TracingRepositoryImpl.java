@@ -4,7 +4,7 @@ import com.studiozero.projeto.domain.entities.Tracing;
 import com.studiozero.projeto.domain.repositories.TracingRepository;
 import com.studiozero.projeto.infrastructure.entities.TracingEntity;
 import com.studiozero.projeto.infrastructure.mappers.TracingEntityMapper;
-import com.studiozero.projeto.infrastructure.repositories.JpaTracingRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTracingRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -4,7 +4,7 @@ import com.studiozero.projeto.domain.entities.Task;
 import com.studiozero.projeto.domain.repositories.TaskRepository;
 import com.studiozero.projeto.infrastructure.entities.TaskEntity;
 import com.studiozero.projeto.infrastructure.mappers.TaskEntityMapper;
-import com.studiozero.projeto.infrastructure.repositories.JpaTaskRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTaskRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

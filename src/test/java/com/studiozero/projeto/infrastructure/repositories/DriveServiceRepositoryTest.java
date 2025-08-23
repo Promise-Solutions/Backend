@@ -3,7 +3,7 @@ package com.studiozero.projeto.infrastructure.repositories;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JpaDriveRepositoryTest {
+public class DriveServiceRepositoryTest {
     @Test
     void testFindByIdSuccess() {
         // Simule busca por ID

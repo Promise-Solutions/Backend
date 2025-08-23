@@ -1,4 +1,4 @@
-package com.studiozero.projeto.infrastructure.repositories;
+package com.studiozero.projeto.infrastructure.repositories.jpa;
 
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
 import com.studiozero.projeto.application.enums.JobCategory;

@@ -4,7 +4,7 @@ import com.studiozero.projeto.domain.entities.Goal;
 import com.studiozero.projeto.domain.repositories.GoalRepository;
 import com.studiozero.projeto.infrastructure.entities.GoalEntity;
 import com.studiozero.projeto.infrastructure.mappers.GoalEntityMapper;
-import com.studiozero.projeto.infrastructure.repositories.JpaGoalRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaGoalRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

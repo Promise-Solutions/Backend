@@ -4,7 +4,7 @@ import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.repositories.ClientRepository;
 import com.studiozero.projeto.infrastructure.entities.ClientEntity;
 import com.studiozero.projeto.infrastructure.mappers.ClientEntityMapper;
-import com.studiozero.projeto.infrastructure.repositories.JpaClientRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaClientRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

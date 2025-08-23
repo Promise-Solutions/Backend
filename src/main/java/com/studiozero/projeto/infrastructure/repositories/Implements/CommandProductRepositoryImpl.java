@@ -4,7 +4,7 @@ import com.studiozero.projeto.domain.entities.CommandProduct;
 import com.studiozero.projeto.domain.repositories.CommandProductRepository;
 import com.studiozero.projeto.infrastructure.entities.CommandProductEntity;
 import com.studiozero.projeto.infrastructure.mappers.CommandProductEntityMapper;
-import com.studiozero.projeto.infrastructure.repositories.JpaCommandProductRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaCommandProductRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

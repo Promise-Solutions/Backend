@@ -1,4 +1,4 @@
-package com.studiozero.projeto.infrastructure.repositories;
+package com.studiozero.projeto.infrastructure.repositories.services;
 
 import com.studiozero.projeto.domain.repositories.EmailRepository;
 import org.springframework.mail.SimpleMailMessage;
@@ -9,11 +9,11 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaEmailRepository implements EmailRepository {
+public class EmailServiceRepository implements EmailRepository {
     private final JavaMailSender mailSender;
 
     @Override
-    public void enviarAviso(List<String> destinatarios, String assunto, String conteudo) {
+    public void sendEmail(List<String> destinatarios, String assunto, String conteudo) {
         for (String destinatario : destinatarios) {
             SimpleMailMessage mensagem = new SimpleMailMessage();
             mensagem.setTo(destinatario);
@@ -22,4 +22,5 @@ public class JpaEmailRepository implements EmailRepository {
             mailSender.send(mensagem);
         }
     }
+
 }

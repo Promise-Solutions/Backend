@@ -3,7 +3,7 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.repositories.EmployeeRepository;
 import com.studiozero.projeto.infrastructure.entities.EmployeeEntity;
-import com.studiozero.projeto.infrastructure.repositories.JpaEmployeeRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaEmployeeRepository;
 import com.studiozero.projeto.infrastructure.mappers.EmployeeEntityMapper;
 
 import lombok.AllArgsConstructor;

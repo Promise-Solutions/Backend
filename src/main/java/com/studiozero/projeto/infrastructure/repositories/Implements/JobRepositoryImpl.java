@@ -2,7 +2,7 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.repositories.JobRepository;
-import com.studiozero.projeto.infrastructure.repositories.JpaJobRepository;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaJobRepository;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
