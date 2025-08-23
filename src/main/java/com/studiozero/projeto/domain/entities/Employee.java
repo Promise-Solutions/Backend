@@ -12,9 +12,6 @@ public class Employee {
     private Boolean active;
 
     public Employee(UUID id, String name, String email, String contact, String cpf, String password, Boolean active) {
-        if (id == null || id.toString().isEmpty()) {
-            throw new IllegalArgumentException("Id cannot be null or empty");
-        }
         validateName(name);
         validateEmail(email);
         validateContact(contact);

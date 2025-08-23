@@ -17,9 +17,6 @@ public class Command {
 
     public Command(Integer id, Integer commandNumber, LocalDateTime openingDateTime, LocalDateTime closingDateTime,
             Double discount, Double totalValue, Client client, Employee employee, Boolean isInternal, Status status) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
         validateCommandNumber(commandNumber);
         validateOpeningDateTime(openingDateTime);
         validateTotalValue(totalValue);

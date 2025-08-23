@@ -19,9 +19,6 @@ public class SubJob {
 
     public SubJob(UUID id, String title, String description, Double value, LocalDate date, LocalTime startTime,
             LocalTime expectedEndTime, Boolean needsRoom, Status status, Job job) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
         validateTitle(title);
         validateDescription(description);
         validateValue(value);

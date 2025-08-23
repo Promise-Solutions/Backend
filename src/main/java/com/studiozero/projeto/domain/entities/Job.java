@@ -17,9 +17,6 @@ public class Job {
 
     public Job(UUID id, String title, Double totalValue, JobCategory category, Status status, Client client,
             JobType serviceType) {
-        if (id == null || id.toString().isEmpty()) {
-            throw new IllegalArgumentException("Id cannot be null or empty");
-        }
         validateTitle(title);
         validateTotalValue(totalValue);
         validateCategory(category);

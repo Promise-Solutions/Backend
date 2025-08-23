@@ -16,9 +16,6 @@ public class Expense {
 
     public Expense(Integer id, LocalDate date, ExpenseCategory expenseCategory, String description, Integer quantity,
             Double amountSpend, Product product, PaymentType paymentType) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
         validateDescription(description);
         validateAmountSpend(amountSpend);
         this.id = id;

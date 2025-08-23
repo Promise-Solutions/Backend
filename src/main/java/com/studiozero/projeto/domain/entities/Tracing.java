@@ -12,9 +12,6 @@ public class Tracing {
     private LocalDateTime dateTime;
 
     public Tracing(Integer id, Context context, LocalDateTime dateTime) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
         validateContext(context);
         validateDateTime(dateTime);
         this.id = id;

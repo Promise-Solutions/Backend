@@ -16,9 +16,6 @@ public class Task {
 
     public Task(UUID id, String title, String description, LocalDate startDate, LocalDate limitDate, Employee employee,
             Status status, Employee assign) {
-        if (id == null || id.toString().isEmpty()) {
-            throw new IllegalArgumentException("Id cannot be null or empty");
-        }
         validateTitle(title);
         validateDescription(description);
         this.id = id;

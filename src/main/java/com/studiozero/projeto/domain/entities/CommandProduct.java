@@ -8,9 +8,6 @@ public class CommandProduct {
     private Double unitValue;
 
     public CommandProduct(Integer id, Product product, Command command, Integer productQuantity, Double unitValue) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
         validateProduct(product);
         validateCommand(command);
         validateProductQuantity(productQuantity);

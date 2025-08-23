@@ -40,6 +40,10 @@ public class Product {
         return totalBuyValue;
     }
 
+    public void setTotalBuyValue(Double totalBuyValue) {
+        this.totalBuyValue = totalBuyValue;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

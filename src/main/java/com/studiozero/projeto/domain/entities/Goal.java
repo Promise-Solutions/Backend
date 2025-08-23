@@ -5,9 +5,6 @@ public class Goal {
     private Double goal;
 
     public Goal(Integer id, Double goal) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
         validateGoal(goal);
         this.id = id;
         this.goal = goal;
