@@ -12,11 +12,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.studiozero.projeto</groupId>
-    <artifactId>StudioZero</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>StudioZero</name>
-    <description>Demo project for Spring Boot</description>
+	<groupId>Projeto.Studio.Zero</groupId>
+	<artifactId>StudioZero</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>StudioZero</name>
+	<description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>21</java.version>
