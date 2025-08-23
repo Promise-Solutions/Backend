@@ -38,4 +38,6 @@ public class EmployeeEntity {
 
     @Column(name = "ativo", nullable = false)
     private Boolean active;
+
+
 }

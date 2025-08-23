@@ -5,9 +5,12 @@ import com.studiozero.projeto.application.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public interface JpaCommandRepository extends JpaRepository<CommandEntity, Integer> {
     @Query("SELECT c FROM CommandEntity c WHERE c.status = :status")
     List<CommandEntity> findAllByStatus(@Param("status") Status status);

@@ -8,6 +8,7 @@ import com.studiozero.projeto.infrastructure.mappers.*;
 import com.studiozero.projeto.infrastructure.repositories.jpa.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
 import java.util.*;
 
 @Repository

@@ -5,7 +5,6 @@ import com.studiozero.projeto.domain.repositories.SubJobRepository;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaSubJobRepository;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +13,7 @@ import java.util.UUID;
 import com.studiozero.projeto.infrastructure.entities.SubJobEntity;
 import com.studiozero.projeto.infrastructure.mappers.SubJobEntityMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
