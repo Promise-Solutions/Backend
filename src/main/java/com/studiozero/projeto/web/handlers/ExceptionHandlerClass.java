@@ -1,6 +1,5 @@
 package com.studiozero.projeto.web.handlers;
 
-import com.studiozero.projeto.infrastructure.exceptions.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,5 +16,25 @@ public class ExceptionHandlerClass {
                 null
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.httpStatus()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<HttpErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        HttpErrorResponse errorResponse = new HttpErrorResponse(
+                "BAD_REQUEST",
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<HttpErrorResponse> handleIllegalStateException(IllegalStateException ex) {
+        HttpErrorResponse errorResponse = new HttpErrorResponse(
+                "CONFLICT",
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }

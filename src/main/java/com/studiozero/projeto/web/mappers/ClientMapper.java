@@ -1,74 +1,60 @@
 package com.studiozero.projeto.web.mappers;
 
-import com.studiozero.projeto.application.dtos.request.ClientRequestDTO;
-import com.studiozero.projeto.application.dtos.request.ClientUpdateRequestDTO;
-import com.studiozero.projeto.application.dtos.response.ClientResponseDTO;
 import com.studiozero.projeto.domain.entities.Client;
-import org.springframework.stereotype.Component;
-
+import com.studiozero.projeto.web.dtos.request.ClientRequestDTO;
+import com.studiozero.projeto.web.dtos.request.ClientUpdateRequestDTO;
+import com.studiozero.projeto.web.dtos.response.ClientResponseDTO;
 import java.util.List;
 import java.util.UUID;
 
-@Component
 public class ClientMapper {
+    public static Client toDomain(ClientRequestDTO dto) {
+        if (dto == null) return null;
+        return new Client(
+            null,
+            dto.getName(),
+            dto.getCpf(),
+            dto.getEmail(),
+            dto.getContact(),
+            dto.getClientType(),
+            dto.getActive(),
+            dto.getBirthDay(),
+            null
+        );
+    }
 
-    public static Client toEntity(ClientRequestDTO dto) {
-        Client client = new Client();
-        client.setName(dto.getName());
-        client.setCpf(dto.getCpf());
-        client.setEmail(dto.getEmail());
-        client.setContact(dto.getContact());
-        client.setClientType(dto.getClientType());
-        client.setActive(dto.getActive());
-        client.setBirthDay(dto.getBirthDay());
-        return client;
+    public static Client toDomain(ClientUpdateRequestDTO dto, UUID id) {
+        if (dto == null) return null;
+        return new Client(
+            id,
+            dto.getName(),
+            dto.getCpf(),
+            dto.getEmail(),
+            dto.getContact(),
+            dto.getClientType(),
+            dto.getActive(),
+            dto.getBirthDay(),
+            dto.getCreatedDate()
+        );
     }
 
     public static ClientResponseDTO toDTO(Client client) {
-        if (client == null) {
-            return null;
-        }
-        ClientResponseDTO dto = new ClientResponseDTO();
-        dto.setId(client.getId());
-        dto.setName(client.getName());
-        dto.setCpf(client.getCpf());
-        dto.setEmail(client.getEmail());
-        dto.setContact(client.getContact());
-        dto.setClientType(client.getClientType());
-        dto.setActive(client.getActive());
-        dto.setBirthDay(client.getBirthDay());
-        dto.setCreatedDate(client.getCreatedDate());
-        return dto;
+        if (client == null) return null;
+        return new ClientResponseDTO(
+            client.getId(),
+            client.getName(),
+            client.getCpf(),
+            client.getEmail(),
+            client.getContact(),
+            client.getClientType(),
+            client.getActive(),
+            client.getBirthDay(),
+            client.getCreatedDate()
+        );
     }
 
-    public static List<ClientResponseDTO> toListDtos(List<Client> entities) {
-        if (entities == null) {
-            return null;
-        }
-
-        return entities.stream()
-                .map(ClientMapper::toDTO)
-                .toList();
+    public static List<ClientResponseDTO> toDTOList(List<Client> clients) {
+        if (clients == null) return null;
+        return clients.stream().map(ClientMapper::toDTO).toList();
     }
-
-    public static Client toEntity(ClientUpdateRequestDTO dto, UUID id) {
-        if (dto == null) {
-            return null;
-        }
-        Client client = new Client();
-
-        client.setId(id);
-        if (dto.getName() != null) client.setName(dto.getName());
-        if (dto.getCpf() != null) client.setCpf(dto.getCpf());
-        if (dto.getEmail() != null) client.setEmail(dto.getEmail());
-        if (dto.getContact() != null) client.setContact(dto.getContact());
-        if (dto.getClientType() != null) client.setClientType(dto.getClientType());
-        if (dto.getActive() != null) client.setActive(dto.getActive());
-        if (dto.getCreatedDate() != null) client.setCreatedDate(dto.getCreatedDate());
-        if (dto.getBirthDay() != null) client.setBirthDay(dto.getBirthDay());
-
-
-        return client;
-    }
-
 }

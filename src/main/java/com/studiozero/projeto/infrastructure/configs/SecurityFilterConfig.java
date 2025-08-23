@@ -1,9 +1,8 @@
 package com.studiozero.projeto.infrastructure.configs;
 
-
 import com.studiozero.projeto.domain.entities.EmployeeUserDetails;
 import com.studiozero.projeto.domain.repositories.EmployeeRepository;
-import com.studiozero.projeto.application.services.TokenService;
+import com.studiozero.projeto.infrastructure.services.ValidateTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,27 +20,23 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SecurityFilterConfig extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
+    private final ValidateTokenService validateTokenService;
     private final EmployeeRepository employeeRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if (token != null) {
-            var subject = tokenService.validateToken(token);
-            var optionalEmployee = employeeRepository.findByEmail(subject);
-
-            if (optionalEmployee.isPresent()) {
-                UserDetails employee = new EmployeeUserDetails(optionalEmployee.get());
-
+            var subject = validateTokenService.execute(token);
+            var employee = employeeRepository.findByEmail(subject);
+            if (employee != null) {
+                UserDetails userDetails = new EmployeeUserDetails(employee);
                 var authentication = new UsernamePasswordAuthenticationToken(
-                        employee,
+                        userDetails,
                         null,
-                        employee.getAuthorities()
-                );
-
+                        userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 throw new RuntimeException("Employee not found with email of token: " + subject);
@@ -53,8 +48,9 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if (authHeader == null) return null;
+        if (authHeader == null)
+            return null;
 
-        return authHeader.replace("Bearer " , "");
+        return authHeader.replace("Bearer ", "");
     }
 }

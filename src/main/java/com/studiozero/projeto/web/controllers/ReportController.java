@@ -1,6 +1,6 @@
 package com.studiozero.projeto.web.controllers;
 
-import com.studiozero.projeto.application.services.ReportService;
+import com.studiozero.projeto.infrastructure.services.GenerateExcelReport;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -8,9 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,23 +19,23 @@ import java.io.FileNotFoundException;
 @RequiredArgsConstructor
 @Tag(name = "Report", description = "Endpoints for Report Management")
 public class ReportController {
-    private final ReportService reportService;
+    private final GenerateExcelReport generateExcelReport;
 
     @GetMapping("/generate-excel")
-    public ResponseEntity<Resource> gerarRelatorioCompletoExcel() {
-        File arquivo = reportService.gerarRelatorioExcel();
+    public ResponseEntity<Resource> generateFullExcelReport() {
+        File file = generateExcelReport.execute();
 
         try {
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(arquivo));
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
-            String nomeArquivo = arquivo.getName();
+            String fileName = file.getName();
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + nomeArquivo + "\"");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
             headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentLength(arquivo.length())
+                    .contentLength(file.length())
                     .body(resource);
 
         } catch (FileNotFoundException e) {

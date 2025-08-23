@@ -1,37 +1,89 @@
 package com.studiozero.projeto.domain.entities;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "comanda_produto")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CommandProduct {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_comanda_produto", nullable = false)
     private Integer id;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "fk_produto")
     private Product product;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "fk_comanda", nullable = false)
     private Command command;
-
-    @Column(name = "qtd_produto", nullable = false)
     private Integer productQuantity;
-
-    @Column(name = "valor_unitario", nullable = false)
     private Double unitValue;
 
+    public CommandProduct(Integer id, Product product, Command command, Integer productQuantity, Double unitValue) {
+        validateProduct(product);
+        validateCommand(command);
+        validateProductQuantity(productQuantity);
+        validateUnitValue(unitValue);
+        this.id = id;
+        this.product = product;
+        this.command = command;
+        this.productQuantity = productQuantity;
+        this.unitValue = unitValue;
+    }
+
+    private void validateProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+    }
+
+    private void validateCommand(Command command) {
+        if (command == null) {
+            throw new IllegalArgumentException("Command cannot be null");
+        }
+    }
+
+    private void validateProductQuantity(Integer productQuantity) {
+        if (productQuantity == null || productQuantity <= 0) {
+            throw new IllegalArgumentException("Product quantity must be greater than zero");
+        }
+    }
+
+    private void validateUnitValue(Double unitValue) {
+        if (unitValue == null || unitValue <= 0) {
+            throw new IllegalArgumentException("Unit value must be greater than zero");
+        }
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void changeProduct(Product newProduct) {
+        validateProduct(newProduct);
+        this.product = newProduct;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void changeCommand(Command newCommand) {
+        validateCommand(newCommand);
+        this.command = newCommand;
+    }
+
+    public Integer getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void changeProductQuantity(Integer newProductQuantity) {
+        validateProductQuantity(newProductQuantity);
+        this.productQuantity = newProductQuantity;
+    }
+
+    public Double getUnitValue() {
+        return unitValue;
+    }
+
+    public void changeUnitValue(Double newUnitValue) {
+        validateUnitValue(newUnitValue);
+        this.unitValue = newUnitValue;
+    }
+
     public void addQuantity(Integer quantity) {
-        setProductQuantity(this.productQuantity + quantity);
+        changeProductQuantity(this.productQuantity + quantity);
     }
 }

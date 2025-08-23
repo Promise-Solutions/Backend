@@ -1,16 +1,21 @@
 package com.studiozero.projeto.domain.repositories;
 
 import com.studiozero.projeto.domain.entities.Tracing;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-@Repository
-public interface TracingRepository extends JpaRepository<Tracing, Integer> {
-    Optional<Tracing> findTopByOrderByIdDesc();
+public interface TracingRepository {
+    Tracing findTopByOrderByIdDesc();
 
     void deleteAllByIdNot(Integer id);
 
     Tracing findTopByOrderByDateTimeDesc();
+
+    Tracing findById(Integer id);
+
+    void save(Tracing tracing);
+
+    void deleteById(Integer id);
+
+    List<Tracing> findAll();
 }

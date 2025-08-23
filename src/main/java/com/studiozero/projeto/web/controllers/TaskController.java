@@ -1,11 +1,17 @@
 package com.studiozero.projeto.web.controllers;
 
-import com.studiozero.projeto.application.dtos.request.TaskRequestDTO;
-import com.studiozero.projeto.application.dtos.request.TaskUpdateRequestDTO;
-import com.studiozero.projeto.application.dtos.response.TaskResponseDTO;
+import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
+import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.entities.Task;
+import com.studiozero.projeto.web.dtos.request.TaskRequestDTO;
+import com.studiozero.projeto.web.dtos.request.TaskUpdateRequestDTO;
+import com.studiozero.projeto.web.dtos.response.TaskResponseDTO;
 import com.studiozero.projeto.web.mappers.TaskMapper;
-import com.studiozero.projeto.application.services.TaskService;
+import com.studiozero.projeto.application.usecases.task.CreateTaskUseCase;
+import com.studiozero.projeto.application.usecases.task.GetTaskUseCase;
+import com.studiozero.projeto.application.usecases.task.UpdateTaskUseCase;
+import com.studiozero.projeto.application.usecases.task.DeleteTaskUseCase;
+import com.studiozero.projeto.application.usecases.task.ListTasksUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,71 +28,63 @@ import java.util.UUID;
 @Tag(name = "Tasks", description = "Endpoints for Task Management")
 public class TaskController {
 
-    private final TaskService taskService;
-    private final TaskMapper taskMapper;
+        private final CreateTaskUseCase createTaskUseCase;
+        private final GetTaskUseCase getTaskUseCase;
+        private final UpdateTaskUseCase updateTaskUseCase;
+        private final DeleteTaskUseCase deleteTaskUseCase;
+        private final ListTasksUseCase listTasksUseCase;
+        private final GetEmployeeUseCase getEmployeeUseCase;
 
-    @Operation(
-            summary = "Create a task",
-            description = "This method is responsible for create a task."
-    )
-    @PostMapping
-    public ResponseEntity<TaskResponseDTO> createTask(
-            @RequestBody @Valid TaskRequestDTO taskDto
-    ) {
-        Task savedTask = taskService.createTask(taskDto);
-        TaskResponseDTO savedDto = TaskMapper.toDTO(savedTask);
-        return ResponseEntity.status(201).body(savedDto);
-    }
+        @Operation(summary = "Create a task", description = "This method is responsible for create a task.")
+        @PostMapping
+        public ResponseEntity<TaskResponseDTO> createTask(
+                        @RequestBody @Valid TaskRequestDTO taskDto) {
 
-    @Operation(
-            summary = "List all task",
-            description = "This method is responsible for list all task."
-    )
-    @GetMapping
-    public ResponseEntity<List<TaskResponseDTO>> findAllTasks() {
-        List<Task> tasks = taskService.listTasks();
-        List<TaskResponseDTO> taskDtos = TaskMapper.toListDtos(tasks);
-        return ResponseEntity.ok(taskDtos); // Sempre retorna 200, mesmo com lista vazia
-    }
+            Employee employee = getEmployeeUseCase.execute(taskDto.getFkEmployee());
+            Employee assign = getEmployeeUseCase.execute(taskDto.getFkAssigned());
 
-    @Operation(
-            summary = "Search a tasks",
-            description = "This method is responsible for search a tasks."
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> findTaskById(
-            @PathVariable @Valid UUID id
-    ) {
-        Task task = taskService.findTaskById(id);
-        TaskResponseDTO taskDto = TaskMapper.toDTO(task);
+             Task task = TaskMapper.toDomain(taskDto, employee, assign);
+                Task savedTask = createTaskUseCase.execute(task);
+                TaskResponseDTO savedDto = TaskMapper.toDTO(savedTask);
+                return ResponseEntity.status(201).body(savedDto);
+        }
 
-        return ResponseEntity.ok(taskDto);
-    }
+        @Operation(summary = "List all task", description = "This method is responsible for list all task.")
+        @GetMapping
+        public ResponseEntity<List<TaskResponseDTO>> findAllTasks() {
+                List<Task> tasks = listTasksUseCase.execute();
+                List<TaskResponseDTO> taskDtos = TaskMapper.toDTOList(tasks);
+                return ResponseEntity.ok(taskDtos); // Sempre retorna 200, mesmo com lista vazia
+        }
 
-    @Operation(
-            summary = "Update a task",
-            description = "This method is responsible for update a task."
-    )
-    @PatchMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> updateTask(
-            @PathVariable @Valid UUID id,
-            @RequestBody @Valid TaskUpdateRequestDTO taskDto
-    ) {
-        Task task = taskMapper.toEntity(taskDto, id);
-        Task updatedTask = taskService.updateTask(task);
+        @Operation(summary = "Search a tasks", description = "This method is responsible for search a tasks.")
+        @GetMapping("/{id}")
+        public ResponseEntity<TaskResponseDTO> findTaskById(
+                        @PathVariable @Valid UUID id) {
+                Task task = getTaskUseCase.execute(id);
+                TaskResponseDTO taskDto = TaskMapper.toDTO(task);
+                return ResponseEntity.ok(taskDto);
+        }
 
-        return ResponseEntity.ok(TaskMapper.toDTO(updatedTask));
-    }
+        @Operation(summary = "Update a task", description = "This method is responsible for update a task.")
+        @PatchMapping("/{id}")
+        public ResponseEntity<TaskResponseDTO> updateTask(
+                        @PathVariable @Valid UUID id,
+                        @RequestBody @Valid TaskUpdateRequestDTO taskDto) {
 
-    @Operation(
-            summary = "Delete a task",
-            description = "This method is responsible for delete a task."
-    )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(
-            @PathVariable @Valid UUID id
-    ) {
-        taskService.deleteTask(id);
-        return ResponseEntity.ok().build();
-    }
+            Employee employee = getEmployeeUseCase.execute(taskDto.getFkEmployee());
+            Employee assign = getEmployeeUseCase.execute(taskDto.getFkAssigned());
+
+                Task task = TaskMapper.toDomain(taskDto, id, employee, assign);
+                Task updatedTask = updateTaskUseCase.execute(task);
+                return ResponseEntity.ok(TaskMapper.toDTO(updatedTask));
+        }
+
+        @Operation(summary = "Delete a task", description = "This method is responsible for delete a task.")
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deleteTask(
+                        @PathVariable @Valid UUID id) {
+                deleteTaskUseCase.execute(id);
+                return ResponseEntity.ok().build();
+        }
 }

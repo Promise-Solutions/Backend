@@ -2,28 +2,28 @@ package com.studiozero.projeto.domain.repositories;
 
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.application.enums.Status;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
-public interface CommandRepository extends JpaRepository<Command, Integer>, JpaSpecificationExecutor<Command> {
+public interface CommandRepository {
+    boolean existsByClientId(UUID clientId);
 
-    boolean existsByClient_Id(UUID clientId);
+    boolean existsByCommandNumber(Integer commandNumber);
 
     List<Command> findAllByStatus(Status status);
 
-    @Query("SELECT c FROM Command c WHERE c.client.id = :clientId AND c.status = :status")
-    List<Command> findAllByClient_IdAndStatus(UUID clientId, Status status);
+    List<Command> findAllByClientIdAndStatus(UUID clientId, Status status);
 
-    @Query("SELECT MAX(c.openingDateTime) FROM Command c")
+    List<Command> findAll();
+
     LocalDateTime findMaxOpeningDate();
 
-    @Query("SELECT MAX(c.closingDateTime) FROM Command c")
     LocalDateTime findMaxClosingDate();
+
+    Command findById(Integer id);
+
+    void save(Command command);
+
+    void deleteById(Integer id);
 }
