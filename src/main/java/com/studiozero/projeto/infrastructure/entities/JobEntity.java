@@ -3,8 +3,6 @@ package com.studiozero.projeto.infrastructure.entities;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.JobType;
 import com.studiozero.projeto.application.enums.Status;
-import com.studiozero.projeto.domain.entities.Client;
-import com.studiozero.projeto.domain.entities.SubJob;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

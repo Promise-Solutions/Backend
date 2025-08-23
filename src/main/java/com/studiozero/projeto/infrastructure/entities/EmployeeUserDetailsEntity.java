@@ -1,6 +1,5 @@
 package com.studiozero.projeto.infrastructure.entities;
 
-import com.studiozero.projeto.domain.entities.Employee;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -3,8 +3,6 @@ package com.studiozero.projeto.application.usecases.employee;
 import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.repositories.EmployeeRepository;
 
-import java.util.UUID;
-
 public class UpdateEmployeeUseCase {
     private final EmployeeRepository employeeRepository;
 

@@ -2,7 +2,6 @@ package com.studiozero.projeto.web.controllers;
 
 import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
 import com.studiozero.projeto.domain.entities.Employee;
-import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.Task;
 import com.studiozero.projeto.web.dtos.request.TaskRequestDTO;
 import com.studiozero.projeto.web.dtos.request.TaskUpdateRequestDTO;

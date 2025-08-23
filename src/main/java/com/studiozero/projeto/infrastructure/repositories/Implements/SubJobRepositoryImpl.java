@@ -5,7 +5,6 @@ import com.studiozero.projeto.domain.repositories.SubJobRepository;
 import com.studiozero.projeto.infrastructure.repositories.JpaSubJobRepository;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;

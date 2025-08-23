@@ -3,9 +3,6 @@ package com.studiozero.projeto.application.usecases.job;
 import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.domain.repositories.JobRepository;
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
-import com.studiozero.projeto.domain.entities.Job;
-import com.studiozero.projeto.domain.entities.SubJob;
-import java.util.List;
 import java.util.UUID;
 
 public class EvaluateJobStatusUseCase {

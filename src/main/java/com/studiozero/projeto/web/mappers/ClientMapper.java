@@ -6,7 +6,6 @@ import com.studiozero.projeto.web.dtos.request.ClientUpdateRequestDTO;
 import com.studiozero.projeto.web.dtos.response.ClientResponseDTO;
 import java.util.List;
 import java.util.UUID;
-import java.time.LocalDate;
 
 public class ClientMapper {
     public static Client toDomain(ClientRequestDTO dto) {

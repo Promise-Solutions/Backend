@@ -7,7 +7,6 @@ import com.studiozero.projeto.infrastructure.mappers.TaskEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.JpaTaskRepository;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -2,8 +2,6 @@ package com.studiozero.projeto.infrastructure.mappers;
 
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
-import com.studiozero.projeto.infrastructure.mappers.ClientEntityMapper;
-import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.infrastructure.entities.ClientEntity;
 import java.util.List;
 import org.springframework.stereotype.Component;

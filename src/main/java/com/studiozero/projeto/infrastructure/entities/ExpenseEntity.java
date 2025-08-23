@@ -2,7 +2,6 @@ package com.studiozero.projeto.infrastructure.entities;
 
 import com.studiozero.projeto.application.enums.ExpenseCategory;
 import com.studiozero.projeto.application.enums.PaymentType;
-import com.studiozero.projeto.domain.entities.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;

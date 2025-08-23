@@ -2,8 +2,6 @@ package com.studiozero.projeto.infrastructure.mappers;
 
 import com.studiozero.projeto.domain.entities.Expense;
 import com.studiozero.projeto.infrastructure.entities.ExpenseEntity;
-import com.studiozero.projeto.domain.entities.Product;
-import com.studiozero.projeto.infrastructure.entities.ProductEntity;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
