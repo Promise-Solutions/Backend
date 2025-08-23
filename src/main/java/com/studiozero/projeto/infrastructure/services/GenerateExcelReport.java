@@ -9,13 +9,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +90,7 @@ public class GenerateExcelReport {
             double profitOrLoss = totalEntryValue - totalExpenseValue;
 
             // Formatação monetária
-            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
 
             // Preenche a sheet de Finanças
             Row financesHeaderRow = financesSheet.createRow(0);
@@ -107,7 +111,7 @@ public class GenerateExcelReport {
             Sheet expenseSheet = workbook.createSheet("Despesas");
             String[] expenseHeader = { "ID", "Data de Pagamento", "Tipo de Despesa", "Descrição", "Valor Pago",
                     "Produto", "Tipo de Pagamento" };
-            preencherSheetComDados(expenseSheet, expenseHeader, headerStyle, expenses, (row, e) -> {
+            preencherSheetComDados(expenseSheet, expenseHeader, headerStyle, expenses, (Row row, Expense e) -> {
                 row.createCell(0).setCellValue(e.getId().toString());
                 row.createCell(1).setCellValue(formatDate(e.getDate()));
                 row.createCell(2).setCellValue(traduzCategoria(e.getExpenseCategory().toString()));
@@ -120,7 +124,7 @@ public class GenerateExcelReport {
             // SERVIÇOS
             Sheet jobSheet = workbook.createSheet("Serviços");
             String[] jobHeaders = { "ID", "Tipo", "Categoria", "Cliente", "Título", "Valor Total", "Status" };
-            preencherSheetComDados(jobSheet, jobHeaders, headerStyle, jobs, (row, j) -> {
+            preencherSheetComDados(jobSheet, jobHeaders, headerStyle, jobs, (Row row, Job j) -> {
                 row.createCell(0).setCellValue(j.getId().toString());
                 row.createCell(1).setCellValue(traduzTipoCliente(j.getServiceType().toString()));
                 row.createCell(2).setCellValue(traduzCategoria(j.getCategory().toString()));
@@ -134,7 +138,7 @@ public class GenerateExcelReport {
             Sheet subJobSheet = workbook.createSheet("Sub-serviços");
             String[] subJobHeaders = { "ID", "ServiçoID", "Cliente", "Título", "Valor Total", "Data", "Usou Sala?",
                     "Status" };
-            preencherSheetComDados(subJobSheet, subJobHeaders, headerStyle, subJobs, (row, sj) -> {
+            preencherSheetComDados(subJobSheet, subJobHeaders, headerStyle, subJobs, (Row row, SubJob sj) -> {
                 row.createCell(0).setCellValue(sj.getId().toString());
                 row.createCell(1).setCellValue(sj.getJob() != null ? sj.getJob().getId().toString() : "");
                 row.createCell(2).setCellValue(sj.getJob().getClient().getName());
@@ -149,15 +153,13 @@ public class GenerateExcelReport {
             Sheet cmdSheet = workbook.createSheet("Comandas");
             String[] cmdHeaders = { "ID", "Cliente", "Funcionário", "Status", "Desconto (%)", "Valor Total", "Abertura",
                     "Fechamento" };
-            preencherSheetComDados(cmdSheet, cmdHeaders, headerStyle, commands, (row, c) -> {
-                row.createCell(0).setCellValue(c.getId());
+            preencherSheetComDados(cmdSheet, cmdHeaders, headerStyle, commands, (Row row, Command c) -> {
+                row.createCell(0).setCellValue(c.getId().toString());
                 row.createCell(1).setCellValue(
                         c.getClient() != null ? c.getClient().getName() : "Funcionário: " + c.getEmployee().getName());
                 row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "-");
                 row.createCell(3).setCellValue(traduzStatus(c.getStatus().toString()));
-                // Desconto como número (ex: 10 para 10%)
                 row.createCell(4).setCellValue(c.getDiscount());
-                // Valor Total como número
                 row.createCell(5).setCellValue(c.getTotalValue());
                 row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
                 row.createCell(7)
@@ -167,7 +169,7 @@ public class GenerateExcelReport {
             // PRODUTOS
             Sheet prodSheet = workbook.createSheet("Produtos");
             String[] prodHeaders = { "ID", "Nome", "Quantidade", "Valor Cliente", "Valor Funcionário" };
-            preencherSheetComDados(prodSheet, prodHeaders, headerStyle, products, (row, p) -> {
+            preencherSheetComDados(prodSheet, prodHeaders, headerStyle, products, (Row row, Product p) -> {
                 row.createCell(0).setCellValue(p.getId());
                 row.createCell(1).setCellValue(p.getName());
                 row.createCell(2).setCellValue(p.getQuantity());
@@ -179,7 +181,7 @@ public class GenerateExcelReport {
             Sheet cpSheet = workbook.createSheet("Produtos por Comanda");
             String[] cpHeaders = { "ID", "ComandaID", "Usuário da Comanda", "Funcionário", "Produto", "Quantidade",
                     "Valor" };
-            preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (row, cp) -> {
+            preencherSheetComDados(cpSheet, cpHeaders, headerStyle, commandProducts, (Row row, CommandProduct cp) -> {
                 row.createCell(0).setCellValue(cp.getId());
                 row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : '-');
                 row.createCell(2)
@@ -196,7 +198,7 @@ public class GenerateExcelReport {
             Sheet clientesSheet = workbook.createSheet("Clientes");
             String[] clienteHeaders = { "ID", "Nome", "CPF", "Email", "Contato", "Tipo", "Ativo", "Nascimento",
                     "Criação" };
-            preencherSheetComDados(clientesSheet, clienteHeaders, headerStyle, clients, (row, c) -> {
+            preencherSheetComDados(clientesSheet, clienteHeaders, headerStyle, clients, (Row row, Client c) -> {
                 row.createCell(0).setCellValue(c.getId().toString());
                 row.createCell(1).setCellValue(c.getName());
                 row.createCell(2).setCellValue(c.getCpf());
@@ -211,7 +213,7 @@ public class GenerateExcelReport {
             // FUNCIONÁRIOS
             Sheet empSheet = workbook.createSheet("Funcionarios");
             String[] empHeaders = { "ID", "Nome", "CPF", "Email", "Contato", "Ativo" };
-            preencherSheetComDados(empSheet, empHeaders, headerStyle, employees, (row, e) -> {
+            preencherSheetComDados(empSheet, empHeaders, headerStyle, employees, (Row row, Employee e) -> {
                 row.createCell(0).setCellValue(e.getId().toString());
                 row.createCell(1).setCellValue(e.getName());
                 row.createCell(2).setCellValue(e.getCpf());
@@ -224,7 +226,7 @@ public class GenerateExcelReport {
             Sheet taskSheet = workbook.createSheet("Tarefas");
             String[] taskHeaders = { "ID", "Título", "Descrição", "Responsável", "Autor", "Data Inicio", "Data Limite",
                     "Status" };
-            preencherSheetComDados(taskSheet, taskHeaders, headerStyle, tasks, (row, t) -> {
+            preencherSheetComDados(taskSheet, taskHeaders, headerStyle, tasks, (Row row, Task t) -> {
                 row.createCell(0).setCellValue(t.getId().toString());
                 row.createCell(1).setCellValue(t.getTitle());
                 row.createCell(2).setCellValue(t.getDescription());
