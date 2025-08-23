@@ -2,7 +2,7 @@ package com.studiozero.projeto.infrastructure.configs;
 
 import com.studiozero.projeto.domain.entities.EmployeeUserDetails;
 import com.studiozero.projeto.domain.repositories.EmployeeRepository;
-import com.studiozero.projeto.application.usecases.token.ValidateTokenUseCase;
+import com.studiozero.projeto.infrastructure.services.ValidateTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SecurityFilterConfig extends OncePerRequestFilter {
 
-    private final ValidateTokenUseCase validateTokenUseCase;
+    private final ValidateTokenService validateTokenService;
     private final EmployeeRepository employeeRepository;
 
     @Override
@@ -29,7 +29,7 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if (token != null) {
-            var subject = validateTokenUseCase.execute(token);
+            var subject = validateTokenService.execute(token);
             var employee = employeeRepository.findByEmail(subject);
             if (employee != null) {
                 UserDetails userDetails = new EmployeeUserDetails(employee);

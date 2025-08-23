@@ -13,7 +13,7 @@ import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
 import com.studiozero.projeto.application.usecases.employee.UpdateEmployeeUseCase;
 import com.studiozero.projeto.application.usecases.employee.DeleteEmployeeWithUserUseCase;
 import com.studiozero.projeto.application.usecases.employee.ListEmployeesUseCase;
-import com.studiozero.projeto.application.usecases.token.GenerateTokenUseCase;
+import com.studiozero.projeto.infrastructure.services.GenerateTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class EmployeeController {
         private final DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase;
         private final ListEmployeesUseCase listEmployeesUseCase;
         private final AuthenticationManager authenticationManager;
-        private final GenerateTokenUseCase generateTokenUseCase;
+        private final GenerateTokenService generateTokenService;
 
         @Operation(summary = "Create a employee", description = "This method is responsible for create a employee.")
         @PostMapping
@@ -61,7 +61,7 @@ public class EmployeeController {
 
                 var employeeUserDetails = (EmployeeUserDetails) auth.getPrincipal();
 
-                var token = generateTokenUseCase.execute(employeeUserDetails.getEmployee());
+                var token = generateTokenService.execute(employeeUserDetails.getEmployee());
                 var id = employeeUserDetails.getEmployee().getId();
 
                 return ResponseEntity.ok(new EmployeeLoginResponseDTO(token, id));
