@@ -30,7 +30,7 @@ public class TracingController {
     @Operation(summary = "Create Tracing", description = "This method is responsible for create a tracing.")
     public ResponseEntity<TracingResponseDTO> createClient(
             @RequestBody @Valid TracingRequestDTO tracingDto) {
-        Tracing tracing = TracingMapper.toEntity(tracingDto);
+        Tracing tracing = TracingMapper.toDomain(tracingDto);
         Tracing created = createTracingUseCase.execute(tracing);
         return ResponseEntity.status(201).body(TracingMapper.toDTO(created));
     }
@@ -42,7 +42,7 @@ public class TracingController {
         if (tracings.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<TracingResponseDTO> dtos = TracingMapper.toListDtos(tracings);
+        List<TracingResponseDTO> dtos = TracingMapper.toDTOList(tracings);
         return ResponseEntity.status(200).body(dtos);
     }
 

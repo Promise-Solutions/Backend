@@ -1,92 +1,35 @@
 package com.studiozero.projeto.infrastructure.entities;
 
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "comanda_produto")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommandProductEntity {
-    private final Integer id;
-    private ProductEntity productEntity;
-    private CommandEntity commandEntity;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_comanda_produto", nullable = false)
+    private Integer id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_produto")
+    private ProductEntity product;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_comanda", nullable = false)
+    private CommandEntity command;
+
+    @Column(name = "qtd_produto", nullable = false)
     private Integer productQuantity;
+
+    @Column(name = "valor_unitario", nullable = false)
     private Double unitValue;
 
-    public CommandProductEntity(Integer id, ProductEntity productEntity, CommandEntity commandEntity, Integer productQuantity, Double unitValue) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
-        validateProduct(productEntity);
-        validateCommand(commandEntity);
-        validateProductQuantity(productQuantity);
-        validateUnitValue(unitValue);
-        this.id = id;
-        this.productEntity = productEntity;
-        this.commandEntity = commandEntity;
-        this.productQuantity = productQuantity;
-        this.unitValue = unitValue;
-    }
-
-    private void validateProduct(ProductEntity productEntity) {
-        if (productEntity == null) {
-            throw new IllegalArgumentException("Product cannot be null");
-        }
-    }
-
-    private void validateCommand(CommandEntity commandEntity) {
-        if (commandEntity == null) {
-            throw new IllegalArgumentException("Command cannot be null");
-        }
-    }
-
-    private void validateProductQuantity(Integer productQuantity) {
-        if (productQuantity == null || productQuantity <= 0) {
-            throw new IllegalArgumentException("Product quantity must be greater than zero");
-        }
-    }
-
-    private void validateUnitValue(Double unitValue) {
-        if (unitValue == null || unitValue <= 0) {
-            throw new IllegalArgumentException("Unit value must be greater than zero");
-        }
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public ProductEntity getProduct() {
-        return productEntity;
-    }
-
-    public void changeProduct(ProductEntity newProductEntity) {
-        validateProduct(newProductEntity);
-        this.productEntity = newProductEntity;
-    }
-
-    public CommandEntity getCommand() {
-        return commandEntity;
-    }
-
-    public void changeCommand(CommandEntity newCommandEntity) {
-        validateCommand(newCommandEntity);
-        this.commandEntity = newCommandEntity;
-    }
-
-    public Integer getProductQuantity() {
-        return productQuantity;
-    }
-
-    public void changeProductQuantity(Integer newProductQuantity) {
-        validateProductQuantity(newProductQuantity);
-        this.productQuantity = newProductQuantity;
-    }
-
-    public Double getUnitValue() {
-        return unitValue;
-    }
-
-    public void changeUnitValue(Double newUnitValue) {
-        validateUnitValue(newUnitValue);
-        this.unitValue = newUnitValue;
-    }
-
-    public void addQuantity(Integer quantity) {
-        changeProductQuantity(this.productQuantity + quantity);
-    }
 }

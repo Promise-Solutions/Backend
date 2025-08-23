@@ -1,6 +1,8 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.product.GetProductUseCase;
 import com.studiozero.projeto.domain.entities.Expense;
+import com.studiozero.projeto.domain.entities.Product;
 import com.studiozero.projeto.web.dtos.request.ExpenseRequestDTO;
 import com.studiozero.projeto.web.dtos.response.ExpenseResponseDTO;
 import com.studiozero.projeto.web.mappers.ExpenseMapper;
@@ -25,17 +27,18 @@ import java.util.List;
 
 public class ExpenseController {
 
-    private final ExpenseMapper expenseMapper;
     private final CreateExpenseUseCase createExpenseUseCase;
     private final GetExpenseUseCase getExpenseUseCase;
     private final UpdateExpenseUseCase updateExpenseUseCase;
     private final DeleteExpenseUseCase deleteExpenseUseCase;
     private final ListExpensesUseCase listExpensesUseCase;
+    private final GetProductUseCase getProductUseCase;
 
     @Operation(summary = "Create a new Expense", description = "This endpoint is resposable to create a new expense")
     @PostMapping
     public ResponseEntity<ExpenseResponseDTO> createExpense(@RequestBody @Valid ExpenseRequestDTO expenseDTO) {
-        Expense expense = expenseMapper.toEntity(expenseDTO);
+        Product product = getProductUseCase.execute(expenseDTO.getFkProduct());
+        Expense expense = ExpenseMapper.toDomain(expenseDTO, product);
         createExpenseUseCase.execute(expense);
         return ResponseEntity.status(201).body(ExpenseMapper.toDTO(expense));
     }
@@ -54,7 +57,7 @@ public class ExpenseController {
         if (expenses.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<ExpenseResponseDTO> expenseDTOS = ExpenseMapper.toListDtos(expenses);
+        List<ExpenseResponseDTO> expenseDTOS = ExpenseMapper.toDTOList(expenses);
         return ResponseEntity.status(200).body(expenseDTOS);
     }
 
@@ -63,7 +66,9 @@ public class ExpenseController {
     public ResponseEntity<ExpenseResponseDTO> updateExpense(
             @PathVariable Integer id,
             @RequestBody @Valid ExpenseRequestDTO expenseRequestDTO) {
-        Expense expense = expenseMapper.toEntity(expenseRequestDTO, id);
+
+        Product product = getProductUseCase.execute(expenseRequestDTO.getFkProduct());
+        Expense expense = ExpenseMapper.toDomain(expenseRequestDTO, product);
         Expense updatedExpense = updateExpenseUseCase.execute(expense);
         return ResponseEntity.ok(ExpenseMapper.toDTO(updatedExpense));
     }

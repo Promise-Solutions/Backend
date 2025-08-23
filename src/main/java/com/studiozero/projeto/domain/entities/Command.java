@@ -4,7 +4,7 @@ import com.studiozero.projeto.application.enums.Status;
 import java.time.LocalDateTime;
 
 public class Command {
-    private final Integer id;
+    private Integer id;
     private Integer commandNumber;
     private LocalDateTime openingDateTime;
     private LocalDateTime closingDateTime;
@@ -114,6 +114,10 @@ public class Command {
 
     public Double getTotalValue() {
         return totalValue;
+    }
+
+    public Boolean getInternal() {
+        return isInternal;
     }
 
     public void changeTotalValue(Double newTotalValue) {

@@ -1,5 +1,8 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
+import com.studiozero.projeto.domain.entities.Employee;
+import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.Task;
 import com.studiozero.projeto.web.dtos.request.TaskRequestDTO;
 import com.studiozero.projeto.web.dtos.request.TaskUpdateRequestDTO;
@@ -31,13 +34,17 @@ public class TaskController {
         private final UpdateTaskUseCase updateTaskUseCase;
         private final DeleteTaskUseCase deleteTaskUseCase;
         private final ListTasksUseCase listTasksUseCase;
-        private final TaskMapper taskMapper;
+        private final GetEmployeeUseCase getEmployeeUseCase;
 
         @Operation(summary = "Create a task", description = "This method is responsible for create a task.")
         @PostMapping
         public ResponseEntity<TaskResponseDTO> createTask(
                         @RequestBody @Valid TaskRequestDTO taskDto) {
-                Task task = taskMapper.toEntity(taskDto);
+
+            Employee employee = getEmployeeUseCase.execute(taskDto.getFkEmployee());
+            Employee assign = getEmployeeUseCase.execute(taskDto.getFkAssigned());
+
+             Task task = TaskMapper.toDomain(taskDto, employee, assign);
                 Task savedTask = createTaskUseCase.execute(task);
                 TaskResponseDTO savedDto = TaskMapper.toDTO(savedTask);
                 return ResponseEntity.status(201).body(savedDto);
@@ -47,7 +54,7 @@ public class TaskController {
         @GetMapping
         public ResponseEntity<List<TaskResponseDTO>> findAllTasks() {
                 List<Task> tasks = listTasksUseCase.execute();
-                List<TaskResponseDTO> taskDtos = TaskMapper.toListDtos(tasks);
+                List<TaskResponseDTO> taskDtos = TaskMapper.toDTOList(tasks);
                 return ResponseEntity.ok(taskDtos); // Sempre retorna 200, mesmo com lista vazia
         }
 
@@ -65,7 +72,11 @@ public class TaskController {
         public ResponseEntity<TaskResponseDTO> updateTask(
                         @PathVariable @Valid UUID id,
                         @RequestBody @Valid TaskUpdateRequestDTO taskDto) {
-                Task task = taskMapper.toEntity(taskDto, id);
+
+            Employee employee = getEmployeeUseCase.execute(taskDto.getFkEmployee());
+            Employee assign = getEmployeeUseCase.execute(taskDto.getFkAssigned());
+
+                Task task = TaskMapper.toDomain(taskDto, id, employee, assign);
                 Task updatedTask = updateTaskUseCase.execute(task);
                 return ResponseEntity.ok(TaskMapper.toDTO(updatedTask));
         }

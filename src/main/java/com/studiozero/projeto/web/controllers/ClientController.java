@@ -36,7 +36,7 @@ public class ClientController {
         @PostMapping
         public ResponseEntity<ClientResponseDTO> createClient(
                         @RequestBody @Valid ClientRequestDTO clientDto) {
-                Client client = ClientMapper.toEntity(clientDto);
+                Client client= ClientMapper.toDomain(clientDto);
                 Client created = createClientUseCase.execute(client);
                 return ResponseEntity.status(201).body(ClientMapper.toDTO(created));
         }
@@ -56,7 +56,7 @@ public class ClientController {
                 if (clients.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                List<ClientResponseDTO> dtos = ClientMapper.toListDtos(clients);
+                List<ClientResponseDTO> dtos = ClientMapper.toDTOList(clients);
                 return ResponseEntity.status(200).body(dtos);
         }
 
@@ -65,7 +65,7 @@ public class ClientController {
         public ResponseEntity<ClientResponseDTO> updateClient(
                         @PathVariable UUID id,
                         @RequestBody @Valid ClientUpdateRequestDTO clientDto) {
-                Client client = ClientMapper.toEntity(clientDto, id);
+                Client client = ClientMapper.toDomain(clientDto, id);
                 Client updatedClient = updateClientUseCase.execute(client);
                 return ResponseEntity.ok(ClientMapper.toDTO(updatedClient));
         }

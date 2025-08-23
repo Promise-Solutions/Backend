@@ -1,5 +1,7 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.job.GetJobUseCase;
+import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.web.dtos.request.SubJobRequestDTO;
@@ -42,13 +44,15 @@ public class SubJobController {
         private final UpdateSubJobStatusUseCase updateSubJobStatusUseCase;
         private final EvaluateJobStatusUseCase evaluateJobStatusUseCase;
         private final CalculateJobTotalValueUseCase calculateJobTotalValueUseCase;
-        private final SubJobMapper subJobMapper;
+        private final GetJobUseCase getJobUseCase;
 
         @Operation(summary = "Create a new sub job", description = "This method is responsible for create a new sub job.")
         @PostMapping
         public ResponseEntity<SubJobResponseDTO> createSubJob(
                         @RequestBody @Valid SubJobRequestDTO subJobDto) {
-                SubJob subJob = subJobMapper.toEntity(subJobDto);
+
+            Job job = getJobUseCase.execute(subJobDto.getFkService());
+                SubJob subJob = SubJobMapper.toDomain(subJobDto, job);
                 SubJob savedSubJob = createSubJobUseCase.execute(subJob);
                 Status jobStatus = evaluateJobStatusUseCase.execute(savedSubJob.getJob().getId());
                 Double totalValueJob = calculateJobTotalValueUseCase.execute(savedSubJob.getJob());
@@ -72,7 +76,7 @@ public class SubJobController {
                 if (subJobs.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                return ResponseEntity.status(200).body(SubJobMapper.toListDtos(subJobs));
+                return ResponseEntity.status(200).body(SubJobMapper.toDTOList(subJobs));
         }
 
         @Operation(summary = "List all sub jobs", description = "This method is responsible for list all sub jobs.")
@@ -82,7 +86,7 @@ public class SubJobController {
                 if (subJobs.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                List<SubJobResponseDTO> subJobDtos = SubJobMapper.toListDtos(subJobs);
+                List<SubJobResponseDTO> subJobDtos = SubJobMapper.toDTOList(subJobs);
                 return ResponseEntity.status(200).body(subJobDtos);
         }
 
@@ -91,7 +95,8 @@ public class SubJobController {
         public ResponseEntity<SubJobResponseDTO> updateSubJob(
                         @PathVariable UUID id,
                         @RequestBody @Valid SubJobRequestDTO subJobDto) {
-                SubJob subJob = subJobMapper.toEntity(subJobDto, id);
+                Job job = getJobUseCase.execute(subJobDto.getFkService());
+                SubJob subJob = SubJobMapper.toDomain(subJobDto, id, job);
                 SubJob updatedSubJob = updateSubJobUseCase.execute(subJob);
                 Double totalValueJob = calculateJobTotalValueUseCase.execute(updatedSubJob.getJob());
                 return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, totalValueJob));

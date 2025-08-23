@@ -12,6 +12,6 @@ public class ListTracingsUseCase {
     }
 
     public List<Tracing> execute() {
-        return tracingRepository.listAll();
+        return tracingRepository.findAll();
     }
 }

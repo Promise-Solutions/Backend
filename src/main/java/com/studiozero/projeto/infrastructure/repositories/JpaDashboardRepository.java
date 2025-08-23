@@ -3,6 +3,8 @@ package com.studiozero.projeto.infrastructure.repositories;
 import com.studiozero.projeto.domain.repositories.DashboardRepository;
 import com.studiozero.projeto.domain.entities.*;
 import com.studiozero.projeto.application.enums.*;
+import com.studiozero.projeto.infrastructure.entities.*;
+import com.studiozero.projeto.infrastructure.mappers.*;
 import org.springframework.stereotype.Repository;
 import lombok.RequiredArgsConstructor;
 import java.util.*;
@@ -31,7 +33,8 @@ public class JpaDashboardRepository implements DashboardRepository {
         double totalValue = 0.0;
         double totalCommandsValue = 0.0;
 
-        List<SubJob> subJobs = subJobRepository.findAll();
+        List<SubJobEntity> subJobEntities = subJobRepository.findAll();
+        List<SubJob> subJobs = SubJobEntityMapper.toDomainList(subJobEntities);
         List<SubJob> filteredSubJobs = subJobs.stream()
                 .filter(subJob -> subJob.getJob().getClient().getId().equals(clientUUID) &&
                         subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
@@ -39,7 +42,8 @@ public class JpaDashboardRepository implements DashboardRepository {
         totalValue = filteredSubJobs.stream().mapToDouble(SubJob::getValue).sum();
         frequency = filteredSubJobs.size();
 
-        List<Command> closedCommands = commandRepository.findAllByClientIdAndStatus(clientUUID, Status.CLOSED);
+        List<CommandEntity> commandEntities = commandRepository.findAllByClientIdAndStatus(clientUUID, Status.CLOSED);
+        List<Command> closedCommands = CommandEntityMapper.toDomainList(commandEntities);
         totalCommandsValue = closedCommands.stream().mapToDouble(Command::getTotalValue).sum();
         Double ticket = (frequency > 0) ? (totalValue + totalCommandsValue) / frequency : 0.0;
         return Map.of(
@@ -51,24 +55,14 @@ public class JpaDashboardRepository implements DashboardRepository {
 
     @Override
     public Map<String, Double> getFrequencys() {
-        double frequencySingle = 0.0;
-        double frequencyMonthly = 0.0;
-        double frequencyByPc = 0.0;
-        double frequencyByMr = 0.0;
-        double frequencyByPv = 0.0;
-
-        List<SubJob> subJobs = subJobRepository.findAll();
+        List<SubJobEntity> subJobEntities = subJobRepository.findAll();
+        List<SubJob> subJobs = SubJobEntityMapper.toDomainList(subJobEntities);
         List<SubJob> closedSubJobs = subJobs.stream().filter(subJob -> subJob.getStatus() == Status.CLOSED).toList();
-        frequencySingle = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.SINGLE)
-                .count();
-        frequencyMonthly = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.MONTHLY)
-                .count();
-        frequencyByPc = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PODCAST)
-                .count();
-        frequencyByMr = closedSubJobs.stream()
-                .filter(subJob -> subJob.getJob().getCategory() == JobCategory.MUSIC_REHEARSAL).count();
-        frequencyByPv = closedSubJobs.stream()
-                .filter(subJob -> subJob.getJob().getCategory() == JobCategory.PHOTO_VIDEO_STUDIO).count();
+        double frequencySingle = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.SINGLE).count();
+        double frequencyMonthly = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.MONTHLY).count();
+        double frequencyByPc = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PODCAST).count();
+        double frequencyByMr = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.MUSIC_REHEARSAL).count();
+        double frequencyByPv = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PHOTO_VIDEO_STUDIO).count();
         return Map.of(
                 "frequencySingle", frequencySingle,
                 "frequencyMonthly", frequencyMonthly,
@@ -88,8 +82,10 @@ public class JpaDashboardRepository implements DashboardRepository {
 
     @Override
     public Map<String, Double> getBarFinances() {
-        List<Command> commandList = commandRepository.findAll();
-        List<Expense> expenseList = expenseRepository.findAll();
+        List<CommandEntity> commandEntities = commandRepository.findAll();
+        List<Command> commandList = CommandEntityMapper.toDomainList(commandEntities);
+        List<ExpenseEntity> expenseEntities = expenseRepository.findAll();
+        List<Expense> expenseList = ExpenseEntityMapper.toDomainList(expenseEntities);
         double totalClosedCommands = commandList.stream().filter(command -> command.getStatus() == Status.CLOSED)
                 .mapToDouble(Command::getTotalValue).sum();
         double totalExpenseProduct = expenseList.stream()
@@ -119,9 +115,12 @@ public class JpaDashboardRepository implements DashboardRepository {
 
     @Override
     public Map<String, Double> getBalances() {
-        List<Command> commandList = commandRepository.findAll();
-        List<Job> jobList = jobRepository.findAll();
-        List<Expense> expenseList = expenseRepository.findAll();
+        List<CommandEntity> commandEntities = commandRepository.findAll();
+        List<Command> commandList = CommandEntityMapper.toDomainList(commandEntities);
+        List<JobEntity> jobEntities = jobRepository.findAll();
+        List<Job> jobList = JobEntityMapper.toDomainList(jobEntities);
+        List<ExpenseEntity> expenseEntities = expenseRepository.findAll();
+        List<Expense> expenseList = ExpenseEntityMapper.toDomainList(expenseEntities);
         double totalCommandEntryValue = commandList.stream().filter(command -> command.getStatus() == Status.CLOSED)
                 .mapToDouble(Command::getTotalValue).sum();
         double totalJobEntryValue = jobList.stream().filter(job -> job.getStatus() == Status.CLOSED)
@@ -137,7 +136,8 @@ public class JpaDashboardRepository implements DashboardRepository {
 
     @Override
     public java.time.LocalDateTime getRecentTime() {
-        Tracing lastTracing = tracingRepository.findTopByOrderByDateTimeDesc();
+        TracingEntity lastTracingEntity = tracingRepository.findTopByOrderByDateTimeDesc();
+        Tracing lastTracing = TracingEntityMapper.toDomain(lastTracingEntity);
         return lastTracing != null ? lastTracing.getDateTime() : null;
     }
 }

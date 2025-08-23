@@ -14,5 +14,5 @@ public interface ClientRepository {
 
     boolean existsByCpf(String cpf);
 
-    List<Client> listAll();
+    List<Client> findAll();
 }

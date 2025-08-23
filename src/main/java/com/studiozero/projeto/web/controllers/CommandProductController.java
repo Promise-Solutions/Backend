@@ -1,6 +1,10 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.command.GetCommandUseCase;
+import com.studiozero.projeto.application.usecases.product.GetProductUseCase;
+import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.domain.entities.CommandProduct;
+import com.studiozero.projeto.domain.entities.Product;
 import com.studiozero.projeto.web.dtos.request.CommandProductRequestDTO;
 import com.studiozero.projeto.web.dtos.response.CommandProductResponseDTO;
 import com.studiozero.projeto.web.mappers.CommandProductMapper;
@@ -29,13 +33,16 @@ public class CommandProductController {
     private final UpdateCommandProductUseCase updateCommandProductUseCase;
     private final DeleteCommandProductUseCase deleteCommandProductUseCase;
     private final ListCommandProductsUseCase listCommandProductsUseCase;
-    private final CommandProductMapper commandProductMapper;
+    private final GetProductUseCase getProductUseCase;
+    private final GetCommandUseCase getCommandUseCase;
 
     @Operation(summary = "Create a command product", description = "This method is responsible for create a command product.")
     @PostMapping
     public ResponseEntity<CommandProductResponseDTO> createCommandProduct(
             @RequestBody @Valid CommandProductRequestDTO commandProductDto) {
-        CommandProduct commandProduct = commandProductMapper.toEntity(commandProductDto);
+        Product product = getProductUseCase.execute(commandProductDto.getFkProduct());
+        Command command = getCommandUseCase.execute(commandProductDto.getFkCommand());
+        CommandProduct commandProduct = CommandProductMapper.toDomain(commandProductDto, product, command);
         CommandProduct savedCommandProduct = createCommandProductUseCase.execute(commandProduct);
         CommandProductResponseDTO savedDto = CommandProductMapper.toDTO(savedCommandProduct);
         return ResponseEntity.status(201).body(savedDto);
@@ -58,7 +65,7 @@ public class CommandProductController {
         if (commandProducts.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<CommandProductResponseDTO> commandProductsDtos = CommandProductMapper.toListDtos(commandProducts);
+        List<CommandProductResponseDTO> commandProductsDtos = CommandProductMapper.toDTOList(commandProducts);
         return ResponseEntity.status(200).body(commandProductsDtos);
     }
 
@@ -67,7 +74,10 @@ public class CommandProductController {
     public ResponseEntity<CommandProductResponseDTO> updateCommandProduct(
             @PathVariable @Valid Integer id,
             @RequestBody @Valid CommandProductRequestDTO commandProductDto) {
-        CommandProduct commandProduct = commandProductMapper.toEntity(commandProductDto, id);
+
+        Product product = getProductUseCase.execute(commandProductDto.getFkProduct());
+        Command command = getCommandUseCase.execute(commandProductDto.getFkCommand());
+        CommandProduct commandProduct = CommandProductMapper.toDomain(commandProductDto, id, product, command);
 
         CommandProduct updatedCommandProduct = updateCommandProductUseCase.execute(commandProduct);
         return ResponseEntity.ok(CommandProductMapper.toDTO(updatedCommandProduct));

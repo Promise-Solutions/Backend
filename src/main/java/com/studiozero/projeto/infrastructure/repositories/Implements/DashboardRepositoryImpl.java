@@ -1,12 +1,14 @@
 package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.repositories.DashboardRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
 
 @Repository
+@AllArgsConstructor
 public class DashboardRepositoryImpl implements DashboardRepository {
     @Override
     public Object getDashboardData() {

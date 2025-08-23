@@ -1,7 +1,7 @@
 package com.studiozero.projeto.domain.entities;
 
 public class CommandProduct {
-    private final Integer id;
+    private Integer id;
     private Product product;
     private Command command;
     private Integer productQuantity;

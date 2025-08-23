@@ -17,5 +17,5 @@ public interface TracingRepository {
 
     void deleteById(Integer id);
 
-    List<Tracing> listAll();
+    List<Tracing> findAll();
 }

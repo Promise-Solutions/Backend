@@ -7,30 +7,18 @@ import com.studiozero.projeto.web.dtos.response.TracingResponseDTO;
 import java.util.List;
 
 public class TracingMapper {
-
-    public static Tracing toEntity(TracingRequestDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-        // Geração de id pode ser feita no use case, aqui passamos null e
-        // LocalDateTime.now()
+    public static Tracing toDomain(TracingRequestDTO dto) {
+        if (dto == null) return null;
         return new Tracing(null, dto.getContext(), java.time.LocalDateTime.now());
     }
 
     public static TracingResponseDTO toDTO(Tracing tracing) {
-        if (tracing == null) {
-            return null;
-        }
+        if (tracing == null) return null;
         return new TracingResponseDTO(tracing.getId(), tracing.getContext(), tracing.getDateTime());
     }
 
-    public static List<TracingResponseDTO> toListDtos(List<Tracing> entities) {
-        if (entities == null) {
-            return null;
-        }
-
-        return entities.stream()
-                .map(TracingMapper::toDTO)
-                .toList();
+    public static List<TracingResponseDTO> toDTOList(List<Tracing> entities) {
+        if (entities == null) return null;
+        return entities.stream().map(TracingMapper::toDTO).toList();
     }
 }

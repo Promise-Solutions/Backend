@@ -2,30 +2,31 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Product;
 import com.studiozero.projeto.domain.repositories.ProductRepository;
+import com.studiozero.projeto.infrastructure.entities.ProductEntity;
+import com.studiozero.projeto.infrastructure.mappers.ProductEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.JpaProductRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
     private final JpaProductRepository jpaProductRepository;
 
-    @Autowired
-    public ProductRepositoryImpl(JpaProductRepository jpaProductRepository) {
-        this.jpaProductRepository = jpaProductRepository;
-    }
-
     @Override
     public Product findById(Integer id) {
-        return jpaProductRepository.findById(id).orElse(null);
+        return jpaProductRepository.findById(id)
+            .map(ProductEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
     public void save(Product product) {
-        jpaProductRepository.save(product);
+        ProductEntity entity = ProductEntityMapper.toEntity(product);
+        jpaProductRepository.save(entity);
     }
 
     @Override
@@ -35,6 +36,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-        return jpaProductRepository.findAll();
+        return jpaProductRepository.findAll()
+            .stream()
+            .map(ProductEntityMapper::toDomain)
+            .toList();
     }
 }

@@ -2,33 +2,32 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.repositories.ClientRepository;
+import com.studiozero.projeto.infrastructure.entities.ClientEntity;
+import com.studiozero.projeto.infrastructure.mappers.ClientEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.JpaClientRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@AllArgsConstructor
 public class ClientRepositoryImpl implements ClientRepository {
     private final JpaClientRepository jpaClientRepository;
 
-    @Autowired
-    public ClientRepositoryImpl(JpaClientRepository jpaClientRepository) {
-        this.jpaClientRepository = jpaClientRepository;
-    }
-
     @Override
     public Client findById(UUID id) {
-        Optional<Client> client = jpaClientRepository.findById(id);
-        return client.orElse(null);
+        return jpaClientRepository.findById(id)
+            .map(ClientEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
     public void save(Client client) {
-        jpaClientRepository.save(client);
+        ClientEntity entity = ClientEntityMapper.toEntity(client);
+        jpaClientRepository.save(entity);
     }
 
     @Override
@@ -42,7 +41,10 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
-    public List<Client> listAll() {
-        return jpaClientRepository.findAll();
+    public List<Client> findAll() {
+        return jpaClientRepository.findAll()
+            .stream()
+            .map(ClientEntityMapper::toDomain)
+            .toList();
     }
 }

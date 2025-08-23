@@ -31,7 +31,7 @@ public class GoalController {
 
     @PostMapping()
     public ResponseEntity<GoalResponseDTO> createGoal(@Valid @RequestBody GoalRequestDTO dto) {
-        Goal goal = GoalMapper.toEntity(dto);
+        Goal goal = GoalMapper.toDomain(dto);
         createGoalUseCase.execute(goal);
         return ResponseEntity.ok(GoalMapper.toDTO(goal));
     }
@@ -45,7 +45,7 @@ public class GoalController {
     @GetMapping
     public ResponseEntity<List<GoalResponseDTO>> listGoals() {
         List<Goal> goals = listGoalsUseCase.execute();
-        List<GoalResponseDTO> goalsDtos = GoalMapper.toListDtos(goals);
+        List<GoalResponseDTO> goalsDtos = GoalMapper.toDTOList(goals);
         return ResponseEntity.ok(goalsDtos);
     }
 

@@ -12,6 +12,6 @@ public class ListEmployeesUseCase {
     }
 
     public List<Employee> execute() {
-        return employeeRepository.listAll();
+        return employeeRepository.findAll();
     }
 }

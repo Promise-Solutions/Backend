@@ -7,7 +7,7 @@ import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.application.enums.JobType;
 
 public class Job {
-    private final UUID id;
+    private UUID id;
     private String title;
     private Double totalValue;
     private JobCategory category;
@@ -100,6 +100,34 @@ public class Job {
 
     public JobType getServiceType() {
         return serviceType;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public void setCategory(JobCategory category) {
+        this.category = category;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setServiceType(JobType serviceType) {
+        this.serviceType = serviceType;
     }
 
     public void changeTitle(String newTitle) {

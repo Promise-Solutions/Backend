@@ -7,6 +7,8 @@ public interface CommandProductRepository {
 
     List<CommandProduct> findAllByCommand_Id(Integer fkComanda);
 
+    List<CommandProduct> findAll();
+
     boolean existsByProduct_IdAndCommand_Id(Integer idProduct, Integer idCommand);
 
     CommandProduct findByProduct_IdAndCommand_Id(Integer idProduct, Integer idCommand);
@@ -16,4 +18,5 @@ public interface CommandProductRepository {
     void save(CommandProduct commandProduct);
 
     void deleteById(Integer id);
+
 }

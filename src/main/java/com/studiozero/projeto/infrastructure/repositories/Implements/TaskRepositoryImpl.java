@@ -2,8 +2,11 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Task;
 import com.studiozero.projeto.domain.repositories.TaskRepository;
+import com.studiozero.projeto.infrastructure.entities.TaskEntity;
+import com.studiozero.projeto.infrastructure.mappers.TaskEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.JpaTaskRepository;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,27 +14,28 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
+@AllArgsConstructor
 public class TaskRepositoryImpl implements TaskRepository {
     private final JpaTaskRepository jpaTaskRepository;
 
-    @Autowired
-    public TaskRepositoryImpl(JpaTaskRepository jpaTaskRepository) {
-        this.jpaTaskRepository = jpaTaskRepository;
-    }
-
     @Override
     public Task findById(UUID id) {
-        return jpaTaskRepository.findById(id).orElse(null);
+        return jpaTaskRepository.findById(id)
+            .map(TaskEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
     public List<Task> findAll() {
-        return jpaTaskRepository.findAll();
+        return jpaTaskRepository.findAll().stream()
+            .map(TaskEntityMapper::toDomain)
+            .toList();
     }
 
     @Override
     public void save(Task task) {
-        jpaTaskRepository.save(task);
+        TaskEntity entity = TaskEntityMapper.toEntity(task);
+        jpaTaskRepository.save(entity);
     }
 
     @Override

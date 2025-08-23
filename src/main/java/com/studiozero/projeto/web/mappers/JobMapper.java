@@ -4,43 +4,38 @@ import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.web.dtos.request.JobRequestDTO;
 import com.studiozero.projeto.web.dtos.response.JobResponseDTO;
-import com.studiozero.projeto.web.handlers.NotFoundException;
-import com.studiozero.projeto.domain.repositories.ClientRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.UUID;
 
-@Component
 public class JobMapper {
-
-    private final ClientRepository clientRepository;
-
-    public JobMapper(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public static Job toDomain(JobRequestDTO dto, Client client) {
+        if (dto == null || client == null) return null;
+        return new Job(
+            null,
+            dto.getTitle(),
+            dto.getTotalValue(),
+            dto.getCategory(),
+            dto.getStatus(),
+            client,
+            dto.getServiceType()
+        );
     }
 
-    public Job toEntity(JobRequestDTO dto) {
-        if (dto == null)
-            return null;
-        Client client = clientRepository.findById(dto.getFkClient());
-        if (client == null)
-            throw new NotFoundException("FkClient not found");
-        // Geração de id pode ser feita no use case, aqui passamos null
+    public static Job toDomain(JobRequestDTO dto, UUID id, Client client) {
+        if (dto == null || id == null || client == null) return null;
         return new Job(
-                null,
-                dto.getTitle(),
-                dto.getTotalValue(),
-                dto.getCategory(),
-                dto.getStatus(),
-                client,
-                dto.getServiceType());
+            id,
+            dto.getTitle(),
+            dto.getTotalValue(),
+            dto.getCategory(),
+            dto.getStatus(),
+            client,
+            dto.getServiceType()
+        );
     }
 
     public static JobResponseDTO toDTO(Job job) {
-        if (job == null) {
-            return null;
-        }
+        if (job == null) return null;
         JobResponseDTO dto = new JobResponseDTO();
         dto.setId(job.getId());
         dto.setTitle(job.getTitle());
@@ -52,30 +47,8 @@ public class JobMapper {
         return dto;
     }
 
-    public static List<JobResponseDTO> toListDtos(List<Job> entities) {
-        if (entities == null) {
-            return null;
-        }
-
-        return entities.stream()
-                .map(JobMapper::toDTO)
-                .toList();
+    public static List<JobResponseDTO> toDTOList(List<Job> entities) {
+        if (entities == null) return null;
+        return entities.stream().map(JobMapper::toDTO).toList();
     }
-
-    public Job toEntity(JobRequestDTO dto, UUID id) {
-        if (dto == null || id == null)
-            return null;
-        Client client = clientRepository.findById(dto.getFkClient());
-        if (client == null)
-            throw new NotFoundException("FkClient not found!");
-        return new Job(
-                id,
-                dto.getTitle(),
-                dto.getTotalValue(),
-                dto.getCategory(),
-                dto.getStatus(),
-                client,
-                dto.getServiceType());
-    }
-
 }

@@ -14,6 +14,7 @@ public class CreateCommandProductUseCase {
         if (commandProduct == null) {
             throw new IllegalArgumentException("CommandProduct cannot be null");
         }
+
         commandProductRepository.save(commandProduct);
         return commandProduct;
     }

@@ -15,7 +15,6 @@ public class DeleteClientUseCase {
     }
 
     public void execute(UUID id) {
-        // Supondo que id é UUID string
         if (commandRepository.existsByClientId((id))) {
             throw new IllegalStateException("Não é possível deletar cliente com comandos associados");
         }

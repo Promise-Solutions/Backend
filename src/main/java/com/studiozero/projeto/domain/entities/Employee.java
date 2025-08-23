@@ -3,7 +3,7 @@ package com.studiozero.projeto.domain.entities;
 import java.util.UUID;
 
 public class Employee {
-    private final UUID id;
+    private UUID id;
     private String name;
     private String email;
     private String contact;
@@ -106,6 +106,34 @@ public class Employee {
 
     public Boolean getActive() {
         return active;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void changeName(String newName) {

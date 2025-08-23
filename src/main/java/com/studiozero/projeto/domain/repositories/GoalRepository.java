@@ -14,7 +14,5 @@ public interface GoalRepository {
 
     void deleteById(Integer id);
 
-    List<Goal> listAll();
-
     List<Goal> findAll();
 }

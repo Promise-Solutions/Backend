@@ -11,5 +11,5 @@ public interface ExpenseRepository {
 
     void deleteById(Integer id);
 
-    List<Expense> listAll();
+    List<Expense> findAll();
 }

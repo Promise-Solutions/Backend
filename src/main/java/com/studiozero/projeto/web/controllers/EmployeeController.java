@@ -44,7 +44,7 @@ public class EmployeeController {
         @PostMapping
         public ResponseEntity<EmployeeResponseDTO> createEmployee(
                         @RequestBody @Valid EmployeeRequestDTO employeeDto) {
-                Employee employee = EmployeeMapper.toEntity(employeeDto);
+                Employee employee = EmployeeMapper.toDomain(employeeDto);
                 createEmployeeUseCase.execute(employee);
                 return ResponseEntity.status(201).body(EmployeeMapper.toDTO(employee));
         }
@@ -82,7 +82,7 @@ public class EmployeeController {
                 if (employees.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                List<EmployeeResponseDTO> dtos = EmployeeMapper.toListDtos(employees);
+                List<EmployeeResponseDTO> dtos = EmployeeMapper.toDTOList(employees);
                 return ResponseEntity.status(200).body(dtos);
         }
 
@@ -91,7 +91,7 @@ public class EmployeeController {
         public ResponseEntity<EmployeeResponseDTO> updateEmployee(
                         @PathVariable @Valid UUID id,
                         @RequestBody @Valid EmployeeUpdateRequestDTO employeeDto) {
-                Employee employee = EmployeeMapper.toEntity(employeeDto, id);
+                Employee employee = EmployeeMapper.toDomain(employeeDto, id);
                 Employee updatedEmployee = updateEmployeeUseCase.execute(employee);
                 return ResponseEntity.ok(EmployeeMapper.toDTO(updatedEmployee));
         }

@@ -20,5 +20,5 @@ public interface EmployeeRepository {
 
     void deleteById(UUID id);
 
-    List<Employee> listAll();
+    List<Employee> findAll();
 }

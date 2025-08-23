@@ -3,6 +3,8 @@ package com.studiozero.projeto.application.usecases.job;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.repositories.JobRepository;
 
+import java.util.UUID;
+
 public class CreateJobUseCase {
     private final JobRepository jobRepository;
 
@@ -11,8 +13,12 @@ public class CreateJobUseCase {
     }
 
     public void execute(Job job) {
-        if (job == null || job.getId() == null || job.getId().toString().isEmpty()) {
+        if (job == null) {
             throw new IllegalArgumentException("Job inválido");
+        }
+
+        if (job.getId() == null) {
+            job.setId(UUID.randomUUID());
         }
         jobRepository.save(job);
     }

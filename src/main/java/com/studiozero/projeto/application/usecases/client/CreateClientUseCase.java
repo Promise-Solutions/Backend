@@ -3,6 +3,8 @@ package com.studiozero.projeto.application.usecases.client;
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.repositories.ClientRepository;
 
+import java.util.UUID;
+
 public class CreateClientUseCase {
     private final ClientRepository clientRepository;
 
@@ -14,12 +16,15 @@ public class CreateClientUseCase {
         if (client == null) {
             throw new IllegalArgumentException("Cliente inválido");
         }
-        if (client.getId() == null) {
-            client.setId(java.util.UUID.randomUUID());
-        }
+
         if (clientRepository.existsByCpf(client.getCpf())) {
             throw new IllegalStateException("Cliente com este CPF já existe");
         }
+
+        if (client.getId() == null) {
+            client.setId(UUID.randomUUID());
+        }
+
         clientRepository.save(client);
         return client;
     }

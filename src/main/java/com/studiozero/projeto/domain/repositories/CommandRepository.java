@@ -9,9 +9,13 @@ import java.util.UUID;
 public interface CommandRepository {
     boolean existsByClientId(UUID clientId);
 
+    boolean existsByCommandNumber(Integer commandNumber);
+
     List<Command> findAllByStatus(Status status);
 
     List<Command> findAllByClientIdAndStatus(UUID clientId, Status status);
+
+    List<Command> findAll();
 
     LocalDateTime findMaxOpeningDate();
 

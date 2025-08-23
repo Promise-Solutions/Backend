@@ -5,30 +5,32 @@ import com.studiozero.projeto.domain.repositories.JobRepository;
 import com.studiozero.projeto.infrastructure.repositories.JpaJobRepository;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.studiozero.projeto.infrastructure.entities.JobEntity;
+import com.studiozero.projeto.infrastructure.mappers.JobEntityMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
+@AllArgsConstructor
 public class JobRepositoryImpl implements JobRepository {
     private final JpaJobRepository jpaJobRepository;
 
-    @Autowired
-    public JobRepositoryImpl(JpaJobRepository jpaJobRepository) {
-        this.jpaJobRepository = jpaJobRepository;
-    }
-
     @Override
     public List<Job> findAll() {
-        return jpaJobRepository.findAll();
+        return jpaJobRepository.findAll()
+            .stream()
+            .map(JobEntityMapper::toDomain)
+            .toList();
     }
 
     @Override
     public List<Job> findAllByClientId(UUID clientId) {
         return jpaJobRepository.findAll().stream()
-                .filter(j -> j.getClient() != null && clientId.equals(j.getClient().getId())).toList();
+            .map(JobEntityMapper::toDomain)
+            .filter(j -> j.getClient() != null && clientId.equals(j.getClient().getId())).toList();
     }
 
     @Override
@@ -38,12 +40,15 @@ public class JobRepositoryImpl implements JobRepository {
 
     @Override
     public Job findById(UUID id) {
-        return jpaJobRepository.findById(id).orElse(null);
+        return jpaJobRepository.findById(id)
+            .map(JobEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
     public void save(Job job) {
-        jpaJobRepository.save(job);
+        JobEntity entity = JobEntityMapper.toEntity(job);
+        jpaJobRepository.save(entity);
     }
 
     @Override

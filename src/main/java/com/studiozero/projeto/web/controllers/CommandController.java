@@ -1,7 +1,11 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.client.GetClientUseCase;
+import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
+import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.application.enums.Status;
+import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.web.dtos.request.CommandRequestDTO;
 import com.studiozero.projeto.web.dtos.response.CommandResponseDTO;
 import com.studiozero.projeto.web.mappers.CommandMapper;
@@ -30,13 +34,16 @@ public class CommandController {
     private final ListCommandsUseCase listCommandsUseCase;
     private final UpdateCommandUseCase updateCommandUseCase;
     private final DeleteCommandUseCase deleteCommandUseCase;
-    private final CommandMapper commandMapper;
+    private final GetClientUseCase getClientUseCase;
+    private final GetEmployeeUseCase getEmployeeUseCase;
 
     @Operation(summary = "Create a new command", description = "This method is responsible for creating a new command.")
     @PostMapping
     public ResponseEntity<CommandResponseDTO> createCommand(
             @RequestBody @Valid CommandRequestDTO commandDto) {
-        Command command = commandMapper.toEntity(commandDto);
+        Client client = getClientUseCase.execute(commandDto.getFkClient());
+        Employee employee = getEmployeeUseCase.execute(commandDto.getFkEmployee());
+        Command command = CommandMapper.toDomain(commandDto, client, employee);
         Command savedCommand = createCommandUseCase.execute(command);
         CommandResponseDTO savedDto = CommandMapper.toDTO(savedCommand);
         return ResponseEntity.status(201).body(savedDto);
@@ -63,7 +70,7 @@ public class CommandController {
         if (commands.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<CommandResponseDTO> commandDtos = CommandMapper.toListDtos(commands);
+        List<CommandResponseDTO> commandDtos = CommandMapper.toDTOList(commands);
         return ResponseEntity.status(200).body(commandDtos);
     }
 
@@ -72,7 +79,9 @@ public class CommandController {
     public ResponseEntity<CommandResponseDTO> updateCommand(
             @PathVariable Integer id,
             @RequestBody @Valid CommandRequestDTO commandDto) {
-        Command command = commandMapper.toEntity(commandDto, id);
+        Client client = getClientUseCase.execute(commandDto.getFkClient());
+        Employee employee = getEmployeeUseCase.execute(commandDto.getFkEmployee());
+        Command command = CommandMapper.toDomain(commandDto, id, client, employee);
         Command updatedCommand = updateCommandUseCase.execute(command);
         return ResponseEntity.ok(CommandMapper.toDTO(updatedCommand));
     }

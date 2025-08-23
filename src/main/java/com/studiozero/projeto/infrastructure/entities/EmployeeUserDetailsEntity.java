@@ -1,32 +1,31 @@
 package com.studiozero.projeto.infrastructure.entities;
 
+import com.studiozero.projeto.domain.entities.Employee;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@AllArgsConstructor
 public class EmployeeUserDetailsEntity implements UserDetails {
-    private final EmployeeEntity employeeEntity;
 
-    public EmployeeUserDetailsEntity(EmployeeEntity employeeEntity) {
-        this.employeeEntity = employeeEntity;
-    }
+    private final EmployeeEntity employee;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Retorne as authorities do funcionário, se houver. Aqui retorna vazio.
         return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return employeeEntity.getPassword();
+        return employee.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return employeeEntity.getEmail();
+        return employee.getEmail();
     }
 
     @Override
@@ -46,10 +45,10 @@ public class EmployeeUserDetailsEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return Boolean.TRUE.equals(employeeEntity.getActive());
+        return true;
     }
 
     public EmployeeEntity getEmployee() {
-        return employeeEntity;
+        return employee;
     }
 }

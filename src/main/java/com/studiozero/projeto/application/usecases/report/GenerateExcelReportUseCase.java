@@ -1,41 +1,41 @@
 package com.studiozero.projeto.application.usecases.report;
 
-import com.studiozero.projeto.infrastructure.repositories.*;
+import com.studiozero.projeto.domain.entities.Command;
+import com.studiozero.projeto.domain.entities.Expense;
+import com.studiozero.projeto.domain.entities.Job;
+import com.studiozero.projeto.domain.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.BiConsumer;
 
 @RequiredArgsConstructor
 public class GenerateExcelReportUseCase {
-    private final JpaClientRepository clientRepository;
-    private final JpaCommandProductRepository commandProductRepository;
-    private final JpaEmployeeRepository employeeRepository;
-    private final JpaCommandRepository commandRepository;
-    private final JpaJobRepository jobRepository;
-    private final JpaSubJobRepository subJobRepository;
-    private final JpaProductRepository productRepository;
-    private final JpaTaskRepository taskRepository;
-    private final JpaExpenseRepository expenseRepository;
-    // private final DriveService driveService; // Implemente se necessário
+    private final CommandRepository commandRepository;
+    private final JobRepository jobRepository;
+    private final ExpenseRepository expenseRepository;
+    private final ClientRepository clientRepository;
+    private final CommandProductRepository commandProductRepository;
+    private final EmployeeRepository employeeRepository;
+    private final SubJobRepository subJobRepository;
+    private final ProductRepository productRepository;
+    private final TaskRepository taskRepository;
 
     public File execute() {
-        var clients = clientRepository.findAll();
-        var employees = employeeRepository.findAll();
         var commands = commandRepository.findAll();
         var jobs = jobRepository.findAll();
+        var expenses = expenseRepository.findAll();
+        var clients = clientRepository.findAll();
+        var employees = employeeRepository.findAll();
         var subJobs = subJobRepository.findAll();
         var products = productRepository.findAll();
         var tasks = taskRepository.findAll();
         var commandProducts = commandProductRepository.findAll();
-        var expenses = expenseRepository.findAll();
 
         String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         File arquivoXLSX = new File(System.getProperty("java.io.tmpdir"),
@@ -58,11 +58,11 @@ public class GenerateExcelReportUseCase {
             String[] financesHeaders = { "Entrada", "Saída", "Lucro ou Perda" };
             double totalCommandEntryValue = commands.stream()
                     .filter(command -> "CLOSED".equals(command.getStatus().toString()))
-                    .mapToDouble(com.studiozero.projeto.domain.entities.Command::getTotalValue).sum();
+                    .mapToDouble(Command::getTotalValue).sum();
             double totalJobEntryValue = jobs.stream().filter(job -> "CLOSED".equals(job.getStatus().toString()))
-                    .mapToDouble(com.studiozero.projeto.domain.entities.Job::getTotalValue).sum();
+                    .mapToDouble(Job::getTotalValue).sum();
             double totalExpenseValue = expenses.stream()
-                    .mapToDouble(com.studiozero.projeto.domain.entities.Expense::getAmountSpend).sum();
+                    .mapToDouble(Expense::getAmountSpend).sum();
             double totalEntryValue = totalCommandEntryValue + totalJobEntryValue;
             double profitOrLoss = totalEntryValue - totalExpenseValue;
             NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("pt-BR"));
@@ -294,7 +294,4 @@ public class GenerateExcelReportUseCase {
             default -> tipo;
         };
     }
-
-    // Adicione os métodos auxiliares traduzBoolean, traduzStatus, etc, conforme o
-    // legado
 }

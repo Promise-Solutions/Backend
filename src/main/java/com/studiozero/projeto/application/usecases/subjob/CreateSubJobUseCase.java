@@ -16,6 +16,10 @@ public class CreateSubJobUseCase {
                 subJob.getJob().getCategory(), subJob.getDate(), subJob.getStartTime(), subJob.getExpectedEndTime())) {
             throw new IllegalStateException("There is a room usage conflict");
         }
+
+        if (subJob.getId() == null) {
+            subJob.setId(UUID.randomUUID());
+        }
         subJobRepository.save(subJob);
         return subJob;
     }

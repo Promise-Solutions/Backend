@@ -2,30 +2,31 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Expense;
 import com.studiozero.projeto.domain.repositories.ExpenseRepository;
+import com.studiozero.projeto.infrastructure.entities.ExpenseEntity;
+import com.studiozero.projeto.infrastructure.mappers.ExpenseEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.JpaExpenseRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class ExpenseRepositoryImpl implements ExpenseRepository {
     private final JpaExpenseRepository jpaExpenseRepository;
 
-    @Autowired
-    public ExpenseRepositoryImpl(JpaExpenseRepository jpaExpenseRepository) {
-        this.jpaExpenseRepository = jpaExpenseRepository;
-    }
-
     @Override
     public Expense findById(Integer id) {
-        return jpaExpenseRepository.findById(id).orElse(null);
+        return jpaExpenseRepository.findById(id)
+            .map(ExpenseEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
     public void save(Expense expense) {
-        jpaExpenseRepository.save(expense);
+        ExpenseEntity entity = ExpenseEntityMapper.toEntity(expense);
+        jpaExpenseRepository.save(entity);
     }
 
     @Override
@@ -34,7 +35,10 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> listAll() {
-        return jpaExpenseRepository.findAll();
+    public List<Expense> findAll() {
+        return jpaExpenseRepository.findAll()
+            .stream()
+            .map(ExpenseEntityMapper::toDomain)
+            .toList();
     }
 }

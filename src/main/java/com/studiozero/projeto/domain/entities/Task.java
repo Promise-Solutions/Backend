@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Task {
-    private final UUID id;
+    private UUID id;
     private String title;
     private String description;
     private LocalDate startDate;
@@ -79,6 +79,38 @@ public class Task {
 
     public Employee getAssign() {
         return assign;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setLimitDate(LocalDate limitDate) {
+        this.limitDate = limitDate;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setAssign(Employee assign) {
+        this.assign = assign;
     }
 
     public void changeTitle(String newTitle) {

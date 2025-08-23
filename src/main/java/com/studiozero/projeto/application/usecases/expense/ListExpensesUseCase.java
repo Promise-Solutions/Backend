@@ -12,6 +12,6 @@ public class ListExpensesUseCase {
     }
 
     public List<Expense> execute() {
-        return expenseRepository.listAll();
+        return expenseRepository.findAll();
     }
 }

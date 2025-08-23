@@ -8,14 +8,12 @@ public class Product {
     private Double internalValue;
     private Double totalBuyValue;
 
-    public Product(Integer id, String name, Integer quantity, Double clientValue, Double internalValue,
-            Double totalBuyValue) {
+    public Product(Integer id, String name, Integer quantity, Double clientValue, Double internalValue) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.clientValue = clientValue;
         this.internalValue = internalValue;
-        this.totalBuyValue = totalBuyValue;
     }
 
     public Integer getId() {
@@ -62,7 +60,4 @@ public class Product {
         this.internalValue = internalValue;
     }
 
-    public void setTotalBuyValue(Double totalBuyValue) {
-        this.totalBuyValue = totalBuyValue;
-    }
 }

@@ -29,13 +29,12 @@ public class ProductController {
         private final UpdateProductUseCase updateProductUseCase;
         private final DeleteProductUseCase deleteProductUseCase;
         private final ListProductsUseCase listProductsUseCase;
-        private final ProductMapper productMapper;
 
         @Operation(summary = "Create a product", description = "This method is responsible for create a product.")
         @PostMapping
         public ResponseEntity<ProductResponseDTO> createProduct(
                         @RequestBody @Valid ProductRequestDTO productDto) {
-                Product product = productMapper.toEntity(productDto);
+                Product product = ProductMapper.toDomain(productDto);
                 Product savedProduct = createProductUseCase.execute(product);
                 return ResponseEntity.status(201).body(ProductMapper.toDTO(savedProduct));
         }
@@ -55,7 +54,7 @@ public class ProductController {
                 if (products.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                List<ProductResponseDTO> dtos = ProductMapper.toListDtos(products);
+                List<ProductResponseDTO> dtos = ProductMapper.toDTOList(products);
                 return ResponseEntity.status(200).body(dtos);
         }
 
@@ -64,7 +63,7 @@ public class ProductController {
         public ResponseEntity<ProductResponseDTO> updateProduct(
                         @PathVariable @Valid Integer id,
                         @RequestBody @Valid ProductRequestDTO productDto) {
-                Product product = productMapper.toEntity(productDto, id);
+                Product product = ProductMapper.toDomain(productDto, id);
                 Product updatedProduct = updateProductUseCase.execute(product);
                 return ResponseEntity.ok(ProductMapper.toDTO(updatedProduct));
         }

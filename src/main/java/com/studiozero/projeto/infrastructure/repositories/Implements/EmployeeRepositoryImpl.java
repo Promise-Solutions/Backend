@@ -2,31 +2,39 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.repositories.EmployeeRepository;
+import com.studiozero.projeto.infrastructure.entities.EmployeeEntity;
 import com.studiozero.projeto.infrastructure.repositories.JpaEmployeeRepository;
+import com.studiozero.projeto.infrastructure.mappers.EmployeeEntityMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
+@AllArgsConstructor
 public class EmployeeRepositoryImpl implements EmployeeRepository {
     private final JpaEmployeeRepository jpaEmployeeRepository;
 
-    @Autowired
-    public EmployeeRepositoryImpl(JpaEmployeeRepository jpaEmployeeRepository) {
-        this.jpaEmployeeRepository = jpaEmployeeRepository;
+    @Override
+    public Employee findById(UUID id) {
+        return jpaEmployeeRepository.findById(id)
+            .map(EmployeeEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
-    public Employee findById(UUID id) {
-        return jpaEmployeeRepository.findById(id).orElse(null);
+    public List<Employee> findAll() {
+        return jpaEmployeeRepository.findAll()
+            .stream()
+            .map(EmployeeEntityMapper::toDomain)
+            .toList();
     }
 
     @Override
     public Employee findByEmail(String email) {
-        return jpaEmployeeRepository.findByEmail(email);
+        return EmployeeEntityMapper.toDomain(jpaEmployeeRepository.findByEmail(email));
     }
 
     @Override
@@ -41,12 +49,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public Employee findByEmailAndPassword(String email, String password) {
-        return jpaEmployeeRepository.findByEmailAndPassword(email, password);
+        return EmployeeEntityMapper.toDomain(jpaEmployeeRepository.findByEmailAndPassword(email, password));
     }
 
     @Override
     public void save(Employee employee) {
-        jpaEmployeeRepository.save(employee);
+        EmployeeEntity entity = EmployeeEntityMapper.toEntity(employee);
+        jpaEmployeeRepository.save(entity);
     }
 
     @Override
@@ -54,8 +63,4 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         jpaEmployeeRepository.deleteById(id);
     }
 
-    @Override
-    public List<Employee> listAll() {
-        return jpaEmployeeRepository.findAll();
-    }
 }

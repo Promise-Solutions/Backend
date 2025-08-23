@@ -2,25 +2,25 @@ package com.studiozero.projeto.infrastructure.repositories.Implements;
 
 import com.studiozero.projeto.domain.entities.Tracing;
 import com.studiozero.projeto.domain.repositories.TracingRepository;
+import com.studiozero.projeto.infrastructure.entities.TracingEntity;
+import com.studiozero.projeto.infrastructure.mappers.TracingEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.JpaTracingRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class TracingRepositoryImpl implements TracingRepository {
     private final JpaTracingRepository jpaTracingRepository;
 
-    @Autowired
-    public TracingRepositoryImpl(JpaTracingRepository jpaTracingRepository) {
-        this.jpaTracingRepository = jpaTracingRepository;
-    }
-
     @Override
     public Tracing findTopByOrderByIdDesc() {
-        return jpaTracingRepository.findTopByOrderByIdDesc().orElse(null);
+        return jpaTracingRepository.findTopByOrderByIdDesc()
+            .map(TracingEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
@@ -30,17 +30,21 @@ public class TracingRepositoryImpl implements TracingRepository {
 
     @Override
     public Tracing findTopByOrderByDateTimeDesc() {
-        return jpaTracingRepository.findTopByOrderByDateTimeDesc();
+        TracingEntity entity = jpaTracingRepository.findTopByOrderByDateTimeDesc();
+        return TracingEntityMapper.toDomain(entity);
     }
 
     @Override
     public Tracing findById(Integer id) {
-        return jpaTracingRepository.findById(id).orElse(null);
+        return jpaTracingRepository.findById(id)
+            .map(TracingEntityMapper::toDomain)
+            .orElse(null);
     }
 
     @Override
     public void save(Tracing tracing) {
-        jpaTracingRepository.save(tracing);
+        TracingEntity entity = TracingEntityMapper.toEntity(tracing);
+        jpaTracingRepository.save(entity);
     }
 
     @Override
@@ -49,7 +53,9 @@ public class TracingRepositoryImpl implements TracingRepository {
     }
 
     @Override
-    public List<Tracing> listAll() {
-        return jpaTracingRepository.findAll();
+    public List<Tracing> findAll() {
+        return jpaTracingRepository.findAll().stream()
+            .map(TracingEntityMapper::toDomain)
+            .toList();
     }
 }

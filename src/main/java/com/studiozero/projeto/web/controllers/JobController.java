@@ -1,5 +1,7 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.client.GetClientUseCase;
+import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.web.dtos.request.JobRequestDTO;
 import com.studiozero.projeto.web.dtos.response.JobResponseDTO;
@@ -30,13 +32,14 @@ public class JobController {
         private final UpdateJobUseCase updateJobUseCase;
         private final DeleteJobUseCase deleteJobUseCase;
         private final ListJobsUseCase listJobsUseCase;
-        private final JobMapper jobMapper;
+        private final GetClientUseCase getClientUseCase;
 
         @Operation(summary = "Create a new job", description = "This method is responsible for creating a new job.")
         @PostMapping
         public ResponseEntity<JobResponseDTO> createJob(
                         @RequestBody @Valid JobRequestDTO jobDto) {
-                Job job = jobMapper.toEntity(jobDto);
+            Client client = getClientUseCase.execute(jobDto.getFkClient());
+                Job job = JobMapper.toDomain(jobDto, client);
                 createJobUseCase.execute(job);
                 JobResponseDTO savedDto = JobMapper.toDTO(job);
                 return ResponseEntity.status(201).body(savedDto);
@@ -58,7 +61,7 @@ public class JobController {
                 if (jobs.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                List<JobResponseDTO> jobDtos = JobMapper.toListDtos(jobs);
+                List<JobResponseDTO> jobDtos = JobMapper.toDTOList(jobs);
                 return ResponseEntity.status(200).body(jobDtos);
         }
 
@@ -70,7 +73,7 @@ public class JobController {
                 if (jobs.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                return ResponseEntity.status(200).body(JobMapper.toListDtos(jobs));
+                return ResponseEntity.status(200).body(JobMapper.toDTOList(jobs));
         }
 
         @Operation(summary = "Update a job", description = "This method is responsible for updating a job.")
@@ -78,7 +81,8 @@ public class JobController {
         public ResponseEntity<JobResponseDTO> updateJob(
                         @PathVariable UUID id,
                         @RequestBody @Valid JobRequestDTO jobDto) {
-                Job job = jobMapper.toEntity(jobDto, id);
+            Client client = getClientUseCase.execute(jobDto.getFkClient());
+                Job job = JobMapper.toDomain(jobDto, id, client);
                 updateJobUseCase.execute(job);
                 return ResponseEntity.ok(JobMapper.toDTO(job));
         }

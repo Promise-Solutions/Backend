@@ -12,6 +12,6 @@ public class ListClientsUseCase {
     }
 
     public List<Client> execute() {
-        return clientRepository.listAll();
+        return clientRepository.findAll();
     }
 }

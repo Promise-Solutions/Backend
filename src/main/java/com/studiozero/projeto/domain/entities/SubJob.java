@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public class SubJob {
-    private final UUID id;
+    private UUID id;
     private String title;
     private String description;
     private Double value;
@@ -148,6 +148,42 @@ public class SubJob {
 
     public Status getStatus() {
         return status;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setExpectedEndTime(LocalTime expectedEndTime) {
+        this.expectedEndTime = expectedEndTime;
+    }
+
+    public void setNeedsRoom(Boolean needsRoom) {
+        this.needsRoom = needsRoom;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public void setStatus(Status status) {
