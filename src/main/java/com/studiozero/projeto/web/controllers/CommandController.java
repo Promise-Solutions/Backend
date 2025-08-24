@@ -17,7 +17,6 @@ import com.studiozero.projeto.application.usecases.command.DeleteCommandUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/commands")
-@RequiredArgsConstructor
 @Tag(name = "Commands", description = "Endpoints for Command Management")
 public class CommandController {
 
@@ -36,6 +34,16 @@ public class CommandController {
     private final DeleteCommandUseCase deleteCommandUseCase;
     private final GetClientUseCase getClientUseCase;
     private final GetEmployeeUseCase getEmployeeUseCase;
+
+    public CommandController(CreateCommandUseCase createCommandUseCase, GetCommandUseCase getCommandUseCase, ListCommandsUseCase listCommandsUseCase, UpdateCommandUseCase updateCommandUseCase, DeleteCommandUseCase deleteCommandUseCase, GetClientUseCase getClientUseCase, GetEmployeeUseCase getEmployeeUseCase) {
+        this.createCommandUseCase = createCommandUseCase;
+        this.getCommandUseCase = getCommandUseCase;
+        this.listCommandsUseCase = listCommandsUseCase;
+        this.updateCommandUseCase = updateCommandUseCase;
+        this.deleteCommandUseCase = deleteCommandUseCase;
+        this.getClientUseCase = getClientUseCase;
+        this.getEmployeeUseCase = getEmployeeUseCase;
+    }
 
     @Operation(summary = "Create a new command", description = "This method is responsible for creating a new command.")
     @PostMapping

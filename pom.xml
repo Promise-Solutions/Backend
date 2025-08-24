@@ -23,7 +23,7 @@
         <springdoc.version>2.5.0</springdoc.version>
         <jwt.version>4.4.0</jwt.version>
         <mysql.version>8.4.0</mysql.version>
-        <lombok.version>1.18.32</lombok.version>
+<!--        <lombok.version>1.18.32</lombok.version> -->
     </properties>
 
     <dependencies>
@@ -59,12 +59,12 @@
         </dependency>
 
         <!-- Lombok -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
 
         <!-- JWT -->
         <dependency>
@@ -169,6 +169,7 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                    <!--
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -176,6 +177,7 @@
                             <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    -->
                 </configuration>
             </plugin>
         </plugins>

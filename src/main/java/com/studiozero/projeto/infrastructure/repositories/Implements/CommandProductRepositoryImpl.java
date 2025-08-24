@@ -6,15 +6,17 @@ import com.studiozero.projeto.infrastructure.entities.CommandProductEntity;
 import com.studiozero.projeto.infrastructure.mappers.CommandProductEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaCommandProductRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 public class CommandProductRepositoryImpl implements CommandProductRepository {
     private final JpaCommandProductRepository jpaCommandProductRepository;
+
+    public CommandProductRepositoryImpl(JpaCommandProductRepository jpaCommandProductRepository) {
+        this.jpaCommandProductRepository = jpaCommandProductRepository;
+    }
 
     @Override
     public List<CommandProduct> findAllByCommand_Id(Integer commandId) {

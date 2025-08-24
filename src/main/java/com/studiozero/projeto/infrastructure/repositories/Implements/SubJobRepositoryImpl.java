@@ -12,13 +12,15 @@ import java.util.List;
 import java.util.UUID;
 import com.studiozero.projeto.infrastructure.entities.SubJobEntity;
 import com.studiozero.projeto.infrastructure.mappers.SubJobEntityMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@AllArgsConstructor
 public class SubJobRepositoryImpl implements SubJobRepository {
     private final JpaSubJobRepository jpaSubJobRepository;
+
+    public SubJobRepositoryImpl(JpaSubJobRepository jpaSubJobRepository) {
+        this.jpaSubJobRepository = jpaSubJobRepository;
+    }
 
     @Override
     public boolean existsByJobId(UUID jobId) {

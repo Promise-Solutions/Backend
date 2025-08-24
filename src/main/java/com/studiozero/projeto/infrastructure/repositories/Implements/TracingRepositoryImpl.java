@@ -6,15 +6,17 @@ import com.studiozero.projeto.infrastructure.entities.TracingEntity;
 import com.studiozero.projeto.infrastructure.mappers.TracingEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTracingRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 public class TracingRepositoryImpl implements TracingRepository {
     private final JpaTracingRepository jpaTracingRepository;
+
+    public TracingRepositoryImpl(JpaTracingRepository jpaTracingRepository) {
+        this.jpaTracingRepository = jpaTracingRepository;
+    }
 
     @Override
     public Tracing findTopByOrderByIdDesc() {

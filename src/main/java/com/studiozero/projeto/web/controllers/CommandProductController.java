@@ -16,7 +16,6 @@ import com.studiozero.projeto.application.usecases.commandproduct.ListCommandPro
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/command-products")
-@RequiredArgsConstructor
 @Tag(name = "Command Products", description = "Endpoints for Command Product Management")
 public class CommandProductController {
 
@@ -35,6 +33,16 @@ public class CommandProductController {
     private final ListCommandProductsUseCase listCommandProductsUseCase;
     private final GetProductUseCase getProductUseCase;
     private final GetCommandUseCase getCommandUseCase;
+
+    public CommandProductController(CreateCommandProductUseCase createCommandProductUseCase, GetCommandProductUseCase getCommandProductUseCase, UpdateCommandProductUseCase updateCommandProductUseCase, DeleteCommandProductUseCase deleteCommandProductUseCase, ListCommandProductsUseCase listCommandProductsUseCase, GetProductUseCase getProductUseCase, GetCommandUseCase getCommandUseCase) {
+        this.createCommandProductUseCase = createCommandProductUseCase;
+        this.getCommandProductUseCase = getCommandProductUseCase;
+        this.updateCommandProductUseCase = updateCommandProductUseCase;
+        this.deleteCommandProductUseCase = deleteCommandProductUseCase;
+        this.listCommandProductsUseCase = listCommandProductsUseCase;
+        this.getProductUseCase = getProductUseCase;
+        this.getCommandUseCase = getCommandUseCase;
+    }
 
     @Operation(summary = "Create a command product", description = "This method is responsible for create a command product.")
     @PostMapping

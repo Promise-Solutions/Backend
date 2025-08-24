@@ -12,7 +12,6 @@ import com.studiozero.projeto.application.usecases.product.ListProductsUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-@RequiredArgsConstructor
 @Tag(name = "Products", description = "Endpoints for Product Management")
 public class ProductController {
 
@@ -30,7 +28,15 @@ public class ProductController {
         private final DeleteProductUseCase deleteProductUseCase;
         private final ListProductsUseCase listProductsUseCase;
 
-        @Operation(summary = "Create a product", description = "This method is responsible for create a product.")
+    public ProductController(CreateProductUseCase createProductUseCase, GetProductUseCase getProductUseCase, UpdateProductUseCase updateProductUseCase, DeleteProductUseCase deleteProductUseCase, ListProductsUseCase listProductsUseCase) {
+        this.createProductUseCase = createProductUseCase;
+        this.getProductUseCase = getProductUseCase;
+        this.updateProductUseCase = updateProductUseCase;
+        this.deleteProductUseCase = deleteProductUseCase;
+        this.listProductsUseCase = listProductsUseCase;
+    }
+
+    @Operation(summary = "Create a product", description = "This method is responsible for create a product.")
         @PostMapping
         public ResponseEntity<ProductResponseDTO> createProduct(
                         @RequestBody @Valid ProductRequestDTO productDto) {

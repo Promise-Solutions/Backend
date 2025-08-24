@@ -4,7 +4,6 @@ import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.domain.repositories.CommandRepository;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaCommandRepository;
 import com.studiozero.projeto.application.enums.Status;
-import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -13,9 +12,12 @@ import com.studiozero.projeto.infrastructure.mappers.CommandEntityMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@AllArgsConstructor
 public class CommandRepositoryImpl implements CommandRepository {
     private final JpaCommandRepository jpaCommandRepository;
+
+    public CommandRepositoryImpl(JpaCommandRepository jpaCommandRepository) {
+        this.jpaCommandRepository = jpaCommandRepository;
+    }
 
     @Override
     public boolean existsByClientId(UUID clientId) {

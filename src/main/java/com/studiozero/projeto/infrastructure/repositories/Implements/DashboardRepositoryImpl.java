@@ -6,13 +6,11 @@ import com.studiozero.projeto.domain.repositories.DashboardRepository;
 import com.studiozero.projeto.infrastructure.entities.*;
 import com.studiozero.projeto.infrastructure.mappers.*;
 import com.studiozero.projeto.infrastructure.repositories.jpa.*;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-@AllArgsConstructor
 public class DashboardRepositoryImpl implements DashboardRepository {
     private final JpaCommandRepository commandRepository;
     private final JpaSubJobRepository subJobRepository;
@@ -20,6 +18,15 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     private final JpaJobRepository jobRepository;
     private final JpaTracingRepository tracingRepository;
     private final JpaExpenseRepository expenseRepository;
+
+    public DashboardRepositoryImpl(JpaCommandRepository commandRepository, JpaSubJobRepository subJobRepository, JpaClientRepository clientRepository, JpaJobRepository jobRepository, JpaTracingRepository tracingRepository, JpaExpenseRepository expenseRepository) {
+        this.commandRepository = commandRepository;
+        this.subJobRepository = subJobRepository;
+        this.clientRepository = clientRepository;
+        this.jobRepository = jobRepository;
+        this.tracingRepository = tracingRepository;
+        this.expenseRepository = expenseRepository;
+    }
 
     @Override
     public Object getDashboardData() {

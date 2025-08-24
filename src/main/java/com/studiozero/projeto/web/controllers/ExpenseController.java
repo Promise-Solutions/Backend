@@ -14,7 +14,6 @@ import com.studiozero.projeto.application.usecases.expense.ListExpensesUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/expenses")
-@RequiredArgsConstructor
 @Tag(name = "Expenses", description = "Endpoints for Expenses Management")
 
 public class ExpenseController {
@@ -33,6 +31,15 @@ public class ExpenseController {
     private final DeleteExpenseUseCase deleteExpenseUseCase;
     private final ListExpensesUseCase listExpensesUseCase;
     private final GetProductUseCase getProductUseCase;
+
+    public ExpenseController(CreateExpenseUseCase createExpenseUseCase, GetExpenseUseCase getExpenseUseCase, UpdateExpenseUseCase updateExpenseUseCase, DeleteExpenseUseCase deleteExpenseUseCase, ListExpensesUseCase listExpensesUseCase, GetProductUseCase getProductUseCase) {
+        this.createExpenseUseCase = createExpenseUseCase;
+        this.getExpenseUseCase = getExpenseUseCase;
+        this.updateExpenseUseCase = updateExpenseUseCase;
+        this.deleteExpenseUseCase = deleteExpenseUseCase;
+        this.listExpensesUseCase = listExpensesUseCase;
+        this.getProductUseCase = getProductUseCase;
+    }
 
     @Operation(summary = "Create a new Expense", description = "This endpoint is resposable to create a new expense")
     @PostMapping

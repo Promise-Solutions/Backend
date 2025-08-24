@@ -22,7 +22,6 @@ import com.studiozero.projeto.application.usecases.job.CalculateJobTotalValueUse
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/sub-jobs")
-@RequiredArgsConstructor
 @Tag(name = "Sub Jobs", description = "Endpoints for Sub Job Management")
 public class SubJobController {
 
@@ -46,7 +44,20 @@ public class SubJobController {
         private final CalculateJobTotalValueUseCase calculateJobTotalValueUseCase;
         private final GetJobUseCase getJobUseCase;
 
-        @Operation(summary = "Create a new sub job", description = "This method is responsible for create a new sub job.")
+    public SubJobController(CreateSubJobUseCase createSubJobUseCase, GetSubJobUseCase getSubJobUseCase, UpdateSubJobUseCase updateSubJobUseCase, DeleteSubJobUseCase deleteSubJobUseCase, ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase, ListSubJobsUseCase listSubJobsUseCase, UpdateSubJobStatusUseCase updateSubJobStatusUseCase, EvaluateJobStatusUseCase evaluateJobStatusUseCase, CalculateJobTotalValueUseCase calculateJobTotalValueUseCase, GetJobUseCase getJobUseCase) {
+        this.createSubJobUseCase = createSubJobUseCase;
+        this.getSubJobUseCase = getSubJobUseCase;
+        this.updateSubJobUseCase = updateSubJobUseCase;
+        this.deleteSubJobUseCase = deleteSubJobUseCase;
+        this.listSubJobsByFkServiceUseCase = listSubJobsByFkServiceUseCase;
+        this.listSubJobsUseCase = listSubJobsUseCase;
+        this.updateSubJobStatusUseCase = updateSubJobStatusUseCase;
+        this.evaluateJobStatusUseCase = evaluateJobStatusUseCase;
+        this.calculateJobTotalValueUseCase = calculateJobTotalValueUseCase;
+        this.getJobUseCase = getJobUseCase;
+    }
+
+    @Operation(summary = "Create a new sub job", description = "This method is responsible for create a new sub job.")
         @PostMapping
         public ResponseEntity<SubJobResponseDTO> createSubJob(
                         @RequestBody @Valid SubJobRequestDTO subJobDto) {

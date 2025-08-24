@@ -4,7 +4,6 @@ import com.google.api.services.drive.model.File;
 import com.studiozero.projeto.infrastructure.repositories.services.DriveServiceRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +14,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/drive")
-@RequiredArgsConstructor
 @Tag(name = "Google Drive API", description = "Endpoints for Google Drive")
 public class DriveController {
 
     private final DriveServiceRepository driveRepository;
+
+    public DriveController(DriveServiceRepository driveRepository) {
+        this.driveRepository = driveRepository;
+    }
 
     @Operation(summary = "Send a file to drive", description = "This method is responsible for sending a file to drive.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

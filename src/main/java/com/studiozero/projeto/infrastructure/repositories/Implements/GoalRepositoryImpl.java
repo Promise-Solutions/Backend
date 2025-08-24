@@ -6,16 +6,18 @@ import com.studiozero.projeto.infrastructure.entities.GoalEntity;
 import com.studiozero.projeto.infrastructure.mappers.GoalEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaGoalRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@AllArgsConstructor
 public class GoalRepositoryImpl implements GoalRepository {
     private final JpaGoalRepository jpaGoalRepository;
+
+    public GoalRepositoryImpl(JpaGoalRepository jpaGoalRepository) {
+        this.jpaGoalRepository = jpaGoalRepository;
+    }
 
     @Override
     public Goal findById(Integer id) {

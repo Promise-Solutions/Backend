@@ -15,7 +15,6 @@ import com.studiozero.projeto.application.usecases.task.ListTasksUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
-@RequiredArgsConstructor
 @Tag(name = "Tasks", description = "Endpoints for Task Management")
 public class TaskController {
 
@@ -35,7 +33,16 @@ public class TaskController {
         private final ListTasksUseCase listTasksUseCase;
         private final GetEmployeeUseCase getEmployeeUseCase;
 
-        @Operation(summary = "Create a task", description = "This method is responsible for create a task.")
+    public TaskController(CreateTaskUseCase createTaskUseCase, GetTaskUseCase getTaskUseCase, UpdateTaskUseCase updateTaskUseCase, DeleteTaskUseCase deleteTaskUseCase, ListTasksUseCase listTasksUseCase, GetEmployeeUseCase getEmployeeUseCase) {
+        this.createTaskUseCase = createTaskUseCase;
+        this.getTaskUseCase = getTaskUseCase;
+        this.updateTaskUseCase = updateTaskUseCase;
+        this.deleteTaskUseCase = deleteTaskUseCase;
+        this.listTasksUseCase = listTasksUseCase;
+        this.getEmployeeUseCase = getEmployeeUseCase;
+    }
+
+    @Operation(summary = "Create a task", description = "This method is responsible for create a task.")
         @PostMapping
         public ResponseEntity<TaskResponseDTO> createTask(
                         @RequestBody @Valid TaskRequestDTO taskDto) {

@@ -6,16 +6,26 @@ import com.studiozero.projeto.application.enums.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
 
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class SubJobUpdateStatusRequestDTO {
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public SubJobUpdateStatusRequestDTO() {
+    }
+
+    public SubJobUpdateStatusRequestDTO(Status status) {
+        this.status = status;
+    }
+
+    public @NotNull Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(@NotNull Status status) {
+        this.status = status;
+    }
 }

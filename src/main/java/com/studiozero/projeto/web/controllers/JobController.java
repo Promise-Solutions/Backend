@@ -14,7 +14,6 @@ import com.studiozero.projeto.application.usecases.job.ListJobsUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/jobs")
-@RequiredArgsConstructor
 @Tag(name = "Jobs", description = "Endpoints for Job Management")
 public class JobController {
 
@@ -34,7 +32,16 @@ public class JobController {
         private final ListJobsUseCase listJobsUseCase;
         private final GetClientUseCase getClientUseCase;
 
-        @Operation(summary = "Create a new job", description = "This method is responsible for creating a new job.")
+    public JobController(CreateJobUseCase createJobUseCase, GetJobUseCase getJobUseCase, UpdateJobUseCase updateJobUseCase, DeleteJobUseCase deleteJobUseCase, ListJobsUseCase listJobsUseCase, GetClientUseCase getClientUseCase) {
+        this.createJobUseCase = createJobUseCase;
+        this.getJobUseCase = getJobUseCase;
+        this.updateJobUseCase = updateJobUseCase;
+        this.deleteJobUseCase = deleteJobUseCase;
+        this.listJobsUseCase = listJobsUseCase;
+        this.getClientUseCase = getClientUseCase;
+    }
+
+    @Operation(summary = "Create a new job", description = "This method is responsible for creating a new job.")
         @PostMapping
         public ResponseEntity<JobResponseDTO> createJob(
                         @RequestBody @Valid JobRequestDTO jobDto) {

@@ -4,7 +4,6 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.studiozero.projeto.domain.repositories.DriveRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +13,13 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class DriveServiceRepository implements DriveRepository {
     @Qualifier("customGoogleDriveService")
     private final Drive drive;
+
+    public DriveServiceRepository(Drive drive) {
+        this.drive = drive;
+    }
 
     @Override
     public String uploadFile(MultipartFile multipartFile) throws IOException {

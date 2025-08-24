@@ -7,16 +7,18 @@ import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
 import com.studiozero.projeto.infrastructure.mappers.JobEntityMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-@AllArgsConstructor
 public class JobRepositoryImpl implements JobRepository {
     private final JpaJobRepository jpaJobRepository;
+
+    public JobRepositoryImpl(JpaJobRepository jpaJobRepository) {
+        this.jpaJobRepository = jpaJobRepository;
+    }
 
     @Override
     public List<Job> findAll() {
