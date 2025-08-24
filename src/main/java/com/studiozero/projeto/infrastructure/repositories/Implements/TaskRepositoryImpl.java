@@ -6,16 +6,18 @@ import com.studiozero.projeto.infrastructure.entities.TaskEntity;
 import com.studiozero.projeto.infrastructure.mappers.TaskEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTaskRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-@AllArgsConstructor
 public class TaskRepositoryImpl implements TaskRepository {
     private final JpaTaskRepository jpaTaskRepository;
+
+    public TaskRepositoryImpl(JpaTaskRepository jpaTaskRepository) {
+        this.jpaTaskRepository = jpaTaskRepository;
+    }
 
     @Override
     public Task findById(UUID id) {

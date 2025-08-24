@@ -11,7 +11,6 @@ import com.studiozero.projeto.application.usecases.goal.UpdateGoalUseCase;
 import com.studiozero.projeto.application.usecases.goal.DeleteGoalUseCase;
 import com.studiozero.projeto.application.usecases.goal.GetMostRecentGoalUseCase;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/goals")
-@RequiredArgsConstructor
 public class GoalController {
 
     private final CreateGoalUseCase createGoalUseCase;
@@ -28,6 +26,15 @@ public class GoalController {
     private final UpdateGoalUseCase updateGoalUseCase;
     private final DeleteGoalUseCase deleteGoalUseCase;
     private final GetMostRecentGoalUseCase getMostRecentGoalUseCase;
+
+    public GoalController(CreateGoalUseCase createGoalUseCase, GetGoalUseCase getGoalUseCase, ListGoalsUseCase listGoalsUseCase, UpdateGoalUseCase updateGoalUseCase, DeleteGoalUseCase deleteGoalUseCase, GetMostRecentGoalUseCase getMostRecentGoalUseCase) {
+        this.createGoalUseCase = createGoalUseCase;
+        this.getGoalUseCase = getGoalUseCase;
+        this.listGoalsUseCase = listGoalsUseCase;
+        this.updateGoalUseCase = updateGoalUseCase;
+        this.deleteGoalUseCase = deleteGoalUseCase;
+        this.getMostRecentGoalUseCase = getMostRecentGoalUseCase;
+    }
 
     @PostMapping()
     public ResponseEntity<GoalResponseDTO> createGoal(@Valid @RequestBody GoalRequestDTO dto) {

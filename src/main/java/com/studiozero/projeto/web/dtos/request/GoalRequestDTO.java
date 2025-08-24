@@ -2,15 +2,24 @@ package com.studiozero.projeto.web.dtos.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class GoalRequestDTO {
     @NotNull
     @Positive
     private Double goal;
+
+    public GoalRequestDTO() {
+    }
+
+    public GoalRequestDTO(Double goal) {
+        this.goal = goal;
+    }
+
+    public @NotNull @Positive Double getGoal() {
+        return goal;
+    }
+
+    public void setGoal(@NotNull @Positive Double goal) {
+        this.goal = goal;
+    }
 }

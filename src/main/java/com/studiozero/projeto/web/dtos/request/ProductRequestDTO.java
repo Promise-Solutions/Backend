@@ -6,11 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class ProductRequestDTO {
 
@@ -29,4 +25,45 @@ public class ProductRequestDTO {
     @Positive
     private Double internalValue;
 
+    public ProductRequestDTO() {
+    }
+
+    public ProductRequestDTO(String name, Integer quantity, Double clientValue, Double internalValue) {
+        this.name = name;
+        this.quantity = quantity;
+        this.clientValue = clientValue;
+        this.internalValue = internalValue;
+    }
+
+    public @NotBlank(message = "name value is mandatory") String getName() {
+        return name;
+    }
+
+    public void setName(@NotBlank(message = "name value is mandatory") String name) {
+        this.name = name;
+    }
+
+    public @NotNull(message = "qtdProduct value is mandatory") @PositiveOrZero(message = "qtdProduct must be a positive number") Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(@NotNull(message = "qtdProduct value is mandatory") @PositiveOrZero(message = "qtdProduct must be a positive number") Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public @NotNull(message = "clientValue  is mandatory") @Positive Double getClientValue() {
+        return clientValue;
+    }
+
+    public void setClientValue(@NotNull(message = "clientValue  is mandatory") @Positive Double clientValue) {
+        this.clientValue = clientValue;
+    }
+
+    public void setInternalValue(@NotNull(message = "internalValue  is mandatory") @Positive Double internalValue) {
+        this.internalValue = internalValue;
+    }
+
+    public @NotNull(message = "internalValue  is mandatory") @Positive Double getInternalValue() {
+        return internalValue;
+    }
 }

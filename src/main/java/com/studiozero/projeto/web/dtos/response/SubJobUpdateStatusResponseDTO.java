@@ -5,16 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.application.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-@AllArgsConstructor
 public class SubJobUpdateStatusResponseDTO {
     private UUID subJobId;
     private Status subJobStatus;
@@ -29,6 +23,39 @@ public class SubJobUpdateStatusResponseDTO {
     public SubJobUpdateStatusResponseDTO(SubJob subJob, Status jobStatus) {
         this.subJobId = subJob.getId();
         this.subJobStatus = subJob.getStatus();
+        this.jobStatus = jobStatus;
+    }
+
+    public SubJobUpdateStatusResponseDTO() {
+    }
+
+    public SubJobUpdateStatusResponseDTO(UUID subJobId, Status subJobStatus, Status jobStatus) {
+        this.subJobId = subJobId;
+        this.subJobStatus = subJobStatus;
+        this.jobStatus = jobStatus;
+    }
+
+    public UUID getSubJobId() {
+        return subJobId;
+    }
+
+    public void setSubJobId(UUID subJobId) {
+        this.subJobId = subJobId;
+    }
+
+    public Status getSubJobStatus() {
+        return subJobStatus;
+    }
+
+    public void setSubJobStatus(Status subJobStatus) {
+        this.subJobStatus = subJobStatus;
+    }
+
+    public Status getJobStatus() {
+        return jobStatus;
+    }
+
+    public void setJobStatus(Status jobStatus) {
         this.jobStatus = jobStatus;
     }
 }

@@ -3,7 +3,6 @@ package com.studiozero.projeto.infrastructure.services;
 import com.studiozero.projeto.domain.entities.*;
 import com.studiozero.projeto.domain.repositories.*;
 import com.studiozero.projeto.infrastructure.repositories.services.DriveServiceRepository;
-import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 
 @Service
-@RequiredArgsConstructor
 public class GenerateExcelReport {
     private final ClientRepository clientRepository;
     private final CommandProductRepository commandProductRepository;
@@ -33,6 +31,19 @@ public class GenerateExcelReport {
     private final TaskRepository taskRepository;
     private final ExpenseRepository expenseRepository;
     private final DriveServiceRepository driveService;
+
+    public GenerateExcelReport(ClientRepository clientRepository, CommandProductRepository commandProductRepository, EmployeeRepository employeeRepository, CommandRepository commandRepository, JobRepository jobRepository, SubJobRepository subJobRepository, ProductRepository productRepository, TaskRepository taskRepository, ExpenseRepository expenseRepository, DriveServiceRepository driveService) {
+        this.clientRepository = clientRepository;
+        this.commandProductRepository = commandProductRepository;
+        this.employeeRepository = employeeRepository;
+        this.commandRepository = commandRepository;
+        this.jobRepository = jobRepository;
+        this.subJobRepository = subJobRepository;
+        this.productRepository = productRepository;
+        this.taskRepository = taskRepository;
+        this.expenseRepository = expenseRepository;
+        this.driveService = driveService;
+    }
 
     public File execute() {
         List<Client> clients = clientRepository.findAll();

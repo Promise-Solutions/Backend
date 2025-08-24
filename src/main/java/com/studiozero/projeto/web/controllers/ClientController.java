@@ -13,7 +13,6 @@ import com.studiozero.projeto.application.usecases.client.DeleteClientUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/clients")
-@RequiredArgsConstructor
 @Tag(name = "Clients", description = "Endpoints for Client Management")
 public class ClientController {
 
@@ -32,7 +30,15 @@ public class ClientController {
         private final UpdateClientUseCase updateClientUseCase;
         private final DeleteClientUseCase deleteClientUseCase;
 
-        @Operation(summary = "Create a new client", description = "This method is responsible for creating a new client.")
+    public ClientController(CreateClientUseCase createClientUseCase, GetClientUseCase getClientUseCase, ListClientsUseCase listClientsUseCase, UpdateClientUseCase updateClientUseCase, DeleteClientUseCase deleteClientUseCase) {
+        this.createClientUseCase = createClientUseCase;
+        this.getClientUseCase = getClientUseCase;
+        this.listClientsUseCase = listClientsUseCase;
+        this.updateClientUseCase = updateClientUseCase;
+        this.deleteClientUseCase = deleteClientUseCase;
+    }
+
+    @Operation(summary = "Create a new client", description = "This method is responsible for creating a new client.")
         @PostMapping
         public ResponseEntity<ClientResponseDTO> createClient(
                         @RequestBody @Valid ClientRequestDTO clientDto) {

@@ -7,22 +7,29 @@ import com.studiozero.projeto.application.usecases.subjob.ListSubJobsUseCase;
 import com.studiozero.projeto.application.usecases.employee.ListEmployeesUseCase;
 import com.studiozero.projeto.application.usecases.task.ListTasksUseCase;
 import com.studiozero.projeto.domain.entities.Task;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.MailException;
 import java.time.LocalDate;
 import java.util.List;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class ScheduledEmailTask {
+    private static final Logger log = LoggerFactory.getLogger(ScheduledEmailTask.class);
+
     private final ListSubJobsUseCase listSubJobsUseCase;
     private final ListEmployeesUseCase listEmployeesUseCase;
     private final ListTasksUseCase listTasksUseCase;
     private final EmailRepository emailRepository;
+
+    public ScheduledEmailTask(ListSubJobsUseCase listSubJobsUseCase, ListEmployeesUseCase listEmployeesUseCase, ListTasksUseCase listTasksUseCase, EmailRepository emailRepository) {
+        this.listSubJobsUseCase = listSubJobsUseCase;
+        this.listEmployeesUseCase = listEmployeesUseCase;
+        this.listTasksUseCase = listTasksUseCase;
+        this.emailRepository = emailRepository;
+    }
 
     // 4am every day
     @Scheduled(cron = "0 0 4 * * *", zone = "America/Sao_Paulo")

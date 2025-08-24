@@ -7,16 +7,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class EmployeeRequestDTO implements UserDetails {
 
@@ -41,6 +37,9 @@ public class EmployeeRequestDTO implements UserDetails {
 
     @NotNull(message = "Active value is mandatory")
     private Boolean active = true;
+
+    public EmployeeRequestDTO() {
+    }
 
     public EmployeeRequestDTO(Employee employee) {
         this.name = employee.getName();
@@ -79,5 +78,54 @@ public class EmployeeRequestDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public @NotBlank(message = "Name value is mandatory") String getName() {
+        return name;
+    }
+
+    public void setName(@NotBlank(message = "Name value is mandatory") String name) {
+        this.name = name;
+    }
+
+    public @NotBlank(message = "Email value is mandatory") @Email String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NotBlank(message = "Email value is mandatory") @Email String email) {
+        this.email = email;
+    }
+
+    public @NotBlank(message = "Contact value is mandatory") @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "Contact must be in the format (XX) XXXXX-XXXX") String getContact() {
+        return contact;
+    }
+
+    public void setContact(@NotBlank(message = "Contact value is mandatory") @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "Contact must be in the format (XX) XXXXX-XXXX") String contact) {
+        this.contact = contact;
+    }
+
+    public @NotNull(message = "Cpf value is mandatory") @CPF @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format 000.000.000-00") String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(@NotNull(message = "Cpf value is mandatory") @CPF @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format 000.000.000-00") String cpf) {
+        this.cpf = cpf;
+    }
+
+    @Override
+    public @NotBlank(message = "Password value is mandatory") String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@NotBlank(message = "Password value is mandatory") String password) {
+        this.password = password;
+    }
+
+    public @NotNull(message = "Active value is mandatory") Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(@NotNull(message = "Active value is mandatory") Boolean active) {
+        this.active = active;
     }
 }

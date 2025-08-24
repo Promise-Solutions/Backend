@@ -2,7 +2,6 @@ package com.studiozero.projeto.web.controllers;
 
 import com.studiozero.projeto.infrastructure.services.GenerateExcelReport;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +15,13 @@ import java.io.FileNotFoundException;
 
 @RestController
 @RequestMapping("/report")
-@RequiredArgsConstructor
 @Tag(name = "Report", description = "Endpoints for Report Management")
 public class ReportController {
     private final GenerateExcelReport generateExcelReport;
+
+    public ReportController(GenerateExcelReport generateExcelReport) {
+        this.generateExcelReport = generateExcelReport;
+    }
 
     @GetMapping("/generate-excel")
     public ResponseEntity<Resource> generateFullExcelReport() {

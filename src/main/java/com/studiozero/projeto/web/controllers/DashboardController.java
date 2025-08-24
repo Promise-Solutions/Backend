@@ -9,7 +9,6 @@ import com.studiozero.projeto.application.usecases.dashboard.GetBalancesUseCase;
 import com.studiozero.projeto.application.usecases.dashboard.GetRecentTimeUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/dashboard")
-@RequiredArgsConstructor
 @Tag(name = "Dashboard", description = "Endpoints for Dashboard Management")
 public class DashboardController {
 
@@ -30,6 +28,16 @@ public class DashboardController {
     private final GetBarFinancesUseCase getBarFinancesUseCase;
     private final GetBalancesUseCase getBalancesUseCase;
     private final GetRecentTimeUseCase getRecentTimeUseCase;
+
+    public DashboardController(GetClientStatsUseCase getClientStatsUseCase, GetFrequencysUseCase getFrequencysUseCase, GetActivesUseCase getActivesUseCase, GetCategoryBalancesUseCase getCategoryBalancesUseCase, GetBarFinancesUseCase getBarFinancesUseCase, GetBalancesUseCase getBalancesUseCase, GetRecentTimeUseCase getRecentTimeUseCase) {
+        this.getClientStatsUseCase = getClientStatsUseCase;
+        this.getFrequencysUseCase = getFrequencysUseCase;
+        this.getActivesUseCase = getActivesUseCase;
+        this.getCategoryBalancesUseCase = getCategoryBalancesUseCase;
+        this.getBarFinancesUseCase = getBarFinancesUseCase;
+        this.getBalancesUseCase = getBalancesUseCase;
+        this.getRecentTimeUseCase = getRecentTimeUseCase;
+    }
 
     @Operation(summary = "Get client-specific statistics", description = "Returns frequency and financial return of subjobs and jobs for a specific client, including total closed commands.")
     @GetMapping("/client-stats/{clientId}")

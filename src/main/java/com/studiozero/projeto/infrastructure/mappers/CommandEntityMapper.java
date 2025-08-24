@@ -2,13 +2,11 @@ package com.studiozero.projeto.infrastructure.mappers;
 
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.infrastructure.entities.CommandEntity;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class CommandEntityMapper {
 
     public static CommandEntity toEntity(Command command) {

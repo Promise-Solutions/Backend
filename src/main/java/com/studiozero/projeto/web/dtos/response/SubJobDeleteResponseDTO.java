@@ -4,16 +4,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.application.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
-@AllArgsConstructor
 public class SubJobDeleteResponseDTO {
     private UUID id;
     private Status jobStatus;
@@ -23,5 +17,38 @@ public class SubJobDeleteResponseDTO {
         this.id = id;
         this.jobStatus = job.getStatus();
         this.jobTotalValue = job.getTotalValue();
+    }
+
+    public SubJobDeleteResponseDTO() {
+    }
+
+    public SubJobDeleteResponseDTO(UUID id, Status jobStatus, Double jobTotalValue) {
+        this.id = id;
+        this.jobStatus = jobStatus;
+        this.jobTotalValue = jobTotalValue;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Status getJobStatus() {
+        return jobStatus;
+    }
+
+    public void setJobStatus(Status jobStatus) {
+        this.jobStatus = jobStatus;
+    }
+
+    public Double getJobTotalValue() {
+        return jobTotalValue;
+    }
+
+    public void setJobTotalValue(Double jobTotalValue) {
+        this.jobTotalValue = jobTotalValue;
     }
 }

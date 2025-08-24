@@ -6,16 +6,18 @@ import com.studiozero.projeto.infrastructure.entities.ClientEntity;
 import com.studiozero.projeto.infrastructure.mappers.ClientEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaClientRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-@AllArgsConstructor
 public class ClientRepositoryImpl implements ClientRepository {
     private final JpaClientRepository jpaClientRepository;
+
+    public ClientRepositoryImpl(JpaClientRepository jpaClientRepository) {
+        this.jpaClientRepository = jpaClientRepository;
+    }
 
     @Override
     public Client findById(UUID id) {

@@ -6,15 +6,9 @@ import com.studiozero.projeto.domain.entities.Tracing;
 import com.studiozero.projeto.application.enums.Context;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class TracingResponseDTO {
     private Integer id;
@@ -28,5 +22,38 @@ public class TracingResponseDTO {
         this.id = id;
         this.context = context;
         this.dateTime= dateTime;
+    }
+
+    public TracingResponseDTO() {
+    }
+
+    public TracingResponseDTO(Integer id, Context context, LocalDateTime dateTime) {
+        this.id = id;
+        this.context = context;
+        this.dateTime = dateTime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

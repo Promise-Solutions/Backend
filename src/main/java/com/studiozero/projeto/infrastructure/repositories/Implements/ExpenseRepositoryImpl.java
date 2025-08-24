@@ -6,15 +6,17 @@ import com.studiozero.projeto.infrastructure.entities.ExpenseEntity;
 import com.studiozero.projeto.infrastructure.mappers.ExpenseEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaExpenseRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 public class ExpenseRepositoryImpl implements ExpenseRepository {
     private final JpaExpenseRepository jpaExpenseRepository;
+
+    public ExpenseRepositoryImpl(JpaExpenseRepository jpaExpenseRepository) {
+        this.jpaExpenseRepository = jpaExpenseRepository;
+    }
 
     @Override
     public Expense findById(Integer id) {

@@ -1,6 +1,5 @@
 package com.studiozero.projeto.infrastructure.configs;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,38 +21,42 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final SecurityFilterConfig securityFilterConfig;
     private final CustomAuthenticationEntryPointConfig customAuthenticationEntryPointConfig;
 
-    private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
-            new AntPathRequestMatcher("/docs"),
-            new AntPathRequestMatcher("/docs/*"),
-            new AntPathRequestMatcher("/docs/**"),
-            new AntPathRequestMatcher("/h2-console/**"),
-            new AntPathRequestMatcher("/h2-console/**/**"),
-            new AntPathRequestMatcher("/employees/login"),
-            new AntPathRequestMatcher("/drive"),
-            new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/swagger-ui.html"),
-            new AntPathRequestMatcher("/swagger-resources"),
-            new AntPathRequestMatcher("/swagger-resources/**"),
-            new AntPathRequestMatcher("/configuration/ui"),
-            new AntPathRequestMatcher("/configuration/security"),
-            new AntPathRequestMatcher("/webjars/**"),
-            new AntPathRequestMatcher("/v3/api-docs/**"),
-            new AntPathRequestMatcher("/actuator/*"),
-            new AntPathRequestMatcher("/error/**"),
-            new AntPathRequestMatcher("/employees/**"),
+    private static final String[] URLS_PERMITIDAS = {
+            "/docs",
+            "/docs/*",
+            "/docs/**",
+            "/h2-console/**",
+            "/employees/login",
+            "/drive",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/webjars/**",
+            "/v3/api-docs/**",
+            "/actuator/*",
+            "/error/**",
+            "/employees/**"
     };
+
+    public SecurityConfig(SecurityFilterConfig securityFilterConfig,
+                          CustomAuthenticationEntryPointConfig customAuthenticationEntryPointConfig) {
+        this.securityFilterConfig = securityFilterConfig;
+        this.customAuthenticationEntryPointConfig = customAuthenticationEntryPointConfig;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception ->
-                        exception. authenticationEntryPoint(customAuthenticationEntryPointConfig))
+                        exception.authenticationEntryPoint(customAuthenticationEntryPointConfig))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(URLS_PERMITIDAS).permitAll()

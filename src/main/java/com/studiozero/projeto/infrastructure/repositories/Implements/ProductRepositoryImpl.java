@@ -6,15 +6,17 @@ import com.studiozero.projeto.infrastructure.entities.ProductEntity;
 import com.studiozero.projeto.infrastructure.mappers.ProductEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaProductRepository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
     private final JpaProductRepository jpaProductRepository;
+
+    public ProductRepositoryImpl(JpaProductRepository jpaProductRepository) {
+        this.jpaProductRepository = jpaProductRepository;
+    }
 
     @Override
     public Product findById(Integer id) {

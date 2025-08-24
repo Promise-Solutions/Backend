@@ -1,15 +1,9 @@
 package com.studiozero.projeto.infrastructure.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "meta")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class GoalEntity {
 
     @Id
@@ -24,5 +18,29 @@ public class GoalEntity {
     }
 
     public void setTargetValue(double v) {
+    }
+
+    public GoalEntity() {
+    }
+
+    public GoalEntity(Integer id, Double goal) {
+        this.id = id;
+        this.goal = goal;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Double getGoal() {
+        return goal;
+    }
+
+    public void setGoal(Double goal) {
+        this.goal = goal;
     }
 }

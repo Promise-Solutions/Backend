@@ -6,16 +6,18 @@ import com.studiozero.projeto.infrastructure.entities.EmployeeEntity;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaEmployeeRepository;
 import com.studiozero.projeto.infrastructure.mappers.EmployeeEntityMapper;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-@AllArgsConstructor
 public class EmployeeRepositoryImpl implements EmployeeRepository {
     private final JpaEmployeeRepository jpaEmployeeRepository;
+
+    public EmployeeRepositoryImpl(JpaEmployeeRepository jpaEmployeeRepository) {
+        this.jpaEmployeeRepository = jpaEmployeeRepository;
+    }
 
     @Override
     public Employee findById(UUID id) {

@@ -10,13 +10,11 @@ import com.studiozero.projeto.application.usecases.tracing.DeleteAllTracingsUseC
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/tracing")
 @Tag(name = "Tracing", description = "Endpoints for Tracing Management")
@@ -25,6 +23,12 @@ public class TracingController {
     private final CreateTracingUseCase createTracingUseCase;
     private final ListTracingsUseCase listTracingsUseCase;
     private final DeleteAllTracingsUseCase deleteAllTracingsUseCase;
+
+    public TracingController(CreateTracingUseCase createTracingUseCase, ListTracingsUseCase listTracingsUseCase, DeleteAllTracingsUseCase deleteAllTracingsUseCase) {
+        this.createTracingUseCase = createTracingUseCase;
+        this.listTracingsUseCase = listTracingsUseCase;
+        this.deleteAllTracingsUseCase = deleteAllTracingsUseCase;
+    }
 
     @PostMapping
     @Operation(summary = "Create Tracing", description = "This method is responsible for create a tracing.")

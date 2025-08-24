@@ -2,17 +2,11 @@ package com.studiozero.projeto.infrastructure.entities;
 
 import com.studiozero.projeto.application.enums.Context;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rastreio")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class TracingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +19,37 @@ public class TracingEntity {
 
     @Column(name = "data_hora", nullable = false)
     private LocalDateTime dateTime;
+
+    public TracingEntity() {
+    }
+
+    public TracingEntity(Integer id, Context context, LocalDateTime dateTime) {
+        this.id = id;
+        this.context = context;
+        this.dateTime = dateTime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 }

@@ -6,16 +6,10 @@ import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.JobType;
 import com.studiozero.projeto.application.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class JobResponseDTO {
     private UUID id;
@@ -35,6 +29,84 @@ public class JobResponseDTO {
         this.category = job.getCategory();
         this.status = job.getStatus();
         this.serviceType = job.getServiceType();
+    }
+
+    public JobResponseDTO() {
+    }
+
+    public JobResponseDTO(UUID id, UUID fkClient, String title, Double totalValue, JobCategory category, Status status, JobType serviceType, List<SubJobResponseDTO> subJobs) {
+        this.id = id;
+        this.fkClient = fkClient;
+        this.title = title;
+        this.totalValue = totalValue;
+        this.category = category;
+        this.status = status;
+        this.serviceType = serviceType;
+        this.subJobs = subJobs;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getFkClient() {
+        return fkClient;
+    }
+
+    public void setFkClient(UUID fkClient) {
+        this.fkClient = fkClient;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public JobCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(JobCategory category) {
+        this.category = category;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public JobType getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(JobType serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public List<SubJobResponseDTO> getSubJobs() {
+        return subJobs;
+    }
+
+    public void setSubJobs(List<SubJobResponseDTO> subJobs) {
+        this.subJobs = subJobs;
     }
 }
 

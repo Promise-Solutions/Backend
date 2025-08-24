@@ -17,7 +17,6 @@ import com.studiozero.projeto.infrastructure.services.GenerateTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +27,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/employees")
-@RequiredArgsConstructor
 @Tag(name = "Employees", description = "Endpoints for Employee Management")
 public class EmployeeController {
 
@@ -40,7 +38,17 @@ public class EmployeeController {
         private final AuthenticationManager authenticationManager;
         private final GenerateTokenService generateTokenService;
 
-        @Operation(summary = "Create a employee", description = "This method is responsible for create a employee.")
+    public EmployeeController(CreateEmployeeUseCase createEmployeeUseCase, GetEmployeeUseCase getEmployeeUseCase, UpdateEmployeeUseCase updateEmployeeUseCase, DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase, ListEmployeesUseCase listEmployeesUseCase, AuthenticationManager authenticationManager, GenerateTokenService generateTokenService) {
+        this.createEmployeeUseCase = createEmployeeUseCase;
+        this.getEmployeeUseCase = getEmployeeUseCase;
+        this.updateEmployeeUseCase = updateEmployeeUseCase;
+        this.deleteEmployeeWithUserUseCase = deleteEmployeeWithUserUseCase;
+        this.listEmployeesUseCase = listEmployeesUseCase;
+        this.authenticationManager = authenticationManager;
+        this.generateTokenService = generateTokenService;
+    }
+
+    @Operation(summary = "Create a employee", description = "This method is responsible for create a employee.")
         @PostMapping
         public ResponseEntity<EmployeeResponseDTO> createEmployee(
                         @RequestBody @Valid EmployeeRequestDTO employeeDto) {
