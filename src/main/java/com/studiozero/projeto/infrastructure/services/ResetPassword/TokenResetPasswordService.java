@@ -15,9 +15,12 @@ import java.time.ZoneOffset;
 @Service
 public class TokenResetPasswordService {
     private final String secret;
+    private final Long expiration;
 
-    public TokenResetPasswordService(@Value("${jwt.reset.secret}") String secret) {
+    public TokenResetPasswordService(@Value("${JWT.RESET.SECRET}") String secret,
+                                     @Value("${EXPIRATION_TIME_RESET}") Long expiration) {
         this.secret = secret;
+        this.expiration = expiration;
     }
 
     public String GenerateResetToken(Employee employee) {
@@ -49,6 +52,6 @@ public class TokenResetPasswordService {
     }
 
     private Instant generateExpirationDate() {
-        return LocalDateTime.now().plusMinutes(3).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(expiration).toInstant(ZoneOffset.of("-03:00"));
     }
 }
