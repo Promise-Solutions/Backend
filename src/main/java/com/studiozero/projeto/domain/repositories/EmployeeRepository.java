@@ -21,4 +21,6 @@ public interface EmployeeRepository {
     void deleteById(UUID id);
 
     List<Employee> findAll();
+
+    Employee findByCpf(String cpf);
 }

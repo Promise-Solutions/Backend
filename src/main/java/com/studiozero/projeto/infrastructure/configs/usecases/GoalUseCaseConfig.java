@@ -1,11 +1,9 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
 import com.studiozero.projeto.infrastructure.repositories.Implements.GoalRepositoryImpl;
-import com.studiozero.projeto.infrastructure.repositories.jpa.JpaGoalRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.studiozero.projeto.domain.repositories.GoalRepository;
 import com.studiozero.projeto.application.usecases.goal.CreateGoalUseCase;
 import com.studiozero.projeto.application.usecases.goal.DeleteGoalUseCase;
 import com.studiozero.projeto.application.usecases.goal.GetGoalUseCase;
@@ -16,38 +14,33 @@ import com.studiozero.projeto.application.usecases.goal.UpdateGoalUseCase;
 @Configuration
 public class GoalUseCaseConfig {
     @Bean
-    public CreateGoalUseCase createGoalUseCase(GoalRepository goalRepository) {
+    public CreateGoalUseCase createGoalUseCase(GoalRepositoryImpl goalRepository) {
         return new CreateGoalUseCase(goalRepository);
     }
 
     @Bean
-    public DeleteGoalUseCase deleteGoalUseCase(GoalRepository goalRepository) {
+    public DeleteGoalUseCase deleteGoalUseCase(GoalRepositoryImpl goalRepository) {
         return new DeleteGoalUseCase(goalRepository);
     }
 
     @Bean
-    public GetGoalUseCase getGoalUseCase(GoalRepository goalRepository) {
+    public GetGoalUseCase getGoalUseCase(GoalRepositoryImpl goalRepository) {
         return new GetGoalUseCase(goalRepository);
     }
 
     @Bean
-    public GetMostRecentGoalUseCase getMostRecentGoalUseCase(GoalRepository goalRepository) {
+    public GetMostRecentGoalUseCase getMostRecentGoalUseCase(GoalRepositoryImpl goalRepository) {
         return new GetMostRecentGoalUseCase(goalRepository);
     }
 
     @Bean
-    public ListGoalsUseCase listGoalsUseCase(GoalRepository goalRepository) {
+    public ListGoalsUseCase listGoalsUseCase(GoalRepositoryImpl goalRepository) {
         return new ListGoalsUseCase(goalRepository);
     }
 
     @Bean
-    public UpdateGoalUseCase updateGoalUseCase(GoalRepository goalRepository) {
+    public UpdateGoalUseCase updateGoalUseCase(GoalRepositoryImpl goalRepository) {
         return new UpdateGoalUseCase(goalRepository);
-    }
-
-    @Bean
-    public GoalRepositoryImpl goalRepositoryImpl(JpaGoalRepository jpaGoalRepository) {
-        return new GoalRepositoryImpl(jpaGoalRepository);
     }
 }
 
