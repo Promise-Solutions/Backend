@@ -9,12 +9,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TokenConfig {
     @Bean
-    public ValidateTokenService validateTokenUseCase(@Value("${JWT_SECRET:studio-zero-key}") String secret) {
+    public ValidateTokenService validateTokenUseCase(@Value("${JWT_SECRET}") String secret) {
         return new ValidateTokenService(secret);
     }
 
     @Bean
-    public GenerateTokenService generateTokenUseCase(@Value("${JWT_SECRET:studio-zero-key}") String secret) {
-        return new GenerateTokenService(secret);
+    public GenerateTokenService generateTokenUseCase(@Value("${JWT_SECRET}") String secret,
+                                                     @Value("${EXPIRATION_TIME}") Long expiration) {
+        return new GenerateTokenService(secret, expiration);
     }
 }

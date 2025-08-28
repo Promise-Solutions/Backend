@@ -55,6 +55,11 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
+    public Employee findByCpf(String cpf) {
+        return EmployeeEntityMapper.toDomain(jpaEmployeeRepository.findByCpf(cpf));
+    }
+
+    @Override
     public void save(Employee employee) {
         EmployeeEntity entity = EmployeeEntityMapper.toEntity(employee);
         jpaEmployeeRepository.save(entity);

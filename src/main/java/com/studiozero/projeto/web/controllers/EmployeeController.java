@@ -1,5 +1,6 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.application.usecases.employee.*;
 import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.entities.EmployeeUserDetails;
 import com.studiozero.projeto.web.dtos.request.EmployeeLoginRequestDTO;
@@ -8,11 +9,6 @@ import com.studiozero.projeto.web.dtos.request.EmployeeUpdateRequestDTO;
 import com.studiozero.projeto.web.dtos.response.EmployeeLoginResponseDTO;
 import com.studiozero.projeto.web.dtos.response.EmployeeResponseDTO;
 import com.studiozero.projeto.web.mappers.EmployeeMapper;
-import com.studiozero.projeto.application.usecases.employee.CreateEmployeeUseCase;
-import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
-import com.studiozero.projeto.application.usecases.employee.UpdateEmployeeUseCase;
-import com.studiozero.projeto.application.usecases.employee.DeleteEmployeeWithUserUseCase;
-import com.studiozero.projeto.application.usecases.employee.ListEmployeesUseCase;
 import com.studiozero.projeto.infrastructure.services.GenerateTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,15 +29,24 @@ public class EmployeeController {
         private final CreateEmployeeUseCase createEmployeeUseCase;
         private final GetEmployeeUseCase getEmployeeUseCase;
         private final UpdateEmployeeUseCase updateEmployeeUseCase;
+        private final LoginEmployeeUseCase loginEmployeeUseCase;
         private final DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase;
         private final ListEmployeesUseCase listEmployeesUseCase;
         private final AuthenticationManager authenticationManager;
         private final GenerateTokenService generateTokenService;
 
-    public EmployeeController(CreateEmployeeUseCase createEmployeeUseCase, GetEmployeeUseCase getEmployeeUseCase, UpdateEmployeeUseCase updateEmployeeUseCase, DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase, ListEmployeesUseCase listEmployeesUseCase, AuthenticationManager authenticationManager, GenerateTokenService generateTokenService) {
+    public EmployeeController(CreateEmployeeUseCase createEmployeeUseCase,
+                              GetEmployeeUseCase getEmployeeUseCase,
+                              UpdateEmployeeUseCase updateEmployeeUseCase,
+                              LoginEmployeeUseCase loginEmployeeUseCase,
+                              DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase,
+                              ListEmployeesUseCase listEmployeesUseCase,
+                              AuthenticationManager authenticationManager,
+                              GenerateTokenService generateTokenService) {
         this.createEmployeeUseCase = createEmployeeUseCase;
         this.getEmployeeUseCase = getEmployeeUseCase;
         this.updateEmployeeUseCase = updateEmployeeUseCase;
+        this.loginEmployeeUseCase = loginEmployeeUseCase;
         this.deleteEmployeeWithUserUseCase = deleteEmployeeWithUserUseCase;
         this.listEmployeesUseCase = listEmployeesUseCase;
         this.authenticationManager = authenticationManager;

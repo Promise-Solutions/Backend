@@ -15,4 +15,6 @@ public interface JpaEmployeeRepository extends JpaRepository<EmployeeEntity, UUI
     EmployeeEntity findByEmail(String email);
 
     EmployeeEntity findByEmailAndPassword(String email, String password);
+
+    EmployeeEntity findByCpf(String cpf);
 }

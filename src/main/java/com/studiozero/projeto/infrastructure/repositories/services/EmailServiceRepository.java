@@ -25,4 +25,13 @@ public class EmailServiceRepository implements EmailRepository {
         }
     }
 
+    @Override
+    public void sendTokenEmail(String destinatario, String assunto, String conteudo) {
+        SimpleMailMessage mensagem = new SimpleMailMessage();
+        mensagem.setTo(destinatario);
+        mensagem.setSubject(assunto);
+        mensagem.setText(conteudo);
+        mailSender.send(mensagem);
+    }
+
 }

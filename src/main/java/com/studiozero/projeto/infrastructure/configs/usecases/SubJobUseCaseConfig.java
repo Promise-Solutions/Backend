@@ -1,11 +1,9 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
 import com.studiozero.projeto.infrastructure.repositories.Implements.SubJobRepositoryImpl;
-import com.studiozero.projeto.infrastructure.repositories.jpa.JpaSubJobRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.studiozero.projeto.domain.repositories.SubJobRepository;
 import com.studiozero.projeto.application.usecases.subjob.CreateSubJobUseCase;
 import com.studiozero.projeto.application.usecases.subjob.DeleteSubJobUseCase;
 import com.studiozero.projeto.application.usecases.subjob.GetSubJobUseCase;
@@ -17,43 +15,38 @@ import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobUseCase;
 @Configuration
 public class SubJobUseCaseConfig {
     @Bean
-    public CreateSubJobUseCase createSubJobUseCase(SubJobRepository subJobRepository) {
+    public CreateSubJobUseCase createSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
         return new CreateSubJobUseCase(subJobRepository);
     }
 
     @Bean
-    public DeleteSubJobUseCase deleteSubJobUseCase(SubJobRepository subJobRepository) {
+    public DeleteSubJobUseCase deleteSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
         return new DeleteSubJobUseCase(subJobRepository);
     }
 
     @Bean
-    public GetSubJobUseCase getSubJobUseCase(SubJobRepository subJobRepository) {
+    public GetSubJobUseCase getSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
         return new GetSubJobUseCase(subJobRepository);
     }
 
     @Bean
-    public ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase(SubJobRepository subJobRepository) {
+    public ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase(SubJobRepositoryImpl subJobRepository) {
         return new ListSubJobsByFkServiceUseCase(subJobRepository);
     }
 
     @Bean
-    public ListSubJobsUseCase listSubJobsUseCase(SubJobRepository subJobRepository) {
+    public ListSubJobsUseCase listSubJobsUseCase(SubJobRepositoryImpl subJobRepository) {
         return new ListSubJobsUseCase(subJobRepository);
     }
 
     @Bean
-    public UpdateSubJobStatusUseCase updateSubJobStatusUseCase(SubJobRepository subJobRepository) {
+    public UpdateSubJobStatusUseCase updateSubJobStatusUseCase(SubJobRepositoryImpl subJobRepository) {
         return new UpdateSubJobStatusUseCase(subJobRepository);
     }
 
     @Bean
-    public UpdateSubJobUseCase updateSubJobUseCase(SubJobRepository subJobRepository) {
+    public UpdateSubJobUseCase updateSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
         return new UpdateSubJobUseCase(subJobRepository);
-    }
-
-    @Bean
-    public SubJobRepositoryImpl subJobRepositoryImpl(JpaSubJobRepository jpaSubJobRepository) {
-        return new SubJobRepositoryImpl(jpaSubJobRepository);
     }
 }
 

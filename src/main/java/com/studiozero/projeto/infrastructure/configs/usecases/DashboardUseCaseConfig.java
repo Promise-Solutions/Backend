@@ -1,11 +1,9 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
 import com.studiozero.projeto.infrastructure.repositories.Implements.DashboardRepositoryImpl;
-import com.studiozero.projeto.infrastructure.repositories.jpa.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.studiozero.projeto.domain.repositories.DashboardRepository;
 import com.studiozero.projeto.application.usecases.dashboard.GetActivesUseCase;
 import com.studiozero.projeto.application.usecases.dashboard.GetBalancesUseCase;
 import com.studiozero.projeto.application.usecases.dashboard.GetBarFinancesUseCase;
@@ -18,60 +16,43 @@ import com.studiozero.projeto.application.usecases.dashboard.GetRecentTimeUseCas
 @Configuration
 public class DashboardUseCaseConfig {
     @Bean
-    public GetActivesUseCase getActivesUseCase(DashboardRepository dashboardRepository) {
+    public GetActivesUseCase getActivesUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetActivesUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetBalancesUseCase getBalancesUseCase(DashboardRepository dashboardRepository) {
+    public GetBalancesUseCase getBalancesUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetBalancesUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetBarFinancesUseCase getBarFinancesUseCase(DashboardRepository dashboardRepository) {
+    public GetBarFinancesUseCase getBarFinancesUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetBarFinancesUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetCategoryBalancesUseCase getCategoryBalancesUseCase(DashboardRepository dashboardRepository) {
+    public GetCategoryBalancesUseCase getCategoryBalancesUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetCategoryBalancesUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetClientStatsUseCase getClientStatsUseCase(DashboardRepository dashboardRepository) {
+    public GetClientStatsUseCase getClientStatsUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetClientStatsUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetDashboardDataUseCase getDashboardDataUseCase(DashboardRepository dashboardRepository) {
+    public GetDashboardDataUseCase getDashboardDataUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetDashboardDataUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetFrequencysUseCase getFrequencysUseCase(DashboardRepository dashboardRepository) {
+    public GetFrequencysUseCase getFrequencysUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetFrequencysUseCase(dashboardRepository);
     }
 
     @Bean
-    public GetRecentTimeUseCase getRecentTimeUseCase(DashboardRepository dashboardRepository) {
+    public GetRecentTimeUseCase getRecentTimeUseCase(DashboardRepositoryImpl dashboardRepository) {
         return new GetRecentTimeUseCase(dashboardRepository);
-    }
-
-    @Bean
-    public DashboardRepositoryImpl dashboardRepositoryImpl(JpaCommandRepository commandRepository,
-                                                            JpaSubJobRepository subJobRepository,
-                                                            JpaClientRepository clientRepository,
-                                                            JpaJobRepository jobRepository,
-                                                            JpaTracingRepository tracingRepository,
-                                                            JpaExpenseRepository expenseRepository) {
-        return new DashboardRepositoryImpl(
-                commandRepository,
-                subJobRepository,
-                clientRepository,
-                jobRepository,
-                tracingRepository,
-                expenseRepository);
-
     }
 }
 
