@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.studiozero.projeto.domain.entities.Employee;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,7 +16,7 @@ import java.time.ZoneOffset;
 public class TokenResetPasswordService {
     private final String secret;
 
-    public TokenResetPasswordService(String secret) {
+    public TokenResetPasswordService(@Value("${jwt.reset.secret}") String secret) {
         this.secret = secret;
     }
 
