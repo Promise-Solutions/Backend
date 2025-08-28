@@ -3,6 +3,7 @@ package com.studiozero.projeto.web.controllers;
 import com.studiozero.projeto.application.usecases.employee.*;
 import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.entities.EmployeeUserDetails;
+import com.studiozero.projeto.infrastructure.services.EncryptPasswordService;
 import com.studiozero.projeto.web.dtos.request.EmployeeLoginRequestDTO;
 import com.studiozero.projeto.web.dtos.request.EmployeeRequestDTO;
 import com.studiozero.projeto.web.dtos.request.EmployeeUpdateRequestDTO;
@@ -34,6 +35,7 @@ public class EmployeeController {
         private final ListEmployeesUseCase listEmployeesUseCase;
         private final AuthenticationManager authenticationManager;
         private final GenerateTokenService generateTokenService;
+        private final EncryptPasswordService encryptPasswordService;
 
     public EmployeeController(CreateEmployeeUseCase createEmployeeUseCase,
                               GetEmployeeUseCase getEmployeeUseCase,
@@ -42,7 +44,9 @@ public class EmployeeController {
                               DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase,
                               ListEmployeesUseCase listEmployeesUseCase,
                               AuthenticationManager authenticationManager,
-                              GenerateTokenService generateTokenService) {
+                              GenerateTokenService generateTokenService,
+                              EncryptPasswordService encryptPasswordService) {
+        this.encryptPasswordService = encryptPasswordService;
         this.createEmployeeUseCase = createEmployeeUseCase;
         this.getEmployeeUseCase = getEmployeeUseCase;
         this.updateEmployeeUseCase = updateEmployeeUseCase;
@@ -57,8 +61,10 @@ public class EmployeeController {
         @PostMapping
         public ResponseEntity<EmployeeResponseDTO> createEmployee(
                         @RequestBody @Valid EmployeeRequestDTO employeeDto) {
+
                 Employee employee = EmployeeMapper.toDomain(employeeDto);
-                createEmployeeUseCase.execute(employee);
+                Employee employeeToEncrypt = encryptPasswordService.encryptPassword(employee);
+                createEmployeeUseCase.execute(employeeToEncrypt);
                 return ResponseEntity.status(201).body(EmployeeMapper.toDTO(employee));
         }
 
