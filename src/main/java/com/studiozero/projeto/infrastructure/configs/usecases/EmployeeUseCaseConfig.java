@@ -36,5 +36,10 @@ public class EmployeeUseCaseConfig {
     public UpdateEmployeeUseCase updateEmployeeUseCase(EmployeeRepositoryImpl employeeRepository) {
         return new UpdateEmployeeUseCase(employeeRepository);
     }
+
+    @Bean
+    public LoginEmployeeUseCase loginEmployeeUseCase(EmployeeRepositoryImpl employeeRepository) {
+        return new LoginEmployeeUseCase(employeeRepository);
+    }
 }
 
