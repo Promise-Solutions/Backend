@@ -12,13 +12,12 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-@Service
 public class TokenResetPasswordService {
     private final String secret;
     private final Long expiration;
 
-    public TokenResetPasswordService(@Value("${JWT.RESET.SECRET}") String secret,
-                                     @Value("${EXPIRATION_TIME_RESET}") Long expiration) {
+    public TokenResetPasswordService(String secret,
+                                     Long expiration) {
         this.secret = secret;
         this.expiration = expiration;
     }
