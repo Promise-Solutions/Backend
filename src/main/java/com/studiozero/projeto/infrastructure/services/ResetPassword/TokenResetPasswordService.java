@@ -1,22 +1,22 @@
-package com.studiozero.projeto.infrastructure.services;
+package com.studiozero.projeto.infrastructure.services.ResetPassword;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.studiozero.projeto.domain.entities.Employee;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public class ResetPasswordJwtService {
+@Service
+public class TokenResetPasswordService {
     private final String secret;
-    private final ScheduledEmailTokenResetPassword tokenResetPassword;
 
-    public ResetPasswordJwtService(String secret, ScheduledEmailTokenResetPassword tokenResetPassword) {
+    public TokenResetPasswordService(String secret) {
         this.secret = secret;
-        this.tokenResetPassword = tokenResetPassword;
     }
 
     public String GenerateResetToken(Employee employee) {
@@ -27,8 +27,6 @@ public class ResetPasswordJwtService {
                     .withSubject(employee.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
-
-            tokenResetPassword.execute(employee.getEmail(), token);
 
             return token;
         } catch (JWTCreationException exception) {

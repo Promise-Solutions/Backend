@@ -5,20 +5,20 @@ import jakarta.validation.constraints.Email;
 public class ForgotPasswordRequestDTO {
 
     @Email
-    private String Email;
+    String email;
 
     public ForgotPasswordRequestDTO(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public ForgotPasswordRequestDTO() {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 }

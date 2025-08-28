@@ -43,7 +43,9 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/actuator/*",
             "/error/**",
-            "/employees/**"
+            "/employees/**",
+            "/auth/forgot-password",
+            "/auth/reset-password"
     };
 
     public SecurityConfig(SecurityFilterConfig securityFilterConfig,

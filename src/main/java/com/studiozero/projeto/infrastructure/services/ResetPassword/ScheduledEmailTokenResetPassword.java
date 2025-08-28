@@ -1,6 +1,7 @@
-package com.studiozero.projeto.infrastructure.services;
+package com.studiozero.projeto.infrastructure.services.ResetPassword;
 
 import com.studiozero.projeto.domain.repositories.EmailRepository;
+import com.studiozero.projeto.infrastructure.services.ScheduledEmailTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
@@ -24,9 +25,10 @@ public class ScheduledEmailTokenResetPassword {
         }
 
         StringBuilder content = new StringBuilder();
-        content.append("Olá, aqui está seu código para redefinir sua senha!.\n\n");
-        content.append("Código: " + token);
-        String subject = "StudioZero: Código para redefinição de senha!";
+        content.append("Olá, aqui está seu código para redefinir sua senha! Clique no link abaixo.\n\n");
+
+        content.append("Link: http://localhost:8080/reset-password?token=" + token);
+        String subject = "StudioZero: Redefinição de senha!";
 
         try {
             emailRepository.sendTokenEmail(email, subject, content.toString());
