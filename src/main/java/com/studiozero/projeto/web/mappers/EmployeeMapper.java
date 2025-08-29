@@ -11,7 +11,7 @@ public class EmployeeMapper {
     public static Employee toDomain(EmployeeRequestDTO dto) {
         if (dto == null) return null;
         return new Employee(
-            UUID.randomUUID(),
+            null,
             dto.getName(),
             dto.getEmail(),
             dto.getContact(),

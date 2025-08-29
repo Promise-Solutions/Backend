@@ -20,7 +20,7 @@ public class Employee {
         if (active == null) {
             throw new IllegalArgumentException("Active cannot be null");
         }
-        this.id = UUID.randomUUID();
+        this.id = id;
         this.name = name;
         this.email = email;
         this.contact = contact;
