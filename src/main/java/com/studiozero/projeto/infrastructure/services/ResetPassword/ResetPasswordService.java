@@ -2,7 +2,6 @@ package com.studiozero.projeto.infrastructure.services.ResetPassword;
 
 import com.studiozero.projeto.domain.entities.Employee;
 import com.studiozero.projeto.domain.repositories.EmployeeRepository;
-import com.studiozero.projeto.web.handlers.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +21,15 @@ public class ResetPasswordService {
 
     public void requestReset(String email) {
         Employee employee = employeeRepository.findByEmail(email);
-        String token = tokenService.GenerateResetToken(employee);
+        if(employee == null) {
+            throw new IllegalArgumentException("Funcionário não encontrado para o email");
+        }
+        String token = tokenService.generateResetToken(employee);
         emailService.execute(employee.getEmail(), token);
     }
 
     public void resetPassword(String token, String newPassword) {
-        String email = tokenService.ValidateResetToken(token);
+        String email = tokenService.validateResetToken(token);
 
         Employee employee = employeeRepository.findByEmail(email);
 

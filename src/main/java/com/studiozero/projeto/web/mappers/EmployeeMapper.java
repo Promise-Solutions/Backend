@@ -29,7 +29,6 @@ public class EmployeeMapper {
             dto.getEmail(),
             dto.getContact(),
             dto.getCpf(),
-            dto.getPassword(),
             dto.getActive()
         );
     }

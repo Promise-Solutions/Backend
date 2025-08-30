@@ -21,8 +21,6 @@ public class EmployeeUpdateRequestDTO {
     @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
-    private String password;
-
     private Boolean active = true;
 
     public EmployeeUpdateRequestDTO() {
@@ -33,7 +31,6 @@ public class EmployeeUpdateRequestDTO {
         this.email = employee.getEmail();
         this.contact = employee.getContact();
         this.cpf = employee.getCpf();
-        this.password = employee.getPassword();
         this.active = employee.getActive();
     }
 
@@ -67,14 +64,6 @@ public class EmployeeUpdateRequestDTO {
 
     public void setCpf(@CPF @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF must be in the format 000.000.000-00") String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Boolean getActive() {

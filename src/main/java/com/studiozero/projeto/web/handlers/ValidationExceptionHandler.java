@@ -21,6 +21,15 @@ public class ValidationExceptionHandler {
         body.put("type", "INVALID_DATA");
         body.put("message", "Invalid request parameters.");
 
+        List<String> invalidFields = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getField)
+                .distinct()
+                .collect(Collectors.toList());
+
+        body.put("invalidFields", invalidFields);
+
         Map<String, List<String>> details = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()

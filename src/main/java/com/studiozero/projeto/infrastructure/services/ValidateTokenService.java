@@ -6,17 +6,17 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 
 public class ValidateTokenService {
-    private final String secret;
+    private final String SECRET;
 
-    public ValidateTokenService(@Value("${JWT_SECRET}") String secret) {
-        this.secret = secret;
+    public ValidateTokenService(@Value("${JWT_SECRET}") String SECRET) {
+        this.SECRET = SECRET;
     }
 
     public String execute(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
             return JWT.require(algorithm)
-                    .withIssuer(secret)
+                    .withIssuer(SECRET)
                     .build()
                     .verify(token)
                     .getSubject();

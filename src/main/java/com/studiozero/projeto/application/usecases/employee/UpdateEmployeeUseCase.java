@@ -18,7 +18,14 @@ public class UpdateEmployeeUseCase {
         if (existing == null) {
             throw new IllegalArgumentException("Funcionário não encontrado");
         }
-        employeeRepository.save(employee);
-        return employee;
+
+        existing.changeName(employee.getName());
+        existing.changeEmail(employee.getEmail());
+        existing.changeContact(employee.getContact());
+        existing.changeCpf(employee.getCpf());
+        existing.changeActive(employee.getActive());
+
+        employeeRepository.save(existing);
+        return existing;
     }
 }

@@ -17,11 +17,11 @@ public class CreateEmployeeUseCase {
         }
 
         if (employeeRepository.existsByCpf(employee.getCpf())) {
-            throw new IllegalStateException("Funcionário com este CPF já existe");
+            throw new IllegalStateException("Funcionário já existe com este CPF");
         }
 
         if (employeeRepository.existsByEmail(employee.getEmail())) {
-            throw new IllegalStateException("Funcionário com este e-mail já existe");
+            throw new IllegalStateException("Funcionário já existe com este e-mail ");
         }
 
         if (employee.getId() == null) {

@@ -10,20 +10,19 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public class GenerateTokenService {
-    private final String secret;
-    private final Long expiration;
+    private final String SECRET;
+    private final Long EXPIRATION;
 
-
-    public GenerateTokenService(String secret, Long expiration) {
-        this.secret = secret;
-        this.expiration = expiration;
+    public GenerateTokenService(String SECRET, Long EXPIRATION) {
+        this.SECRET = SECRET;
+        this.EXPIRATION = EXPIRATION;
     }
 
     public String execute(Employee employee) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
             String token = JWT.create()
-                    .withIssuer("${JWT_SECRET}")
+                    .withIssuer(SECRET)
                     .withSubject(employee.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
@@ -35,6 +34,6 @@ public class GenerateTokenService {
     }
 
     private Instant generateExpirationDate() {
-        return LocalDateTime.now().plusHours(expiration).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(EXPIRATION).toInstant(ZoneOffset.of("-03:00"));
     }
 }

@@ -28,6 +28,12 @@ public class EmployeeResponseDTO {
     }
 
     public EmployeeResponseDTO(UUID id, String name, String cpf, String email, String contact, Boolean active) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.contact = contact;
+        this.active = active;
     }
 
     public UUID getId() {

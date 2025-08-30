@@ -28,6 +28,21 @@ public class Employee {
         this.password = password;
         this.active = active;
     }
+    public Employee(UUID id, String name, String email, String contact, String cpf, Boolean active) {
+        validateName(name);
+        validateEmail(email);
+        validateContact(contact);
+        validateCpf(cpf);
+        if (active == null) {
+            throw new IllegalArgumentException("Active cannot be null");
+        }
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.contact = contact;
+        this.cpf = cpf;
+        this.active = active;
+    }
 
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {

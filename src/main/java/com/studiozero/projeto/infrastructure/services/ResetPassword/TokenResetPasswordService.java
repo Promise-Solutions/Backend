@@ -5,8 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.studiozero.projeto.domain.entities.Employee;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -22,7 +20,7 @@ public class TokenResetPasswordService {
         this.expiration = expiration;
     }
 
-    public String GenerateResetToken(Employee employee) {
+    public String generateResetToken(Employee employee) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
@@ -37,7 +35,7 @@ public class TokenResetPasswordService {
         }
     }
 
-    public String ValidateResetToken(String token) {
+    public String validateResetToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
