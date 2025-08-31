@@ -1,5 +1,6 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.infrastructure.repositories.Implements.JobRepositoryImpl;
 import com.studiozero.projeto.infrastructure.repositories.Implements.SubJobRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +16,13 @@ import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobUseCase;
 @Configuration
 public class SubJobUseCaseConfig {
     @Bean
-    public CreateSubJobUseCase createSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
-        return new CreateSubJobUseCase(subJobRepository);
+    public CreateSubJobUseCase createSubJobUseCase(SubJobRepositoryImpl subJobRepository, JobRepositoryImpl jobRepository) {
+        return new CreateSubJobUseCase(subJobRepository, jobRepository);
     }
 
     @Bean
-    public DeleteSubJobUseCase deleteSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
-        return new DeleteSubJobUseCase(subJobRepository);
+    public DeleteSubJobUseCase deleteSubJobUseCase(SubJobRepositoryImpl subJobRepository, JobRepositoryImpl jobRepository) {
+        return new DeleteSubJobUseCase(subJobRepository, jobRepository);
     }
 
     @Bean
@@ -40,13 +41,13 @@ public class SubJobUseCaseConfig {
     }
 
     @Bean
-    public UpdateSubJobStatusUseCase updateSubJobStatusUseCase(SubJobRepositoryImpl subJobRepository) {
-        return new UpdateSubJobStatusUseCase(subJobRepository);
+    public UpdateSubJobStatusUseCase updateSubJobStatusUseCase(SubJobRepositoryImpl subJobRepository, JobRepositoryImpl jobRepository) {
+        return new UpdateSubJobStatusUseCase(subJobRepository, jobRepository);
     }
 
     @Bean
-    public UpdateSubJobUseCase updateSubJobUseCase(SubJobRepositoryImpl subJobRepository) {
-        return new UpdateSubJobUseCase(subJobRepository);
+    public UpdateSubJobUseCase updateSubJobUseCase(SubJobRepositoryImpl subJobRepository, JobRepositoryImpl jobRepository) {
+        return new UpdateSubJobUseCase(subJobRepository, jobRepository);
     }
 }
 

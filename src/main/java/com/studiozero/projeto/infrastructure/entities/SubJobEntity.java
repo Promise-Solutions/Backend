@@ -60,6 +60,18 @@ public class SubJobEntity {
         this.job = job;
     }
 
+    public SubJobEntity(UUID id, String title, String description, Double value, LocalDate date, LocalTime startTime, LocalTime expectedEndTime, Boolean needsRoom, Status status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.startTime = startTime;
+        this.expectedEndTime = expectedEndTime;
+        this.needsRoom = needsRoom;
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }

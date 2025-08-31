@@ -5,20 +5,20 @@ import com.studiozero.projeto.infrastructure.repositories.Implements.SubJobRepos
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.studiozero.projeto.application.usecases.job.CalculateJobTotalValueUseCase;
+//import com.studiozero.projeto.application.usecases.job.CalculateJobTotalValueUseCase;
 import com.studiozero.projeto.application.usecases.job.CreateJobUseCase;
 import com.studiozero.projeto.application.usecases.job.DeleteJobUseCase;
-import com.studiozero.projeto.application.usecases.job.EvaluateJobStatusUseCase;
+//import com.studiozero.projeto.application.usecases.job.EvaluateJobStatusUseCase;
 import com.studiozero.projeto.application.usecases.job.GetJobUseCase;
 import com.studiozero.projeto.application.usecases.job.ListJobsUseCase;
 import com.studiozero.projeto.application.usecases.job.UpdateJobUseCase;
 
 @Configuration
 public class JobUseCaseConfig {
-    @Bean
-    public CalculateJobTotalValueUseCase calculateJobTotalValueUseCase(JobRepositoryImpl jobRepository, SubJobRepositoryImpl subJobRepository) {
-        return new CalculateJobTotalValueUseCase(jobRepository, subJobRepository);
-    }
+//    @Bean
+//    public CalculateJobTotalValueUseCase calculateJobTotalValueUseCase(JobRepositoryImpl jobRepository, SubJobRepositoryImpl subJobRepository) {
+//        return new CalculateJobTotalValueUseCase(jobRepository, subJobRepository);
+//    }
 
     @Bean
     public CreateJobUseCase createJobUseCase(JobRepositoryImpl jobRepository) {
@@ -30,10 +30,10 @@ public class JobUseCaseConfig {
         return new DeleteJobUseCase(jobRepository);
     }
 
-    @Bean
-    public EvaluateJobStatusUseCase evaluateJobStatusUseCase(JobRepositoryImpl jobRepository, SubJobRepositoryImpl subJobRepository) {
-        return new EvaluateJobStatusUseCase(jobRepository, subJobRepository);
-    }
+//    @Bean
+//    public EvaluateJobStatusUseCase evaluateJobStatusUseCase(JobRepositoryImpl jobRepository, SubJobRepositoryImpl subJobRepository) {
+//        return new EvaluateJobStatusUseCase(jobRepository, subJobRepository);
+//    }
 
     @Bean
     public GetJobUseCase getJobUseCase(JobRepositoryImpl jobRepository) {

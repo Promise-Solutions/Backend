@@ -1,5 +1,6 @@
 package com.studiozero.projeto.infrastructure.repositories.jpa;
 
+import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
@@ -14,4 +15,6 @@ import java.util.UUID;
 public interface JpaJobRepository extends JpaRepository<JobEntity, UUID> {
     @Query("SELECT SUM(j.totalValue) FROM JobEntity j WHERE j.category = :category AND j.status = :status")
     Double sumTotalValueByCategoryAndStatus(@Param("category") JobCategory category, @Param("status") Status status);
+
+    Job findBySubJobs_Id(UUID subJobId);
 }

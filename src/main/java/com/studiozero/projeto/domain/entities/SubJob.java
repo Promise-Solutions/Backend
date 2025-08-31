@@ -3,6 +3,7 @@ package com.studiozero.projeto.domain.entities;
 import com.studiozero.projeto.application.enums.Status;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SubJob {
@@ -17,7 +18,7 @@ public class SubJob {
     private Status status;
     private Job job;
 
-    public SubJob(UUID id, String title, String description, Double value, LocalDate date, LocalTime startTime,
+    public SubJob(String title, String description, Double value, LocalDate date, LocalTime startTime,
             LocalTime expectedEndTime, Boolean needsRoom, Status status, Job job) {
         validateTitle(title);
         validateDescription(description);
@@ -35,6 +36,61 @@ public class SubJob {
         this.needsRoom = needsRoom;
         this.status = status;
         this.job = job;
+    }
+
+    public SubJob(UUID id, String title, String description, Double value, LocalDate date, LocalTime startTime,
+            LocalTime expectedEndTime, Boolean needsRoom, Status status, Job job) {
+        validateTitle(title);
+        validateDescription(description);
+        validateValue(value);
+        validateNeedsRoom(needsRoom);
+        validateStatus(status);
+        validateJob(job);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.startTime = startTime;
+        this.expectedEndTime = expectedEndTime;
+        this.needsRoom = needsRoom;
+        this.status = status;
+        this.job = job;
+    }
+
+    public SubJob(UUID id, String title, String description, Double value, LocalDate date, LocalTime startTime,
+            LocalTime expectedEndTime, Boolean needsRoom, Status status) {
+        validateTitle(title);
+        validateDescription(description);
+        validateValue(value);
+        validateNeedsRoom(needsRoom);
+        validateStatus(status);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.startTime = startTime;
+        this.expectedEndTime = expectedEndTime;
+        this.needsRoom = needsRoom;
+        this.status = status;
+    }
+
+    public SubJob(String title, String description, Double value, LocalDate date, LocalTime startTime,
+            LocalTime expectedEndTime, Boolean needsRoom, Status status) {
+        validateTitle(title);
+        validateDescription(description);
+        validateValue(value);
+        validateNeedsRoom(needsRoom);
+        validateStatus(status);
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.date = date;
+        this.startTime = startTime;
+        this.expectedEndTime = expectedEndTime;
+        this.needsRoom = needsRoom;
+        this.status = status;
     }
 
     private void validateTitle(String title) {
@@ -201,4 +257,37 @@ public class SubJob {
         validateJob(newJob);
         this.job = newJob;
     }
+
+    public void update(SubJob subJobData) {
+        boolean willChangeTitle = subJobData.title != null && !Objects.equals(subJobData.title, this.title);
+        boolean willChangeDescription = subJobData.description != null && !Objects.equals(subJobData.description, this.description);
+        boolean willChangeValue = subJobData.value != null && !Objects.equals(subJobData.value, this.value);
+        boolean willChangeNeedsRoom = subJobData.needsRoom != null && !Objects.equals(subJobData.needsRoom, this.needsRoom);
+        boolean willChangeDate = subJobData.date != null && !Objects.equals(subJobData.date, this.date);
+        boolean willChangeStartTime = date != null && !Objects.equals(subJobData.startTime, this.startTime);
+        boolean willChangeExpectedEndTime = date != null && !Objects.equals(subJobData.expectedEndTime, this.expectedEndTime);
+
+        if(willChangeTitle) {
+            changeTitle(subJobData.title);
+        }
+        if(willChangeDescription) {
+            changeDescription(subJobData.description);
+        }
+        if(willChangeValue) {
+            changeValue(subJobData.value);
+        }
+        if(willChangeNeedsRoom) {
+            changeNeedsRoom(subJobData.needsRoom);
+        }
+        if(willChangeDate) {
+            changeDate(subJobData.date);
+        }
+        if(willChangeStartTime) {
+            changeStartTime(subJobData.startTime);
+        }
+        if(willChangeExpectedEndTime) {
+            changeExpectedEndTime(subJobData.expectedEndTime);
+        }
+    }
+
 }

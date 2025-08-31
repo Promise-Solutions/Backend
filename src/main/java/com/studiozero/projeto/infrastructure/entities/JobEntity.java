@@ -5,6 +5,7 @@ import com.studiozero.projeto.application.enums.JobType;
 import com.studiozero.projeto.application.enums.Status;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class JobEntity {
     @Enumerated(EnumType.STRING)
     private JobType serviceType;
 
-    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubJobEntity> subJobs;
 
     public JobEntity() {
@@ -52,7 +53,19 @@ public class JobEntity {
         this.category = category;
         this.status = status;
         this.serviceType = serviceType;
-        this.subJobs = subJobs;
+        this.subJobs = new ArrayList<>(subJobs);
+    }
+
+
+    public JobEntity(UUID id, ClientEntity client, String title, Double totalValue, JobCategory category, Status status, JobType serviceType) {
+        this.id = id;
+        this.client = client;
+        this.title = title;
+        this.totalValue = totalValue;
+        this.category = category;
+        this.status = status;
+        this.serviceType = serviceType;
+        this.subJobs = new ArrayList<>();
     }
 
     public UUID getId() {

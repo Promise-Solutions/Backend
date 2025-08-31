@@ -21,7 +21,7 @@ public class JobResponseDTO {
     private JobType serviceType;
     private List<SubJobResponseDTO> subJobs;
 
-    public JobResponseDTO(Job job) {
+    public JobResponseDTO(Job job, List<SubJobResponseDTO> subJobResponseDTO) {
         this.id = job.getId();
         this.fkClient = job.getClient().getId();
         this.title = job.getTitle();
@@ -29,6 +29,7 @@ public class JobResponseDTO {
         this.category = job.getCategory();
         this.status = job.getStatus();
         this.serviceType = job.getServiceType();
+        this.subJobs = subJobResponseDTO;
     }
 
     public JobResponseDTO() {

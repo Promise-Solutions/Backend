@@ -1,7 +1,11 @@
 package com.studiozero.projeto.infrastructure.repositories.Implements;
 
+import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
+import com.studiozero.projeto.infrastructure.entities.JobEntity;
+import com.studiozero.projeto.infrastructure.mappers.JobEntityMapper;
+import com.studiozero.projeto.infrastructure.repositories.jpa.JpaJobRepository;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaSubJobRepository;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
@@ -17,9 +21,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SubJobRepositoryImpl implements SubJobRepository {
     private final JpaSubJobRepository jpaSubJobRepository;
+    private final JpaJobRepository jpaJobRepository;
 
-    public SubJobRepositoryImpl(JpaSubJobRepository jpaSubJobRepository) {
+    public SubJobRepositoryImpl(JpaSubJobRepository jpaSubJobRepository, JpaJobRepository jobRepository) {
         this.jpaSubJobRepository = jpaSubJobRepository;
+        this.jpaJobRepository = jobRepository;
     }
 
     @Override
@@ -89,8 +95,10 @@ public class SubJobRepositoryImpl implements SubJobRepository {
 
     @Override
     public void save(SubJob subJob) {
-        SubJobEntity entity = SubJobEntityMapper.toEntity(subJob);
-        jpaSubJobRepository.save(entity);
+        Job job = subJob.getJob();
+        JobEntity jobEntity = JobEntityMapper.toEntity(job);
+
+        jpaJobRepository.save(jobEntity);
     }
 
     @Override
@@ -101,5 +109,10 @@ public class SubJobRepositoryImpl implements SubJobRepository {
     @Override
     public LocalDate findMaxDate() {
         return jpaSubJobRepository.findAll().stream().map(SubJobEntity::getDate).max(LocalDate::compareTo).orElse(null);
+    }
+
+    @Override
+    public Job findJobBySubJobId(UUID subJobId) {
+        return JobEntityMapper.toDomain(jpaSubJobRepository.findJobBySubJobId(subJobId));
     }
 }

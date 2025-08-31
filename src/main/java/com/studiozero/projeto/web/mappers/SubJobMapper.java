@@ -4,7 +4,11 @@ import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.web.dtos.request.SubJobRequestDTO;
+import com.studiozero.projeto.web.dtos.response.SubJobDeleteResponseDTO;
 import com.studiozero.projeto.web.dtos.response.SubJobResponseDTO;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +16,6 @@ public class SubJobMapper {
     public static SubJob toDomain(SubJobRequestDTO dto, Job job) {
         if (dto == null || job == null) return null;
         return new SubJob(
-            null,
             dto.getTitle(),
             dto.getDescription(),
             dto.getValue(),
@@ -26,7 +29,7 @@ public class SubJobMapper {
     }
 
     public static SubJob toDomain(SubJobRequestDTO dto, UUID id, Job job) {
-        if (dto == null || job == null) return null;
+        if (dto == null || job == null || id == null) return null;
         return new SubJob(
             id,
             dto.getTitle(),
@@ -57,7 +60,7 @@ public class SubJobMapper {
         return dto;
     }
 
-    public static SubJobResponseDTO toDTO(SubJob subJob, Status jobStatus, Double totalValueJob) {
+    public static SubJobResponseDTO toDTO(SubJob subJob, Job job) {
         if (subJob == null) return null;
         SubJobResponseDTO dto = new SubJobResponseDTO();
         dto.setId(subJob.getId());
@@ -68,8 +71,9 @@ public class SubJobMapper {
         dto.setStartTime(subJob.getStartTime());
         dto.setExpectedEndTime(subJob.getExpectedEndTime());
         dto.setNeedsRoom(subJob.getNeedsRoom());
-        dto.setStatus(jobStatus);
-        dto.setJobTotalValue(totalValueJob);
+        dto.setStatus(subJob.getStatus());
+        dto.setJobStatus(job.getStatus());
+        dto.setJobTotalValue(job.getTotalValue());
         dto.setFkService(subJob.getJob() != null ? subJob.getJob().getId() : null);
         return dto;
     }
@@ -90,9 +94,18 @@ public class SubJobMapper {
         dto.setFkService(subJob.getJob() != null ? subJob.getJob().getId() : null);
         return dto;
     }
+    public static SubJobDeleteResponseDTO toDTO(UUID id, Job job) {
+        if (id == null || job == null) return null;
+        SubJobDeleteResponseDTO dto = new SubJobDeleteResponseDTO(
+                id, job.getStatus(), job.getTotalValue()
+        );
+        return dto;
+    }
 
     public static List<SubJobResponseDTO> toDTOList(List<SubJob> entities) {
         if (entities == null) return null;
+        if (entities.isEmpty()) return new ArrayList<>();
+
         return entities.stream().map(SubJobMapper::toDTO).toList();
     }
 }

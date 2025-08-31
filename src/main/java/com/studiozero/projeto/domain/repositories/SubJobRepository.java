@@ -1,5 +1,6 @@
 package com.studiozero.projeto.domain.repositories;
 
+import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
@@ -32,4 +33,6 @@ public interface SubJobRepository {
         void deleteById(UUID id);
 
         LocalDate findMaxDate();
+
+        Job findJobBySubJobId(UUID subJobId);
 }

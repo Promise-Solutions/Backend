@@ -17,8 +17,8 @@ import com.studiozero.projeto.application.usecases.subjob.DeleteSubJobUseCase;
 import com.studiozero.projeto.application.usecases.subjob.ListSubJobsByFkServiceUseCase;
 import com.studiozero.projeto.application.usecases.subjob.ListSubJobsUseCase;
 import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobStatusUseCase;
-import com.studiozero.projeto.application.usecases.job.EvaluateJobStatusUseCase;
-import com.studiozero.projeto.application.usecases.job.CalculateJobTotalValueUseCase;
+//import com.studiozero.projeto.application.usecases.job.EvaluateJobStatusUseCase;
+//import com.studiozero.projeto.application.usecases.job.CalculateJobTotalValueUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -40,11 +40,20 @@ public class SubJobController {
         private final ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase;
         private final ListSubJobsUseCase listSubJobsUseCase;
         private final UpdateSubJobStatusUseCase updateSubJobStatusUseCase;
-        private final EvaluateJobStatusUseCase evaluateJobStatusUseCase;
-        private final CalculateJobTotalValueUseCase calculateJobTotalValueUseCase;
+//        private final EvaluateJobStatusUseCase evaluateJobStatusUseCase;
+//        private final CalculateJobTotalValueUseCase calculateJobTotalValueUseCase;
         private final GetJobUseCase getJobUseCase;
 
-    public SubJobController(CreateSubJobUseCase createSubJobUseCase, GetSubJobUseCase getSubJobUseCase, UpdateSubJobUseCase updateSubJobUseCase, DeleteSubJobUseCase deleteSubJobUseCase, ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase, ListSubJobsUseCase listSubJobsUseCase, UpdateSubJobStatusUseCase updateSubJobStatusUseCase, EvaluateJobStatusUseCase evaluateJobStatusUseCase, CalculateJobTotalValueUseCase calculateJobTotalValueUseCase, GetJobUseCase getJobUseCase) {
+    public SubJobController(CreateSubJobUseCase createSubJobUseCase,
+                            GetSubJobUseCase getSubJobUseCase,
+                            UpdateSubJobUseCase updateSubJobUseCase,
+                            DeleteSubJobUseCase deleteSubJobUseCase,
+                            ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase,
+                            ListSubJobsUseCase listSubJobsUseCase,
+                            UpdateSubJobStatusUseCase updateSubJobStatusUseCase,
+//                            EvaluateJobStatusUseCase evaluateJobStatusUseCase,
+//                            CalculateJobTotalValueUseCase calculateJobTotalValueUseCase,
+                            GetJobUseCase getJobUseCase) {
         this.createSubJobUseCase = createSubJobUseCase;
         this.getSubJobUseCase = getSubJobUseCase;
         this.updateSubJobUseCase = updateSubJobUseCase;
@@ -52,8 +61,8 @@ public class SubJobController {
         this.listSubJobsByFkServiceUseCase = listSubJobsByFkServiceUseCase;
         this.listSubJobsUseCase = listSubJobsUseCase;
         this.updateSubJobStatusUseCase = updateSubJobStatusUseCase;
-        this.evaluateJobStatusUseCase = evaluateJobStatusUseCase;
-        this.calculateJobTotalValueUseCase = calculateJobTotalValueUseCase;
+//        this.evaluateJobStatusUseCase = evaluateJobStatusUseCase;
+//        this.calculateJobTotalValueUseCase = calculateJobTotalValueUseCase;
         this.getJobUseCase = getJobUseCase;
     }
 
@@ -63,11 +72,10 @@ public class SubJobController {
                         @RequestBody @Valid SubJobRequestDTO subJobDto) {
 
             Job job = getJobUseCase.execute(subJobDto.getFkService());
-                SubJob subJob = SubJobMapper.toDomain(subJobDto, job);
-                SubJob savedSubJob = createSubJobUseCase.execute(subJob);
-                Status jobStatus = evaluateJobStatusUseCase.execute(savedSubJob.getJob().getId());
-                Double totalValueJob = calculateJobTotalValueUseCase.execute(savedSubJob.getJob());
-                return ResponseEntity.status(201).body(SubJobMapper.toDTO(savedSubJob, jobStatus, totalValueJob));
+            SubJob subJob = SubJobMapper.toDomain(subJobDto, job);
+            SubJob savedSubJob = createSubJobUseCase.execute(subJob);
+            Job jobChanged = savedSubJob.getJob();
+            return ResponseEntity.status(201).body(SubJobMapper.toDTO(savedSubJob, jobChanged));
         }
 
         @Operation(summary = "Search a sub job", description = "This method is responsible for search a sub job.")
@@ -109,8 +117,9 @@ public class SubJobController {
                 Job job = getJobUseCase.execute(subJobDto.getFkService());
                 SubJob subJob = SubJobMapper.toDomain(subJobDto, id, job);
                 SubJob updatedSubJob = updateSubJobUseCase.execute(subJob);
-                Double totalValueJob = calculateJobTotalValueUseCase.execute(updatedSubJob.getJob());
-                return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, totalValueJob));
+
+                Double jobTotalValue = updatedSubJob.getJob().getTotalValue();
+                return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, jobTotalValue));
         }
 
         @Operation(summary = "Update a sub job status", description = "This method is responsible for update a sub job status")
@@ -118,17 +127,18 @@ public class SubJobController {
         public ResponseEntity<SubJobUpdateStatusResponseDTO> updateSubJobStatus(
                         @PathVariable UUID id,
                         @RequestBody @Valid SubJobUpdateStatusRequestDTO statusDTO) {
-                SubJob subJobUpdated = updateSubJobStatusUseCase.execute(id, statusDTO.getStatus());
-                Status jobStatus = evaluateJobStatusUseCase.execute(subJobUpdated.getJob().getId());
+                SubJob subJobUpdated = updateSubJobStatusUseCase.execute(id, statusDTO.getStatus(), statusDTO.getJobId());
+
                 return ResponseEntity.ok().body(new SubJobUpdateStatusResponseDTO(subJobUpdated.getId(),
-                                subJobUpdated.getStatus(), jobStatus));
+                                subJobUpdated.getStatus(), subJobUpdated.getJob().getStatus()));
         }
 
         @Operation(summary = "Delete a sub job", description = "This method is responsible for delete a sub job.")
         @DeleteMapping("/{id}")
         public ResponseEntity<SubJobDeleteResponseDTO> deleteSubJob(
                         @PathVariable UUID id) {
-                deleteSubJobUseCase.execute(id);
-                return ResponseEntity.ok().build();
+            SubJob subJobDeleted = deleteSubJobUseCase.execute(id);
+
+            return ResponseEntity.ok().body(SubJobMapper.toDTO(id, subJobDeleted.getJob()));
         }
 }
