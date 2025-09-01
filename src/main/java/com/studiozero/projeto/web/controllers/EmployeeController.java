@@ -90,6 +90,9 @@ public class EmployeeController {
         @GetMapping("/{id}")
         public ResponseEntity<EmployeeResponseDTO> findEmployeeById(
                         @PathVariable @Valid UUID id) {
+                if (id == null || id.toString().isEmpty() || id.toString().isBlank() || id.equals("null")) {
+                    return ResponseEntity.status(400).build();
+                }
                 Employee employee = getEmployeeUseCase.execute(id);
                 return ResponseEntity.ok(EmployeeMapper.toDTO(employee));
         }
