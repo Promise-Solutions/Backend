@@ -11,7 +11,7 @@ public class CreateExpenseUseCase {
     }
 
     public Expense execute(Expense expense) {
-        if (expense == null || expense.getId() == null || expense.getId().toString().isEmpty()) {
+        if (expense == null) {
             throw new IllegalArgumentException("Despesa inválida");
         }
         expenseRepository.save(expense);
