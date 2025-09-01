@@ -11,6 +11,6 @@ public class GetFrequencysUseCase {
     }
 
     public Map<String, Double> execute() {
-        return (Map<String, Double>) dashboardRepository.getFrequencys();
+        return (dashboardRepository.getFrequencys()) ;
     }
 }

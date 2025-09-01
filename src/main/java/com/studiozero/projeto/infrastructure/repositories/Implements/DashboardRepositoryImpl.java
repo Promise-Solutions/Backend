@@ -63,20 +63,28 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public Map<String, Double> getFrequencys() {
-        List<SubJobEntity> subJobEntities = subJobRepository.findAll();
-        List<SubJob> subJobs = SubJobEntityMapper.toDomainList(subJobEntities);
-        List<SubJob> closedSubJobs = subJobs.stream().filter(subJob -> subJob.getStatus() == Status.CLOSED).toList();
-        double frequencySingle = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.SINGLE).count();
-        double frequencyMonthly = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.MONTHLY).count();
-        double frequencyByPc = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PODCAST).count();
-        double frequencyByMr = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.MUSIC_REHEARSAL).count();
-        double frequencyByPv = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PHOTO_VIDEO_STUDIO).count();
-        return Map.of(
+        try {
+            List<SubJobEntity> subJobEntities = subJobRepository.findAll();
+            List<SubJob> subJobs = SubJobEntityMapper.toDomainList(subJobEntities);
+            List<SubJob> closedSubJobs = subJobs.stream()
+                .filter(subJob -> subJob != null && subJob.getStatus() == Status.CLOSED && subJob.getJob() != null)
+                .toList();
+
+            double frequencySingle = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.SINGLE).count();
+            double frequencyMonthly = closedSubJobs.stream().filter(subJob -> subJob.getJob().getServiceType() == JobType.MONTHLY).count();
+            double frequencyByPc = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PODCAST).count();
+            double frequencyByMr = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.MUSIC_REHEARSAL).count();
+            double frequencyByPv = closedSubJobs.stream().filter(subJob -> subJob.getJob().getCategory() == JobCategory.PHOTO_VIDEO_STUDIO).count();
+            return Map.of(
                 "frequencySingle", frequencySingle,
                 "frequencyMonthly", frequencyMonthly,
                 "frequencyByPc", frequencyByPc,
                 "frequencyByMr", frequencyByMr,
                 "frequencyByPv", frequencyByPv);
+        } catch (Exception e) {
+            e.printStackTrace(); // For debugging, consider using a logger in production
+            return Collections.emptyMap();
+        }
     }
 
     @Override
