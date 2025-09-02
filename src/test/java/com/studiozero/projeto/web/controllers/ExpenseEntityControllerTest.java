@@ -1,5 +1,6 @@
 package com.studiozero.projeto.web.controllers;
 
+import com.studiozero.projeto.finance.web.controller.ExpenseController;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.beans.factory.annotation.Autowired;
