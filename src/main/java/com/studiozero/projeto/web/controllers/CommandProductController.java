@@ -50,7 +50,7 @@ public class CommandProductController {
             @RequestBody @Valid CommandProductRequestDTO commandProductDto) {
         Product product = getProductUseCase.execute(commandProductDto.getFkProduct());
         Command command = getCommandUseCase.execute(commandProductDto.getFkCommand());
-        CommandProduct commandProduct = CommandProductMapper.toDomain(commandProductDto, product, command);
+        CommandProduct commandProduct = CommandProductMapper.toDomain(commandProductDto,product, command);
         CommandProduct savedCommandProduct = createCommandProductUseCase.execute(commandProduct);
         CommandProductResponseDTO savedDto = CommandProductMapper.toDTO(savedCommandProduct);
         return ResponseEntity.status(201).body(savedDto);

@@ -13,10 +13,12 @@ public class GetEmployeeUseCase {
     }
 
     public Employee execute(UUID id) {
-        Employee employee = employeeRepository.findById(id);
-        if (employee == null) {
-            throw new IllegalArgumentException("Funcionário não encontrado");
+        Employee employee = null;
+
+        if (id != null) {
+            employee = employeeRepository.findById(id);
         }
+
         return employee;
     }
 }

@@ -20,8 +20,7 @@ public class Command {
         validateCommandNumber(commandNumber);
         validateOpeningDateTime(openingDateTime);
         validateTotalValue(totalValue);
-        validateEmployee(employee);
-        validateIsInternal(isInternal);
+        defineIsInternal();
         validateStatus(status);
         this.id = id;
         this.commandNumber = commandNumber;
@@ -53,12 +52,6 @@ public class Command {
         }
     }
 
-    private void validateEmployee(Employee employee) {
-        if (employee == null) {
-            throw new IllegalArgumentException("Employee cannot be null");
-        }
-    }
-
     private void validateIsInternal(Boolean isInternal) {
         if (isInternal == null) {
             throw new IllegalArgumentException("isInternal cannot be null");
@@ -71,93 +64,91 @@ public class Command {
         }
     }
 
+    public void defineIsInternal() {
+        if (this.client == null) {
+            this.isInternal = true;
+        } else {
+            this.isInternal = false;
+        };
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getCommandNumber() {
         return commandNumber;
     }
 
-    public void changeCommandNumber(Integer newCommandNumber) {
-        validateCommandNumber(newCommandNumber);
-        this.commandNumber = newCommandNumber;
+    public void setCommandNumber(Integer commandNumber) {
+        this.commandNumber = commandNumber;
     }
 
     public LocalDateTime getOpeningDateTime() {
         return openingDateTime;
     }
 
-    public void changeOpeningDateTime(LocalDateTime newOpeningDateTime) {
-        validateOpeningDateTime(newOpeningDateTime);
-        this.openingDateTime = newOpeningDateTime;
+    public void setOpeningDateTime(LocalDateTime openingDateTime) {
+        this.openingDateTime = openingDateTime;
     }
 
     public LocalDateTime getClosingDateTime() {
         return closingDateTime;
     }
 
-    public void changeClosingDateTime(LocalDateTime newClosingDateTime) {
-        this.closingDateTime = newClosingDateTime;
+    public void setClosingDateTime(LocalDateTime closingDateTime) {
+        this.closingDateTime = closingDateTime;
     }
 
     public Double getDiscount() {
         return discount;
     }
 
-    public void changeDiscount(Double newDiscount) {
-        this.discount = newDiscount;
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
     public Double getTotalValue() {
         return totalValue;
     }
 
-    public Boolean getInternal() {
-        return isInternal;
-    }
-
-    public void changeTotalValue(Double newTotalValue) {
-        validateTotalValue(newTotalValue);
-        this.totalValue = newTotalValue;
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
     }
 
     public Client getClient() {
         return client;
     }
 
-    public void changeClient(Client newClient) {
-        this.client = newClient;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Employee getEmployee() {
         return employee;
     }
 
-    public void changeEmployee(Employee newEmployee) {
-        validateEmployee(newEmployee);
-        this.employee = newEmployee;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public Boolean getIsInternal() {
+    public Boolean getInternal() {
         return isInternal;
     }
 
-    public void changeIsInternal(Boolean newIsInternal) {
-        validateIsInternal(newIsInternal);
-        this.isInternal = newIsInternal;
+    public void setInternal(Boolean internal) {
+        isInternal = internal;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public void changeStatus(Status newStatus) {
-        validateStatus(newStatus);
-        this.status = newStatus;
-    }
-
-    public void defineIsInternal() {
-        this.isInternal = (this.client == null && this.employee != null);
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

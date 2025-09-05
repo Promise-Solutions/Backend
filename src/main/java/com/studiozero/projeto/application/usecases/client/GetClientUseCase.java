@@ -13,10 +13,11 @@ public class GetClientUseCase {
     }
 
     public Client execute(UUID id) {
-        Client client = clientRepository.findById(id);
-        if (client == null) {
-            throw new IllegalArgumentException("Cliente não encontrado");
+        Client client = null;
+        if (id != null) {
+            client = clientRepository.findById(id);
         }
+
         return client;
     }
 }

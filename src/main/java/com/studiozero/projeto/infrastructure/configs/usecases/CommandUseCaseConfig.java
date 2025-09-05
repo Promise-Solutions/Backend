@@ -1,14 +1,12 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.application.usecases.command.*;
+import com.studiozero.projeto.application.usecases.commandproduct.ListCommandProductsUseCase;
+import com.studiozero.projeto.domain.repositories.CommandProductRepository;
+import com.studiozero.projeto.infrastructure.repositories.Implements.CommandProductRepositoryImpl;
 import com.studiozero.projeto.infrastructure.repositories.Implements.CommandRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.studiozero.projeto.application.usecases.command.GetCommandUseCase;
-import com.studiozero.projeto.application.usecases.command.CreateCommandUseCase;
-import com.studiozero.projeto.application.usecases.command.ListCommandsUseCase;
-import com.studiozero.projeto.application.usecases.command.UpdateCommandUseCase;
-import com.studiozero.projeto.application.usecases.command.DeleteCommandUseCase;
 
 @Configuration
 public class CommandUseCaseConfig {
@@ -28,13 +26,18 @@ public class CommandUseCaseConfig {
     }
 
     @Bean
-    public UpdateCommandUseCase updateCommandUseCase(CommandRepositoryImpl commandRepository) {
-        return new UpdateCommandUseCase(commandRepository);
+    public UpdateCommandUseCase updateCommandUseCase(CommandRepositoryImpl commandRepository, CommandTotalCalculator commandTotalCalculator) {
+        return new UpdateCommandUseCase(commandRepository, commandTotalCalculator);
     }
 
     @Bean
     public DeleteCommandUseCase deleteCommandUseCase(CommandRepositoryImpl commandRepository) {
         return new DeleteCommandUseCase(commandRepository);
+    }
+
+    @Bean
+    public CommandTotalCalculator commandTotalCalculator(CommandProductRepositoryImpl commandProductRepository) {
+        return new CommandTotalCalculator(commandProductRepository);
     }
 }
 

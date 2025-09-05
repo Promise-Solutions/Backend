@@ -1,5 +1,10 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.application.usecases.command.CommandTotalCalculator;
+import com.studiozero.projeto.application.usecases.command.GetCommandUseCase;
+import com.studiozero.projeto.application.usecases.command.UpdateCommandUseCase;
+import com.studiozero.projeto.application.usecases.product.GetProductUseCase;
+import com.studiozero.projeto.application.usecases.product.UpdateProductUseCase;
 import com.studiozero.projeto.infrastructure.repositories.Implements.CommandProductRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +23,8 @@ public class CommandProductUseCaseConfig {
     }
 
     @Bean
-    public CreateCommandProductUseCase createCommandProductUseCase(CommandProductRepositoryImpl commandProductRepository) {
-        return new CreateCommandProductUseCase(commandProductRepository);
+    public CreateCommandProductUseCase createCommandProductUseCase(CommandProductRepositoryImpl commandProductRepository, GetProductUseCase getProductUseCase, UpdateProductUseCase updateProductUseCase, UpdateCommandUseCase updateCommandUseCase, GetCommandUseCase getCommandUseCase, CommandTotalCalculator commandTotalCalculator) {
+        return new CreateCommandProductUseCase(commandProductRepository, getProductUseCase, updateProductUseCase, updateCommandUseCase, getCommandUseCase, commandTotalCalculator);
     }
 
     @Bean
@@ -28,13 +33,15 @@ public class CommandProductUseCaseConfig {
     }
 
     @Bean
-    public UpdateCommandProductUseCase updateCommandProductUseCase(CommandProductRepositoryImpl commandProductRepository) {
-        return new UpdateCommandProductUseCase(commandProductRepository);
+    public UpdateCommandProductUseCase updateCommandProductUseCase(CommandProductRepositoryImpl commandProductRepository, GetProductUseCase getProductUseCase, UpdateProductUseCase updateProductUseCase, UpdateCommandUseCase updateCommandUseCase, GetCommandUseCase getCommandUseCase, CommandTotalCalculator commandTotalCalculator) {
+        return new UpdateCommandProductUseCase(commandProductRepository, getProductUseCase, updateProductUseCase, updateCommandUseCase, getCommandUseCase, commandTotalCalculator);
     }
 
     @Bean
-    public DeleteCommandProductUseCase deleteCommandProductUseCase(CommandProductRepositoryImpl commandProductRepository) {
-        return new DeleteCommandProductUseCase(commandProductRepository);
+    public DeleteCommandProductUseCase deleteCommandProductUseCase(CommandProductRepositoryImpl commandProductRepository, GetProductUseCase getProductUseCase, UpdateProductUseCase updateProductUseCase, UpdateCommandUseCase updateCommandUseCase, GetCommandUseCase getCommandUseCase, CommandTotalCalculator commandTotalCalculator) {
+        return new DeleteCommandProductUseCase(commandProductRepository, getProductUseCase, updateProductUseCase, updateCommandUseCase, getCommandUseCase, commandTotalCalculator);
     }
+
+
 }
 

@@ -36,7 +36,7 @@ public class CommandEntity {
     @JoinColumn(name = "fk_funcionario")
     private EmployeeEntity employee;
 
-    @Column(name = "comanda_interna", nullable = false)
+    @Column(name = "uso_interno", nullable = false)
     private Boolean isInternal;
 
     @Column(name = "status", nullable = false)

@@ -52,7 +52,7 @@ public class CommandMapper {
             command.getClient() != null ? command.getClient().getId() : null,
             command.getEmployee() != null ? command.getEmployee().getId() : null,
             command.getStatus(),
-            command.getIsInternal()
+            command.getInternal()
         );
     }
 

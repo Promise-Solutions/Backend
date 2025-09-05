@@ -20,9 +20,17 @@ public class CreateCommandUseCase {
             throw new ConflictException("Comanda com esse número já existe");
         }
 
-        if(commandRepository.existsByClientId(command.getClient().getId())) {
-            throw new ConflictException("Cliente já possui uma comanda aberta");
+        if (command.getClient() != null) {
+            if(commandRepository.existsByClientId(command.getClient().getId())) {
+                throw new ConflictException("Cliente já possui uma comanda aberta");
+            }
         }
+        if (command.getClient() == null) {
+            command.setInternal(true);
+        } else {
+            command.setInternal(false);
+        }
+
         commandRepository.save(command);
         return command;
     }

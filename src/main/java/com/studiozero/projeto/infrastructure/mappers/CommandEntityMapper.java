@@ -20,13 +20,15 @@ public class CommandEntityMapper {
                 command.getTotalValue(),
                 ClientEntityMapper.toEntity(command.getClient()),
                 EmployeeEntityMapper.toEntity(command.getEmployee()),
-                command.getIsInternal(),
+                command.getInternal(),
                 command.getStatus()
         );
     }
 
     public static Command toDomain(CommandEntity entity) {
         if (entity == null) return null;
+        // Log para debug do valor vindo do banco
+        System.out.println("[DEBUG] CommandEntityMapper.toDomain - entity.getCommandNumber(): " + entity.getCommandNumber());
         return new Command(
                 entity.getId(),
                 entity.getCommandNumber(),

@@ -13,9 +13,20 @@ public class CommandProductEntityMapper {
         if (commandProduct == null) return null;
         CommandEntity commandEntity = null;
         ProductEntity productEntity = null;
-        if (commandProduct.getCommand() != null) {
-            commandEntity = new CommandEntity();
-            commandEntity.setId(commandProduct.getCommand().getId());
+        // Só crie CommandEntity se todos os campos essenciais estiverem presentes
+        if (commandProduct.getCommand() != null && commandProduct.getCommand().getCommandNumber() != null) {
+            commandEntity = new CommandEntity(
+                commandProduct.getCommand().getId(),
+                commandProduct.getCommand().getCommandNumber(),
+                commandProduct.getCommand().getOpeningDateTime(),
+                commandProduct.getCommand().getClosingDateTime(),
+                commandProduct.getCommand().getDiscount(),
+                commandProduct.getCommand().getTotalValue(),
+                ClientEntityMapper.toEntity(commandProduct.getCommand().getClient()),
+                EmployeeEntityMapper.toEntity(commandProduct.getCommand().getEmployee()),
+                commandProduct.getCommand().getInternal(),
+                commandProduct.getCommand().getStatus()
+            );
         }
         if (commandProduct.getProduct() != null) {
             productEntity = new ProductEntity();

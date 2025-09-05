@@ -31,7 +31,7 @@ public class CommandResponseDTO {
         this.fkClient = command.getClient() != null ? command.getClient().getId() : null;
         this.fkEmployee = command.getEmployee() != null ? command.getEmployee().getId() : null;
         this.status = command.getStatus();
-        this.isInternal = command.getIsInternal();
+        this.isInternal = command.getInternal();
     }
 
     public CommandResponseDTO() {
