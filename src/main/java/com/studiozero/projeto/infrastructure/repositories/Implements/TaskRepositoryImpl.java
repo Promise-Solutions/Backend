@@ -8,6 +8,7 @@ import com.studiozero.projeto.infrastructure.repositories.jpa.JpaTaskRepository;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,5 +43,11 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void deleteById(UUID id) {
         jpaTaskRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Task> findByTodayDate(LocalDate todayDate) {
+        List<TaskEntity> tasksFound = jpaTaskRepository.findAllByDate(todayDate);
+        return TaskEntityMapper.toDomainList(tasksFound);
     }
 }

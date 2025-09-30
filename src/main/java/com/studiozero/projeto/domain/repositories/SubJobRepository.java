@@ -35,4 +35,6 @@ public interface SubJobRepository {
         LocalDate findMaxDate();
 
         Job findJobBySubJobId(UUID subJobId);
+
+    List<SubJob> findByTodayDate(LocalDate todayDate);
 }

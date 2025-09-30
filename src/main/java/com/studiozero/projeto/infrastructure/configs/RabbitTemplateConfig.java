@@ -1,0 +1,48 @@
+package com.studiozero.projeto.infrastructure.configs;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+
+@Configuration
+public class RabbitTemplateConfig {
+    private final ConnectionFactory connectionFactory;
+
+    public RabbitTemplateConfig(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
+
+    @Value("${broker.fanout.daily-email.exchange}")
+    private String exchangeName;
+
+    @Value("${broker.daily-email-queue}")
+    private String queueName;
+
+    @Bean
+    public FanoutExchange exchange() {return new FanoutExchange(exchangeName);}
+
+    @Bean
+    public Queue queue() {return new Queue(queueName, true);}
+
+    @Bean
+    public Binding binding(Queue queue, FanoutExchange exchange) {
+        return BindingBuilder
+                .bind(queue)
+                .to(exchange);
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setExchange(exchangeName);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        return rabbitTemplate;
+    }
+}

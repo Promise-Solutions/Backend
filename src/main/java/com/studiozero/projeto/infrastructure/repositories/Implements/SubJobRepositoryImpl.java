@@ -115,4 +115,10 @@ public class SubJobRepositoryImpl implements SubJobRepository {
     public Job findJobBySubJobId(UUID subJobId) {
         return JobEntityMapper.toDomain(jpaSubJobRepository.findJobBySubJobId(subJobId));
     }
+
+    @Override
+    public List<SubJob> findByTodayDate(LocalDate todayDate) {
+        List<SubJobEntity> subJobsFound = jpaSubJobRepository.findAllByDate(todayDate);
+        return SubJobEntityMapper.toDomainList(subJobsFound);
+    }
 }
