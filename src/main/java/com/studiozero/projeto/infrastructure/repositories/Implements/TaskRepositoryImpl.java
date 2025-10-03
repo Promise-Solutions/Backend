@@ -47,7 +47,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public List<Task> findByTodayDate(LocalDate todayDate) {
-        List<TaskEntity> tasksFound = jpaTaskRepository.findAllByDate(todayDate);
+        List<TaskEntity> tasksFound = jpaTaskRepository.findAllByLimitDate(todayDate);
         return TaskEntityMapper.toDomainList(tasksFound);
     }
 }

@@ -9,13 +9,17 @@ import com.studiozero.projeto.domain.entities.Task;
 import com.studiozero.projeto.infrastructure.broker.producer.dto.EventDto;
 import com.studiozero.projeto.infrastructure.broker.producer.dto.SubJobEmailEventDto;
 import com.studiozero.projeto.infrastructure.broker.producer.dto.TaskEmailEventDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class DailyEmailProducer {
+    private final Logger log = LoggerFactory.getLogger(DailyEmailProducer.class);
     private final RabbitTemplate rabbitTemplate;
     private final ListTodaySubJobsUseCase listTodaySubJobsUseCase;
     private final ListTodayTasksUseCase listTodayTasksUseCase;
@@ -28,6 +32,9 @@ public class DailyEmailProducer {
         this.listEmployeesUseCase = listEmployeesUseCase;
     }
 
+    // ===== Cron para rodar 04:00AM todos os dias ===== //
+//    @Scheduled(cron = "0 0 4 * * *", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "0 */3 * * * *", zone = "America/Sao_Paulo")
     public void sendEvent() {
         List<SubJob> subJobs = listTodaySubJobsUseCase.execute();
         List<Task> tasks = listTodayTasksUseCase.execute();
@@ -46,5 +53,6 @@ public class DailyEmailProducer {
                 .toList();
 
         rabbitTemplate.convertAndSend(new EventDto(employeesEmail, subJobEmailEvent, taskEmailEvent));
+        log.info("Dados necessários para envio de email enviados ao broker");
     }
 }

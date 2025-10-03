@@ -1,14 +1,9 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.application.usecases.task.*;
 import com.studiozero.projeto.infrastructure.repositories.Implements.TaskRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.studiozero.projeto.application.usecases.task.CreateTaskUseCase;
-import com.studiozero.projeto.application.usecases.task.DeleteTaskUseCase;
-import com.studiozero.projeto.application.usecases.task.GetTaskUseCase;
-import com.studiozero.projeto.application.usecases.task.ListTasksUseCase;
-import com.studiozero.projeto.application.usecases.task.UpdateTaskUseCase;
 
 @Configuration
 public class TaskUseCaseConfig {
@@ -35,6 +30,11 @@ public class TaskUseCaseConfig {
     @Bean
     public UpdateTaskUseCase updateTaskUseCase(TaskRepositoryImpl taskRepository) {
         return new UpdateTaskUseCase(taskRepository);
+    }
+
+    @Bean
+    public ListTodayTasksUseCase listTodayTasksUseCase (TaskRepositoryImpl taskRepository) {
+        return new ListTodayTasksUseCase(taskRepository);
     }
 }
 

@@ -1,17 +1,10 @@
 package com.studiozero.projeto.infrastructure.configs.usecases;
 
+import com.studiozero.projeto.application.usecases.subjob.*;
 import com.studiozero.projeto.infrastructure.repositories.Implements.JobRepositoryImpl;
 import com.studiozero.projeto.infrastructure.repositories.Implements.SubJobRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.studiozero.projeto.application.usecases.subjob.CreateSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.DeleteSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.GetSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.ListSubJobsByFkServiceUseCase;
-import com.studiozero.projeto.application.usecases.subjob.ListSubJobsUseCase;
-import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobStatusUseCase;
-import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobUseCase;
 
 @Configuration
 public class SubJobUseCaseConfig {
@@ -49,5 +42,9 @@ public class SubJobUseCaseConfig {
     public UpdateSubJobUseCase updateSubJobUseCase(SubJobRepositoryImpl subJobRepository, JobRepositoryImpl jobRepository) {
         return new UpdateSubJobUseCase(subJobRepository, jobRepository);
     }
-}
 
+    @Bean
+    public ListTodaySubJobsUseCase listTodaySubJobsUseCase(SubJobRepositoryImpl subJobRepository) {
+        return new ListTodaySubJobsUseCase(subJobRepository);
+    }
+}

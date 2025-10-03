@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.MailException;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class ScheduledEmailTask {
 
     // 4am every day
     @Scheduled(cron = "0 0 4 * * *", zone = "America/Sao_Paulo")
+//    @Scheduled(cron = "0 */3 * * * *", zone = "America/Sao_Paulo")
+    @Transactional(readOnly = true)
     public void execute() {
         LocalDate today = LocalDate.now();
         log.info("🔔 Starting scheduled task - Checking SubJobs and Tasks for {}", today);
@@ -45,10 +49,10 @@ public class ScheduledEmailTask {
                 .filter(task -> task.getLimitDate() != null && task.getLimitDate().isEqual(today))
                 .toList();
 
-        if (subJobsToday.isEmpty() && tasksToday.isEmpty()) {
-            log.info("✅ No SubJob or Task scheduled for today. No email will be sent.");
-            return;
-        }
+//        if (subJobsToday.isEmpty() && tasksToday.isEmpty()) {
+//            log.info("✅ No SubJob or Task scheduled for today. No email will be sent.");
+//            return;
+//        }
 
         log.info("📌 SubJobs found for today: {}", subJobsToday.size());
         log.info("📌 Tasks found for today: {}", tasksToday.size());
@@ -59,10 +63,10 @@ public class ScheduledEmailTask {
                 .filter(email -> email != null && !email.isBlank())
                 .toList();
 
-        if (emails.isEmpty()) {
-            log.warn("⚠️ No valid email found among employees. Notification will not be sent.");
-            return;
-        }
+//        if (emails.isEmpty()) {
+//            log.warn("⚠️ No valid email found among employees. Notification will not be sent.");
+//            return;
+//        }
 
         StringBuilder content = new StringBuilder();
         content.append("Olá, aqui está suas tarefas e atendimentos do dia!.\n\n");

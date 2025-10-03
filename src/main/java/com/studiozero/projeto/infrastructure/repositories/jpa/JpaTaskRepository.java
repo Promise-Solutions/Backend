@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface JpaTaskRepository extends JpaRepository<TaskEntity, UUID> {
-    List<TaskEntity> findAllByDate(LocalDate todayDate);
+    List<TaskEntity> findAllByLimitDate(LocalDate todayDate);
 }
