@@ -1,0 +1,51 @@
+{
+  "vhosts": [
+    { "name": "/" }
+  ],
+  "users": [
+    {
+      "name": "studiozero-admin",
+      "password": "studiozero-rmq-pass",
+      "tags": "administrator"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "studiozero-admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "studio-zero.rmq.fanout.exchange",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "studio-zero.rmq.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "studio-zero.rmq.fanout.exchange",
+      "vhost": "/",
+      "destination": "studio-zero.rmq.queue",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.studiozero.projeto.application.usecases.command;
 
 import com.studiozero.projeto.domain.entities.CommandProduct;
 import com.studiozero.projeto.domain.repositories.CommandProductRepository;
+
 import java.util.List;
 
 public class CommandTotalCalculator {
