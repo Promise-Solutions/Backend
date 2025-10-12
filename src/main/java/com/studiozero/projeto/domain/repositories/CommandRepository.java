@@ -2,6 +2,9 @@ package com.studiozero.projeto.domain.repositories;
 
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.application.enums.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +14,7 @@ public interface CommandRepository {
 
     boolean existsByCommandNumber(Integer commandNumber);
 
-    List<Command> findAllByStatus(Status status);
+    Page<Command> findAllByStatus(Status status, Pageable pageable);
 
     List<Command> findAllByClientIdAndStatus(UUID clientId, Status status);
 
