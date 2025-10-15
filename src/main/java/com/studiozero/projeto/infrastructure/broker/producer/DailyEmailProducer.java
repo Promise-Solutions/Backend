@@ -15,6 +15,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -36,9 +37,13 @@ public class DailyEmailProducer {
 //    @Scheduled(cron = "0 0 4 * * *", zone = "America/Sao_Paulo")
     @Scheduled(cron = "0 */3 * * * *", zone = "America/Sao_Paulo")
     public void sendEvent() {
+        log.info("🔔 Starting scheduled task - Checking SubJobs and Tasks for {}", LocalDate.now());
         List<SubJob> subJobs = listTodaySubJobsUseCase.execute();
         List<Task> tasks = listTodayTasksUseCase.execute();
         List<Employee> employees = listEmployeesUseCase.execute();
+
+        log.info("📌 SubJobs found for today: {}", subJobs.size());
+        log.info("📌 Tasks found for today: {}", tasks.size());
 
         List<SubJobEmailEventDto> subJobEmailEvent = subJobs.stream()
                 .map(sj -> new SubJobEmailEventDto(sj.getJob().getClient().getName(), sj.getTitle()))
@@ -53,6 +58,6 @@ public class DailyEmailProducer {
                 .toList();
 
         rabbitTemplate.convertAndSend(new EventDto(employeesEmail, subJobEmailEvent, taskEmailEvent));
-        log.info("Dados necessários para envio de email enviados ao broker");
+        log.info("📧 Required email data successfully sent to broker");
     }
 }
