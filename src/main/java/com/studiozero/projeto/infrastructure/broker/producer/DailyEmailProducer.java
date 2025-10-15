@@ -34,8 +34,7 @@ public class DailyEmailProducer {
     }
 
     // ===== Cron para rodar 04:00AM todos os dias ===== //
-//    @Scheduled(cron = "0 0 4 * * *", zone = "America/Sao_Paulo")
-    @Scheduled(cron = "0 */3 * * * *", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "0 0 4 * * *", zone = "America/Sao_Paulo")
     public void sendEvent() {
         log.info("🔔 Starting scheduled task - Checking SubJobs and Tasks for {}", LocalDate.now());
         List<SubJob> subJobs = listTodaySubJobsUseCase.execute();
