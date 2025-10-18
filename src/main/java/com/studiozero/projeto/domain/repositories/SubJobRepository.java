@@ -4,6 +4,8 @@ import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.UUID;
 public interface SubJobRepository {
         boolean existsByJobId(UUID jobId);
 
-        List<SubJob> findAll();
+        Page<SubJob> findAll(Pageable pageable);
 
         List<SubJob> findAllByJobId(UUID fkService);
 

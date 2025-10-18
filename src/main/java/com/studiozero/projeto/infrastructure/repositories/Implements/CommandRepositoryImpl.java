@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.UUID;
 import com.studiozero.projeto.infrastructure.entities.CommandEntity;
 import com.studiozero.projeto.infrastructure.mappers.CommandEntityMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -39,10 +41,10 @@ public class CommandRepositoryImpl implements CommandRepository {
     }
 
     @Override
-    public List<Command> findAllByStatus(Status status) {
-        return jpaCommandRepository.findAllByStatus(status).stream()
-            .map(CommandEntityMapper::toDomain)
-            .toList();
+    public Page<Command> findAllByStatus(Status status, Pageable pageable) {
+        Page<CommandEntity> entities =
+                jpaCommandRepository.findAllByStatus(status, pageable);
+        return entities.map(CommandEntityMapper::toDomain);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.studiozero.projeto.domain.repositories;
 
 import com.studiozero.projeto.domain.entities.Expense;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ExpenseRepository {
     Expense findById(Integer id);
@@ -11,5 +11,5 @@ public interface ExpenseRepository {
 
     void deleteById(Integer id);
 
-    List<Expense> findAll();
+    Page<Expense> findAll(Pageable pageable);
 }

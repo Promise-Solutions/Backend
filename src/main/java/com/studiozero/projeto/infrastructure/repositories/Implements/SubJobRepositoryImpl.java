@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.UUID;
 import com.studiozero.projeto.infrastructure.entities.SubJobEntity;
 import com.studiozero.projeto.infrastructure.mappers.SubJobEntityMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,10 +37,9 @@ public class SubJobRepositoryImpl implements SubJobRepository {
     }
 
     @Override
-    public List<SubJob> findAll() {
-        return jpaSubJobRepository.findAll().stream()
-            .map(SubJobEntityMapper::toDomain)
-            .toList();
+    public Page<SubJob> findAll(Pageable pageable) {
+        return jpaSubJobRepository.findAll(pageable)
+                .map(SubJobEntityMapper::toDomain);
     }
 
     @Override

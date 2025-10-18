@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class SecurityFilterConfig extends OncePerRequestFilter {
@@ -21,28 +23,51 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
     private final ValidateTokenService validateTokenService;
     private final EmployeeRepository employeeRepository;
 
+    private static final List<String> PUBLIC_PATHS = Arrays.asList(
+            "/v3/api-docs",
+            "/swagger-ui",
+            "/swagger-resources",
+            "/webjars",
+            "/h2-console",
+            "/actuator",
+            "/employees/login",
+            "/auth/forgot-password",
+            "/auth/reset-password",
+            "/error"
+    );
+
     public SecurityFilterConfig(ValidateTokenService validateTokenService, EmployeeRepository employeeRepository) {
         this.validateTokenService = validateTokenService;
         this.employeeRepository = employeeRepository;
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
+
         if (token != null) {
-            var subject = validateTokenService.execute(token);
-            var employee = employeeRepository.findByEmail(subject);
-            if (employee != null) {
-                UserDetails userDetails = new EmployeeUserDetails(employee);
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new RuntimeException("Employee not found with email of token: " + subject);
+            try {
+                var subject = validateTokenService.execute(token);
+                var employee = employeeRepository.findByEmail(subject);
+
+                if (employee != null) {
+                    UserDetails userDetails = new EmployeeUserDetails(employee);
+                    var authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                System.err.println("Erro ao validar token: " + e.getMessage());
             }
         }
 

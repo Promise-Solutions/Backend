@@ -14,6 +14,8 @@ import com.studiozero.projeto.application.usecases.job.ListJobsUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,16 +63,19 @@ public class JobController {
                 return ResponseEntity.ok(jobDto);
         }
 
-        @Operation(summary = "List all jobs", description = "This method is responsible for listing all jobs.")
-        @GetMapping
-        public ResponseEntity<List<JobResponseDTO>> listAllJobs() {
-                List<Job> jobs = listJobsUseCase.execute();
-                if (jobs.isEmpty()) {
-                        return ResponseEntity.status(204).build();
-                }
-                List<JobResponseDTO> jobDtos = JobMapper.toDTOList(jobs);
-                return ResponseEntity.status(200).body(jobDtos);
+    @Operation(summary = "List all jobs", description = "This method is responsible for listing all jobs.")
+    @GetMapping
+    public ResponseEntity<Page<JobResponseDTO>> listAllJobs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Job> jobPage = listJobsUseCase.execute(PageRequest.of(page, size));
+        if (jobPage.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
+        Page<JobResponseDTO> dtoPage = jobPage.map(JobMapper::toDTO);
+        return ResponseEntity.ok(dtoPage);
+    }
 
         @Operation(summary = "List jobs By a fkClient", description = "This method is responsible for listing all jobs associated with a client.")
         @GetMapping("/client")

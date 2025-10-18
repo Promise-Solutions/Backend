@@ -2,7 +2,8 @@ package com.studiozero.projeto.application.usecases.expense;
 
 import com.studiozero.projeto.domain.entities.Expense;
 import com.studiozero.projeto.domain.repositories.ExpenseRepository;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class ListExpensesUseCase {
     private final ExpenseRepository expenseRepository;
@@ -11,7 +12,7 @@ public class ListExpensesUseCase {
         this.expenseRepository = expenseRepository;
     }
 
-    public List<Expense> execute() {
-        return expenseRepository.findAll();
+    public Page<Expense> execute(Pageable pageable) {
+        return expenseRepository.findAll(pageable);
     }
 }

@@ -22,6 +22,8 @@ import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobStatusUseC
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,16 +100,19 @@ public class SubJobController {
                 return ResponseEntity.status(200).body(SubJobMapper.toDTOList(subJobs));
         }
 
-        @Operation(summary = "List all sub jobs", description = "This method is responsible for list all sub jobs.")
-        @GetMapping
-        public ResponseEntity<List<SubJobResponseDTO>> listAllSubJobs() {
-                List<SubJob> subJobs = listSubJobsUseCase.execute();
-                if (subJobs.isEmpty()) {
-                        return ResponseEntity.status(204).build();
-                }
-                List<SubJobResponseDTO> subJobDtos = SubJobMapper.toDTOList(subJobs);
-                return ResponseEntity.status(200).body(subJobDtos);
+    @Operation(summary = "List all sub jobs", description = "This method is responsible for list all sub jobs.")
+    @GetMapping
+    public ResponseEntity<Page<SubJobResponseDTO>> listAllSubJobs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<SubJob> subJobs = listSubJobsUseCase.execute(PageRequest.of(page, size));
+        if (subJobs.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
+        Page<SubJobResponseDTO> subJobDtos = subJobs.map(SubJobMapper::toDTO);
+        return ResponseEntity.ok(subJobDtos);
+    }
 
         @Operation(summary = "Update a sub job", description = "This method is responsible for update a sub job.")
         @PatchMapping("/{id}")

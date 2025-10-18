@@ -7,6 +7,8 @@ import com.studiozero.projeto.application.enums.JobCategory;
 import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
 import com.studiozero.projeto.infrastructure.mappers.JobEntityMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,11 +23,9 @@ public class JobRepositoryImpl implements JobRepository {
     }
 
     @Override
-    public List<Job> findAll() {
-        return jpaJobRepository.findAll()
-            .stream()
-            .map(JobEntityMapper::toDomain)
-            .toList();
+    public Page<Job> findAll(Pageable pageable) {
+        return jpaJobRepository.findAll(pageable)
+                .map(JobEntityMapper::toDomain);
     }
 
     @Override

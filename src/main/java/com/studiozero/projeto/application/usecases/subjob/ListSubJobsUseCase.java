@@ -2,7 +2,8 @@ package com.studiozero.projeto.application.usecases.subjob;
 
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class ListSubJobsUseCase {
     private final SubJobRepository subJobRepository;
@@ -11,7 +12,7 @@ public class ListSubJobsUseCase {
         this.subJobRepository = subJobRepository;
     }
 
-    public List<SubJob> execute() {
-        return subJobRepository.findAll();
+    public Page<SubJob> execute(Pageable pageable) {
+        return subJobRepository.findAll(pageable);
     }
 }

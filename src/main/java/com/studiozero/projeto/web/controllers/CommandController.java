@@ -17,10 +17,10 @@ import com.studiozero.projeto.application.usecases.command.DeleteCommandUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/commands")
@@ -68,18 +68,23 @@ public class CommandController {
 
     @Operation(summary = "List all commands", description = "This method is responsible for listing all commands.")
     @GetMapping
-    public ResponseEntity<List<CommandResponseDTO>> listAllCommands(@RequestParam(required = false) Status status) {
-        List<Command> commands;
+    public ResponseEntity<Page<CommandResponseDTO>> listAllCommands(
+            @RequestParam(required = false) Status status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Command> commandPage;
         if (status == null) {
-            commands = listCommandsUseCase.execute();
+            commandPage = listCommandsUseCase.execute(PageRequest.of(page, size));
         } else {
-            commands = listCommandsUseCase.execute(status);
+            commandPage = listCommandsUseCase.execute(status, PageRequest.of(page, size));
         }
-        if (commands.isEmpty()) {
+        if (commandPage.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<CommandResponseDTO> commandDtos = CommandMapper.toDTOList(commands);
-        return ResponseEntity.status(200).body(commandDtos);
+        Page<CommandResponseDTO> dtoPage = commandPage.map(CommandMapper::toDTO);
+
+        return ResponseEntity.ok(dtoPage);
     }
 
     @Operation(summary = "Update a command", description = "This method is responsible for updating a command.")
