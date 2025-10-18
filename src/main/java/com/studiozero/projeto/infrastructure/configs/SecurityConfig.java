@@ -27,25 +27,27 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPointConfig customAuthenticationEntryPointConfig;
 
     private static final String[] URLS_PERMITIDAS = {
-            "/docs",
-            "/docs/*",
-            "/docs/**",
-            "/h2-console/**",
-            "/employees/login",
-            "/drive",
+            // Swagger/OpenAPI
+            "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
-            "/swagger-resources",
             "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
             "/webjars/**",
-            "/v3/api-docs/**",
-            "/actuator/*",
-            "/error/**",
-            "/employees/**",
+            "/configuration/**",
+
+            // H2 Console
+            "/h2-console/**",
+
+            // Actuator
+            "/actuator/**",
+
+            // Auth endpoints
+            "/employees/login",
             "/auth/forgot-password",
-            "/auth/reset-password"
+            "/auth/reset-password",
+
+            // Outros
+            "/error/**"
     };
 
     public SecurityConfig(SecurityFilterConfig securityFilterConfig,
@@ -56,7 +58,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+                .csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(customAuthenticationEntryPointConfig))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -64,8 +67,12 @@ public class SecurityConfig {
                         .requestMatchers(URLS_PERMITIDAS).permitAll()
                         .anyRequest().authenticated()
                 )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin()) // IMPORTANTE para H2 Console
+                )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilterBefore(securityFilterConfig, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

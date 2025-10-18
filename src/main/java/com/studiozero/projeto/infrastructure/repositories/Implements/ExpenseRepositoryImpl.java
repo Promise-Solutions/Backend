@@ -5,10 +5,9 @@ import com.studiozero.projeto.domain.repositories.ExpenseRepository;
 import com.studiozero.projeto.infrastructure.entities.ExpenseEntity;
 import com.studiozero.projeto.infrastructure.mappers.ExpenseEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaExpenseRepository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class ExpenseRepositoryImpl implements ExpenseRepository {
@@ -37,10 +36,8 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> findAll() {
-        return jpaExpenseRepository.findAll()
-            .stream()
-            .map(ExpenseEntityMapper::toDomain)
-            .toList();
+    public Page<Expense> findAll(Pageable pageable) {
+        return jpaExpenseRepository.findAll(pageable)
+                .map(ExpenseEntityMapper::toDomain);
     }
 }

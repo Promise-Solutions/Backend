@@ -5,6 +5,7 @@ import com.studiozero.projeto.domain.repositories.*;
 import com.studiozero.projeto.infrastructure.repositories.services.DriveServiceRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -49,12 +50,12 @@ public class GenerateExcelReport {
         List<Client> clients = clientRepository.findAll();
         List<Employee> employees = employeeRepository.findAll();
         List<Command> commands = commandRepository.findAll();
-        List<Job> jobs = jobRepository.findAll();
-        List<SubJob> subJobs = subJobRepository.findAll();
+        List<Job> jobs = jobRepository.findAll(Pageable.unpaged()).getContent();
+        List<SubJob> subJobs = subJobRepository.findAll(Pageable.unpaged()).getContent();
         List<Product> products = productRepository.findAll();
         List<Task> tasks = taskRepository.findAll();
         List<CommandProduct> commandProducts = commandProductRepository.findAll();
-        List<Expense> expenses = expenseRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll(Pageable.unpaged()).getContent();
 
         // Use '-' para o nome do arquivo para evitar problemas de path
         String dataGeracao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));

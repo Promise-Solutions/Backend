@@ -14,6 +14,8 @@ import com.studiozero.projeto.application.usecases.expense.ListExpensesUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,15 +59,18 @@ public class ExpenseController {
         return ResponseEntity.ok(ExpenseMapper.toDTO(expense));
     }
 
-    @Operation(summary = "List all expenses", description = "This endpoint will listing all expenses.")
+    @Operation(summary = "List all expenses", description = "This endpoint will list all expenses with pagination.")
     @GetMapping
-    public ResponseEntity<List<ExpenseResponseDTO>> listAllExpenses() {
-        List<Expense> expenses = listExpensesUseCase.execute();
+    public ResponseEntity<Page<ExpenseResponseDTO>> listAllExpenses(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Expense> expenses = listExpensesUseCase.execute(PageRequest.of(page, size));
         if (expenses.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        List<ExpenseResponseDTO> expenseDTOS = ExpenseMapper.toDTOList(expenses);
-        return ResponseEntity.status(200).body(expenseDTOS);
+        Page<ExpenseResponseDTO> expenseDTOS = expenses.map(ExpenseMapper::toDTO);
+        return ResponseEntity.ok(expenseDTOS);
     }
 
     @Operation(summary = "Update an expense", description = "This method is responsable to update a specific expense")
