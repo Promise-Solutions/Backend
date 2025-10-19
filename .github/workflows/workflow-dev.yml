@@ -1,0 +1,20 @@
+name: workflow-ci-dev.yml
+on:
+  push
+
+jobs:
+  continuos-integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Using JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Run Build and Test
+        run: |
+          mvn clean install
+          java StudioZeroApplication.java
+          mvn test
