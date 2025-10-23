@@ -6,6 +6,7 @@ import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.entities.Command;
 import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.domain.entities.Employee;
+import com.studiozero.projeto.infrastructure.entities.CommandEntity;
 import com.studiozero.projeto.web.dtos.request.CommandRequestDTO;
 import com.studiozero.projeto.web.dtos.response.CommandResponseDTO;
 import com.studiozero.projeto.web.mappers.CommandMapper;
@@ -21,6 +22,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/commands")
@@ -68,21 +72,21 @@ public class CommandController {
 
     @Operation(summary = "List all commands", description = "This method is responsible for listing all commands.")
     @GetMapping
-    public ResponseEntity<Page<CommandResponseDTO>> listAllCommands(
-            @RequestParam(required = false) Status status,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+    public ResponseEntity<List<CommandResponseDTO>> listAllCommands(
+            @RequestParam(required = false) Status status
     ) {
-        Page<Command> commandPage;
-        if (status == null) {
-            commandPage = listCommandsUseCase.execute(PageRequest.of(page, size));
+        List<Command> commands = new ArrayList<Command>();
+        if (status != null) {
+            commands = listCommandsUseCase.execute(status);
         } else {
-            commandPage = listCommandsUseCase.execute(status, PageRequest.of(page, size));
+            commands = listCommandsUseCase.execute();
         }
-        if (commandPage.isEmpty()) {
+
+
+        if (commands.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        Page<CommandResponseDTO> dtoPage = commandPage.map(CommandMapper::toDTO);
+        List<CommandResponseDTO> dtoPage = commands.stream().map(CommandMapper::toDTO).toList();
 
         return ResponseEntity.ok(dtoPage);
     }

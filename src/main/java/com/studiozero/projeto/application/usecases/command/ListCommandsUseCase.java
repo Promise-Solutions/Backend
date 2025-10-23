@@ -15,12 +15,11 @@ public class ListCommandsUseCase {
         this.commandRepository = commandRepository;
     }
 
-    public Page<Command> execute(Pageable pageable) {
-        // Supondo que queremos todos os comandos, independente do status
-        return commandRepository.findAllByStatus(null, pageable);
+    public List<Command> execute() {
+        return commandRepository.findAll();
     }
 
-    public Page<Command> execute(Status status, Pageable pageable) {
-        return commandRepository.findAllByStatus(status, pageable);
+    public List<Command> execute(Status status) {
+        return commandRepository.findAllByStatus(status);
     }
 }

@@ -14,7 +14,7 @@ public interface CommandRepository {
 
     boolean existsByCommandNumber(Integer commandNumber);
 
-    Page<Command> findAllByStatus(Status status, Pageable pageable);
+    List<Command> findAllByStatus(Status status);
 
     List<Command> findAllByClientIdAndStatus(UUID clientId, Status status);
 

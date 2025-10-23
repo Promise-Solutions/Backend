@@ -14,9 +14,9 @@ import java.util.UUID;
 public interface SubJobRepository {
         boolean existsByJobId(UUID jobId);
 
-        Page<SubJob> findAll(Pageable pageable);
+        List<SubJob> findAll();
 
-        List<SubJob> findAllByJobId(UUID fkService);
+        Page<SubJob> findAllByJob(UUID fkService, Pageable pageable);
 
         Integer countByJobId(UUID jobId);
 

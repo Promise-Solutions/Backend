@@ -51,7 +51,7 @@ public class GenerateExcelReport {
         List<Employee> employees = employeeRepository.findAll();
         List<Command> commands = commandRepository.findAll();
         List<Job> jobs = jobRepository.findAll(Pageable.unpaged()).getContent();
-        List<SubJob> subJobs = subJobRepository.findAll(Pageable.unpaged()).getContent();
+        List<SubJob> subJobs = subJobRepository.findAll();
         List<Product> products = productRepository.findAll();
         List<Task> tasks = taskRepository.findAll();
         List<CommandProduct> commandProducts = commandProductRepository.findAll();

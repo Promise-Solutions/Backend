@@ -41,10 +41,10 @@ public class CommandRepositoryImpl implements CommandRepository {
     }
 
     @Override
-    public Page<Command> findAllByStatus(Status status, Pageable pageable) {
-        Page<CommandEntity> entities =
-                jpaCommandRepository.findAllByStatus(status, pageable);
-        return entities.map(CommandEntityMapper::toDomain);
+    public List<Command> findAllByStatus(Status status) {
+        List<CommandEntity> entities =
+                jpaCommandRepository.findAllByStatus(status);
+        return entities.stream().map(CommandEntityMapper::toDomain).toList();
     }
 
     @Override

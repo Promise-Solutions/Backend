@@ -91,26 +91,27 @@ public class SubJobController {
 
         @Operation(summary = "List subJobs By a fkService", description = "This method is responsible for listing all subJobs associated with a job.")
         @GetMapping("/job")
-        public ResponseEntity<List<SubJobResponseDTO>> listSubJobsByFkService(
-                        @RequestParam @Valid UUID fkService) {
-                List<SubJob> subJobs = listSubJobsByFkServiceUseCase.execute(fkService);
+        public ResponseEntity<Page<SubJobResponseDTO>> listSubJobsByFkService(
+                        @RequestParam @Valid UUID fkService,
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "10") int size
+        ) {
+                Page<SubJob> subJobs = listSubJobsByFkServiceUseCase.execute(fkService, PageRequest.of(page, size));
                 if (subJobs.isEmpty()) {
                         return ResponseEntity.status(204).build();
                 }
-                return ResponseEntity.status(200).body(SubJobMapper.toDTOList(subJobs));
+            Page<SubJobResponseDTO> subJobDtos = subJobs.map(SubJobMapper::toDTO);
+            return ResponseEntity.ok(subJobDtos);
         }
 
     @Operation(summary = "List all sub jobs", description = "This method is responsible for list all sub jobs.")
     @GetMapping
-    public ResponseEntity<Page<SubJobResponseDTO>> listAllSubJobs(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        Page<SubJob> subJobs = listSubJobsUseCase.execute(PageRequest.of(page, size));
+    public ResponseEntity<List<SubJobResponseDTO>> listAllSubJobs() {
+        List<SubJob> subJobs = listSubJobsUseCase.execute();
         if (subJobs.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        Page<SubJobResponseDTO> subJobDtos = subJobs.map(SubJobMapper::toDTO);
+        List<SubJobResponseDTO> subJobDtos = subJobs.stream().map(SubJobMapper::toDTO).toList();
         return ResponseEntity.ok(subJobDtos);
     }
 

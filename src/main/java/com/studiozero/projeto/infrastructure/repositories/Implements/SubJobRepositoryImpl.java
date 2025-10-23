@@ -37,16 +37,17 @@ public class SubJobRepositoryImpl implements SubJobRepository {
     }
 
     @Override
-    public Page<SubJob> findAll(Pageable pageable) {
-        return jpaSubJobRepository.findAll(pageable)
-                .map(SubJobEntityMapper::toDomain);
+    public List<SubJob> findAll() {
+        return jpaSubJobRepository.findAll().stream().map(SubJobEntityMapper::toDomain).toList();
     }
 
     @Override
-    public List<SubJob> findAllByJobId(UUID fkService) {
-        return jpaSubJobRepository.findAll().stream()
-            .map(SubJobEntityMapper::toDomain)
-            .filter(sj -> sj.getJob() != null && fkService.equals(sj.getJob().getId())).toList();
+    public Page<SubJob> findAllByJob(UUID fkService, Pageable pageable) {
+        JobEntity job = jpaJobRepository.findById(fkService)
+                .orElse(null);
+
+        Page<SubJobEntity> entities = jpaSubJobRepository.findAllByJob(job, pageable);
+        return entities.map(SubJobEntityMapper::toDomain);
     }
 
     @Override

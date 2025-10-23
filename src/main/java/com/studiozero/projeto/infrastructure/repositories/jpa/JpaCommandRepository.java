@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface JpaCommandRepository extends JpaRepository<CommandEntity, Integer> {
     @Query("SELECT c FROM CommandEntity c WHERE c.status = :status")
-    Page<CommandEntity> findAllByStatus(@Param("status") Status status, Pageable pageable);
+    List<CommandEntity> findAllByStatus(@Param("status") Status status);
 
     @Query("SELECT c FROM CommandEntity c WHERE c.client.id = :clientId AND c.status = :status")
     List<CommandEntity> findAllByClientIdAndStatus(@Param("clientId") UUID clientId,

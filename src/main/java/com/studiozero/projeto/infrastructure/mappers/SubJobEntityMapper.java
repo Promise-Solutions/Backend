@@ -4,7 +4,6 @@ import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.infrastructure.entities.JobEntity;
 import com.studiozero.projeto.infrastructure.entities.SubJobEntity;
-import com.studiozero.projeto.infrastructure.repositories.Implements.JobRepositoryImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,8 +13,8 @@ import java.util.List;
 public class SubJobEntityMapper {
 
     public static SubJob toDomain(SubJobEntity entity) {
-        Job job = JobEntityMapper.toDomain(entity.getJob());
         if (entity == null) return null;
+        Job job = JobEntityMapper.toDomain(entity.getJob());
         return new SubJob(
             entity.getId(),
             entity.getTitle(),
@@ -82,4 +81,5 @@ public class SubJobEntityMapper {
 
         return subJobs.stream().map(s -> toEntity(s, job)).toList();
     }
+
 }
