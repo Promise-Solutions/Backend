@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/command-products")
+@RequestMapping("/api/command-products")
 @Tag(name = "Command Products", description = "Endpoints for Command Product Management")
 public class CommandProductController {
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/dashboard")
+@RequestMapping("/api/dashboard")
 @Tag(name = "Dashboard", description = "Endpoints for Dashboard Management")
 public class DashboardController {
 

@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 @RestController
-@RequestMapping("/report")
+@RequestMapping("/api/report")
 @Tag(name = "Report", description = "Endpoints for Report Management")
 public class ReportController {
     private final GenerateExcelReport generateExcelReport;

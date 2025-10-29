@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/api/clients")
 @Tag(name = "Clients", description = "Endpoints for Client Management")
 public class ClientController {
 

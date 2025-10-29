@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/commands")
+@RequestMapping("/api/commands")
 @Tag(name = "Commands", description = "Endpoints for Command Management")
 public class CommandController {
 

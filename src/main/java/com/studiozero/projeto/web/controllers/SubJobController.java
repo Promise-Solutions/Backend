@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/sub-jobs")
+@RequestMapping("/api/sub-jobs")
 @Tag(name = "Sub Jobs", description = "Endpoints for Sub Job Management")
 public class SubJobController {
 

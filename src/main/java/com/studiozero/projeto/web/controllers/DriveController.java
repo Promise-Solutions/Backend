@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/drive")
+@RequestMapping("/api/drive")
 @Tag(name = "Google Drive API", description = "Endpoints for Google Drive")
 public class DriveController {
 

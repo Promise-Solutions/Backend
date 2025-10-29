@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/api/tasks")
 @Tag(name = "Tasks", description = "Endpoints for Task Management")
 public class TaskController {
 

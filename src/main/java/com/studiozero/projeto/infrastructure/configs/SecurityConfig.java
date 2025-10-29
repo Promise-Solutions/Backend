@@ -1,5 +1,6 @@
 package com.studiozero.projeto.infrastructure.configs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,9 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Value("${REQ_HOST}")
+    private String reqHost;
+
     private final SecurityFilterConfig securityFilterConfig;
     private final CustomAuthenticationEntryPointConfig customAuthenticationEntryPointConfig;
 
@@ -43,6 +47,7 @@ public class SecurityConfig {
 
             // Auth endpoints
             "/employees/login",
+            "/employees",
             "/auth/forgot-password",
             "/auth/reset-password",
 
@@ -79,7 +84,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8080")); // frontend
+        config.setAllowedOrigins(List.of(reqHost)); // load balancer
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

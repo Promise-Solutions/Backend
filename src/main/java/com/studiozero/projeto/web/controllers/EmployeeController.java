@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
 @Tag(name = "Employees", description = "Endpoints for Employee Management")
 public class EmployeeController {
 
