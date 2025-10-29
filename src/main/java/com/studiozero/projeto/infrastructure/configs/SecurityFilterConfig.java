@@ -30,10 +30,10 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
             "/webjars",
             "/h2-console",
             "/actuator",
-            "/employees/login",
-            "/auth/forgot-password",
-            "/auth/reset-password",
-            "/error"
+            "/api/employees/login",
+            "/api/auth/forgot-password",
+            "/api/auth/reset-password",
+            "/api/error"
     );
 
     public SecurityFilterConfig(ValidateTokenService validateTokenService, EmployeeRepository employeeRepository) {
