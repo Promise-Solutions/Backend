@@ -24,7 +24,7 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${studiozero.var.req-host}")
+    @Value("${app.req-host}")
     private String REQ_HOST;
 
     private final SecurityFilterConfig securityFilterConfig;
@@ -46,10 +46,10 @@ public class SecurityConfig {
             "/actuator/**",
 
             // Auth endpoints
-            "/employees/login",
-            "/employees",
-            "/auth/forgot-password",
-            "/auth/reset-password",
+            "/api/employees/login",
+            "/api/employees",
+            "/api/auth/forgot-password",
+            "/api/auth/reset-password",
 
             // Outros
             "/error/**"
