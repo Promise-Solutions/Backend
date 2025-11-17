@@ -12,6 +12,7 @@ import java.time.ZoneOffset;
 public class GenerateTokenService {
     private final String SECRET;
     private final Long EXPIRATION;
+    private static final String ISSUER = "studiozero-auth";
 
     public GenerateTokenService(String SECRET, Long EXPIRATION) {
         this.SECRET = SECRET;
@@ -22,7 +23,7 @@ public class GenerateTokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             String token = JWT.create()
-                    .withIssuer(SECRET)
+                    .withIssuer(ISSUER)
                     .withSubject(employee.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
