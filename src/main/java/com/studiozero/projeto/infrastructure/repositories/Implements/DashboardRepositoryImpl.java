@@ -37,9 +37,6 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     @Override
     public Map<String, Double> getClientStats(Object clientId) {
         UUID clientUUID = UUID.fromString(clientId.toString());
-        double frequency = 0.0;
-        double totalValue = 0.0;
-        double totalCommandsValue = 0.0;
 
         List<SubJobEntity> subJobEntities = subJobRepository.findAll();
         List<SubJob> subJobs = SubJobEntityMapper.toDomainList(subJobEntities);
@@ -47,12 +44,12 @@ public class DashboardRepositoryImpl implements DashboardRepository {
                 .filter(subJob -> subJob.getJob().getClient().getId().equals(clientUUID) &&
                         subJob.getStatus() == Status.CLOSED && subJob.getNeedsRoom())
                 .toList();
-        totalValue = filteredSubJobs.stream().mapToDouble(SubJob::getValue).sum();
-        frequency = filteredSubJobs.size();
+        double totalValue = filteredSubJobs.stream().mapToDouble(SubJob::getValue).sum();
+        double frequency = filteredSubJobs.size();
 
         List<CommandEntity> commandEntities = commandRepository.findAllByClientIdAndStatus(clientUUID, Status.CLOSED);
         List<Command> closedCommands = CommandEntityMapper.toDomainList(commandEntities);
-        totalCommandsValue = closedCommands.stream().mapToDouble(Command::getTotalValue).sum();
+        double totalCommandsValue = closedCommands.stream().mapToDouble(Command::getTotalValue).sum();
         Double ticket = (frequency > 0) ? (totalValue + totalCommandsValue) / frequency : 0.0;
         return Map.of(
                 "frequency", frequency,

@@ -75,7 +75,7 @@ public class CommandController {
     public ResponseEntity<List<CommandResponseDTO>> listAllCommands(
             @RequestParam(required = false) Status status
     ) {
-        List<Command> commands = new ArrayList<Command>();
+        List<Command> commands;
         if (status != null) {
             commands = listCommandsUseCase.execute(status);
         } else {

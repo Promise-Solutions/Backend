@@ -26,7 +26,7 @@ public class ScheduledEmailTokenResetPassword {
         StringBuilder content = new StringBuilder();
         content.append("Olá, aqui está seu código para redefinir sua senha! Clique no link abaixo.\n\n");
 
-        content.append("Link: http://localhost:8080/reset-password?token=" + token);
+        content.append("Link: http://localhost:8080/reset-password?token=").append(token);
         String subject = "StudioZero: Redefinição de senha!";
 
         try {
