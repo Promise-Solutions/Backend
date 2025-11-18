@@ -18,6 +18,7 @@ public class Expense {
             Double amountSpend, Product product, PaymentType paymentType) {
         validateDescription(description);
         validateAmountSpend(amountSpend);
+        validateExpenseCategory(product, expenseCategory);
         this.id = id;
         this.date = date;
         this.expenseCategory = expenseCategory;
@@ -25,6 +26,19 @@ public class Expense {
         this.quantity = quantity;
         this.amountSpend = amountSpend;
         this.product = product;
+        this.paymentType = paymentType;
+    }
+
+    public Expense(Integer id, LocalDate date, ExpenseCategory expenseCategory, String description, Integer quantity,
+            Double amountSpend, PaymentType paymentType) {
+        validateDescription(description);
+        validateAmountSpend(amountSpend);
+        this.id = id;
+        this.date = date;
+        this.expenseCategory = expenseCategory;
+        this.description = description;
+        this.quantity = quantity;
+        this.amountSpend = amountSpend;
         this.paymentType = paymentType;
     }
 
@@ -40,6 +54,12 @@ public class Expense {
     private void validateAmountSpend(Double amountSpend) {
         if (amountSpend == null || amountSpend <= 0) {
             throw new IllegalArgumentException("Amount spend must be greater than zero");
+        }
+    }
+
+    private void validateExpenseCategory(Product product, ExpenseCategory expenseCategory) {
+        if (expenseCategory != ExpenseCategory.STOCK && product != null) {
+            throw new IllegalArgumentException("Only expenses with stock category can have a associated product");
         }
     }
 
