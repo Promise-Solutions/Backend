@@ -32,7 +32,7 @@ jobs:
       - name: Compilar sem testes
         run: mvn clean package -DskipTests
 
-      - name: Rodar testes de integração
+      - name: Rodar testes unitários e integração
         env:
           SPRING_PROFILES_ACTIVE: test
           MYSQL_HOST: localhost

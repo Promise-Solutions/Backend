@@ -40,7 +40,7 @@ jobs:
           sleep 30
           docker ps -a
 
-      - name: Executar testes de integração
+      - name: Executar testes unitários e integração
         env:
           SPRING_PROFILES_ACTIVE: test
           MYSQL_HOST: localhost
