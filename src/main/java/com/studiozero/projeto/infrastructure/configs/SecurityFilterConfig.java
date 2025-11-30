@@ -30,7 +30,8 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
             "/webjars",
             "/h2-console",
             "/actuator",
-            "/api/employees/login",
+            // Note: do NOT include "/api/employees/" here because it will skip the JWT filter
+            // for endpoints like /api/employees/{id}. Keep only truly public auth endpoints below.
             "/api/auth/forgot-password",
             "/api/auth/reset-password",
             "/api/error"
@@ -79,6 +80,10 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
         if (authHeader == null)
             return null;
 
-        return authHeader.replace("Bearer ", "");
+        // Normalize and validate header
+        authHeader = authHeader.trim();
+        if (authHeader.length() < 7) return null; // too short to contain 'Bearer '
+        if (!authHeader.substring(0, 6).equalsIgnoreCase("Bearer")) return null;
+        return authHeader.substring(6).trim();
     }
 }

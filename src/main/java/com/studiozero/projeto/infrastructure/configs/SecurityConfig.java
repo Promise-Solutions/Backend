@@ -46,10 +46,10 @@ public class SecurityConfig {
             "/actuator/**",
 
             // Auth endpoints
-            "/employees/login",
-            "/employees",
-            "/auth/forgot-password",
-            "/auth/reset-password",
+            "/api/employees/login",
+            "/api/employees",
+            "/api/auth/forgot-password",
+            "/api/auth/reset-password",
 
             // Outros
             "/error/**"
