@@ -22,6 +22,16 @@ jobs:
           java-version: 21
           cache: maven
 
+      - name: Criar .env para Docker Compose
+        run: |
+          echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> .env
+          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "JWT_RESET_SECRET=${{ secrets.JWT_RESET_SECRET }}" >> .env
+          echo "EMAIL_USUARIO=${{ secrets.EMAIL_USUARIO }}" >> .env
+          echo "EMAIL_SENHA=${{ secrets.EMAIL_SENHA }}" >> .env
+          echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> .env
+
       - name: Subir containers com Docker Compose
         run: |
           echo "Subindo MySQL + RabbitMQ..."
