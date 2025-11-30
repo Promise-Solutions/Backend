@@ -24,6 +24,10 @@ public class CommandUseCaseConfig {
     public ListCommandsUseCase listCommandsUseCase(CommandRepositoryImpl commandRepository) {
         return new ListCommandsUseCase(commandRepository);
     }
+    @Bean
+    public ListAllCommandsByStatusUseCase listAllCommandsByStatusUseCase(CommandRepositoryImpl commandRepository) {
+        return new ListAllCommandsByStatusUseCase(commandRepository);
+    }
 
     @Bean
     public UpdateCommandUseCase updateCommandUseCase(CommandRepositoryImpl commandRepository, CommandTotalCalculator commandTotalCalculator) {

@@ -21,6 +21,19 @@ public class ExpenseMapper {
         );
     }
 
+ public static Expense toDomain(ExpenseRequestDTO dto) {
+        if (dto == null) return null;
+        return new Expense(
+            null,
+            dto.getDate(),
+            dto.getExpenseCategory(),
+            dto.getDescription(),
+            dto.getQuantity(),
+            dto.getAmountSpend(),
+            dto.getPaymentType()
+        );
+    }
+
     public static ExpenseResponseDTO toDTO(Expense expense) {
         if (expense == null) return null;
         ExpenseResponseDTO dto = new ExpenseResponseDTO();

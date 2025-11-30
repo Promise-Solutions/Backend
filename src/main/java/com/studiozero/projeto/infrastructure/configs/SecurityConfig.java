@@ -24,8 +24,8 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${REQ_HOST}")
-    private String reqHost;
+    @Value("${app.req-host}")
+    private String REQ_HOST;
 
     private final SecurityFilterConfig securityFilterConfig;
     private final CustomAuthenticationEntryPointConfig customAuthenticationEntryPointConfig;
@@ -84,7 +84,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(reqHost)); // load balancer
+        config.setAllowedOrigins(List.of(REQ_HOST)); // load balancer
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

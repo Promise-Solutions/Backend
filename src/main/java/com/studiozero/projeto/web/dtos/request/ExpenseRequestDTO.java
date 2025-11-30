@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-//@JsonNaming(PropertyNamingStrategy.LowerCaseStrategy.class)
 public class ExpenseRequestDTO {
 
     //mostramos a data do dia na tela, mas possiblitamos que seja alterada

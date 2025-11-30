@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class ResetTokenConfig {
 
     @Bean
-    public TokenResetPasswordService tokenResetPasswordService(@Value("${JWT_RESET_SECRET}") String secret,
-                                                          @Value("${EXPIRATION_TIME_RESET}") Long expiration) {
+    public TokenResetPasswordService tokenResetPasswordService(@Value("${app.jwt.reset.secret}") String secret,
+                                                          @Value("${app.jwt.reset.secret.expiration.time}") Long expiration) {
         return new TokenResetPasswordService(secret, expiration);
     }
 

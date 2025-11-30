@@ -73,5 +73,5 @@ public class DriveController {
         }
     }
 
-    record FileInfoDto(String id, String name) {}
+    public record FileInfoDto(String id, String name) {}
 }

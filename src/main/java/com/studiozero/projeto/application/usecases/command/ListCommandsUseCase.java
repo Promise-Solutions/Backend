@@ -19,7 +19,4 @@ public class ListCommandsUseCase {
         return commandRepository.findAll();
     }
 
-    public List<Command> execute(Status status) {
-        return commandRepository.findAllByStatus(status);
-    }
 }

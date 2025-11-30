@@ -1,24 +1,15 @@
 package com.studiozero.projeto.web.controllers;
 
 import com.studiozero.projeto.application.usecases.job.GetJobUseCase;
+import com.studiozero.projeto.application.usecases.subjob.*;
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
-import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.web.dtos.request.SubJobRequestDTO;
 import com.studiozero.projeto.web.dtos.request.SubJobUpdateStatusRequestDTO;
 import com.studiozero.projeto.web.dtos.response.SubJobDeleteResponseDTO;
 import com.studiozero.projeto.web.dtos.response.SubJobResponseDTO;
 import com.studiozero.projeto.web.dtos.response.SubJobUpdateStatusResponseDTO;
 import com.studiozero.projeto.web.mappers.SubJobMapper;
-import com.studiozero.projeto.application.usecases.subjob.CreateSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.GetSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.DeleteSubJobUseCase;
-import com.studiozero.projeto.application.usecases.subjob.ListSubJobsByFkServiceUseCase;
-import com.studiozero.projeto.application.usecases.subjob.ListSubJobsUseCase;
-import com.studiozero.projeto.application.usecases.subjob.UpdateSubJobStatusUseCase;
-//import com.studiozero.projeto.application.usecases.job.EvaluateJobStatusUseCase;
-//import com.studiozero.projeto.application.usecases.job.CalculateJobTotalValueUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -42,8 +33,6 @@ public class SubJobController {
         private final ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase;
         private final ListSubJobsUseCase listSubJobsUseCase;
         private final UpdateSubJobStatusUseCase updateSubJobStatusUseCase;
-//        private final EvaluateJobStatusUseCase evaluateJobStatusUseCase;
-//        private final CalculateJobTotalValueUseCase calculateJobTotalValueUseCase;
         private final GetJobUseCase getJobUseCase;
 
     public SubJobController(CreateSubJobUseCase createSubJobUseCase,
@@ -53,8 +42,6 @@ public class SubJobController {
                             ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase,
                             ListSubJobsUseCase listSubJobsUseCase,
                             UpdateSubJobStatusUseCase updateSubJobStatusUseCase,
-//                            EvaluateJobStatusUseCase evaluateJobStatusUseCase,
-//                            CalculateJobTotalValueUseCase calculateJobTotalValueUseCase,
                             GetJobUseCase getJobUseCase) {
         this.createSubJobUseCase = createSubJobUseCase;
         this.getSubJobUseCase = getSubJobUseCase;
@@ -63,8 +50,6 @@ public class SubJobController {
         this.listSubJobsByFkServiceUseCase = listSubJobsByFkServiceUseCase;
         this.listSubJobsUseCase = listSubJobsUseCase;
         this.updateSubJobStatusUseCase = updateSubJobStatusUseCase;
-//        this.evaluateJobStatusUseCase = evaluateJobStatusUseCase;
-//        this.calculateJobTotalValueUseCase = calculateJobTotalValueUseCase;
         this.getJobUseCase = getJobUseCase;
     }
 

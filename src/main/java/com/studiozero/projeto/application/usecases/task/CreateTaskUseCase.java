@@ -13,10 +13,10 @@ public class CreateTaskUseCase {
     }
 
     public Task execute(Task task) {
-        if (task == null || task.getId() == null || task.getId().toString().isEmpty()) {
+        if (task == null) {
             throw new IllegalArgumentException("Tarefa inválida");
         }
-        if (task.getId() == null) {
+        if (task.getId() == null || task.getId().toString().isEmpty()) {
             task.setId(UUID.randomUUID());
         }
         taskRepository.save(task);

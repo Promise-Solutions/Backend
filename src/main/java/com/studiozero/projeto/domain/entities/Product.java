@@ -64,4 +64,7 @@ public class Product {
         this.internalValue = internalValue;
     }
 
+    public void increaseQuantity(Integer quntityToAdd) {
+        this.quantity += quntityToAdd;
+    }
 }

@@ -19,7 +19,6 @@ public class UpdateExpenseUseCase {
     }
 
     public Expense execute(Expense expense) {
-        System.out.println(expense.getId());
         if (expense == null || expense.getId() == null) {
             throw new IllegalArgumentException("Despesa inválida");
         }

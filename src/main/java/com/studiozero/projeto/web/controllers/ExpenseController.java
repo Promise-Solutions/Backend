@@ -46,10 +46,8 @@ public class ExpenseController {
     @Operation(summary = "Create a new Expense", description = "This endpoint is resposable to create a new expense")
     @PostMapping
     public ResponseEntity<ExpenseResponseDTO> createExpense(@RequestBody @Valid ExpenseRequestDTO expenseDTO) {
-        Product product = getProductUseCase.execute(expenseDTO.getFkProduct());
-        Expense expense = ExpenseMapper.toDomain(expenseDTO, product);
-        createExpenseUseCase.execute(expense);
-        return ResponseEntity.status(201).body(ExpenseMapper.toDTO(expense));
+        Expense response = createExpenseUseCase.execute(expenseDTO);
+        return ResponseEntity.status(201).body(ExpenseMapper.toDTO(response));
     }
 
     @Operation(summary = "Search for an Expense", description = "This endpoint is resposable to return a specific expense")

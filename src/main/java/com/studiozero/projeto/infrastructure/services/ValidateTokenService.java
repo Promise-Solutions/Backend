@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class ValidateTokenService {
     private final String SECRET;
+    private static final String ISSUER = "studiozero-auth";
 
-    public ValidateTokenService(@Value("${JWT_SECRET}") String SECRET) {
+    public ValidateTokenService(@Value("${app.jwt.secret}") String SECRET) {
         this.SECRET = SECRET;
     }
 
@@ -16,7 +17,7 @@ public class ValidateTokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             return JWT.require(algorithm)
-                    .withIssuer(SECRET)
+                    .withIssuer(ISSUER)
                     .build()
                     .verify(token)
                     .getSubject();

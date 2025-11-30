@@ -4,6 +4,7 @@ import com.studiozero.projeto.application.usecases.product.GetProductUseCase;
 import com.studiozero.projeto.application.usecases.product.UpdateProductUseCase;
 import com.studiozero.projeto.domain.repositories.ProductRepository;
 import com.studiozero.projeto.infrastructure.repositories.Implements.ExpenseRepositoryImpl;
+import com.studiozero.projeto.infrastructure.repositories.Implements.ProductRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,8 +17,8 @@ import com.studiozero.projeto.application.usecases.expense.UpdateExpenseUseCase;
 @Configuration
 public class ExpenseUseCaseConfig {
     @Bean
-    public CreateExpenseUseCase createExpenseUseCase(ExpenseRepositoryImpl expenseRepository, UpdateProductUseCase updateProductUseCase, GetProductUseCase getProductUseCase) {
-        return new CreateExpenseUseCase(expenseRepository, updateProductUseCase, getProductUseCase);
+    public CreateExpenseUseCase createExpenseUseCase(ExpenseRepositoryImpl expenseRepository, ProductRepositoryImpl productRepository) {
+        return new CreateExpenseUseCase(expenseRepository, productRepository);
     }
 
     @Bean

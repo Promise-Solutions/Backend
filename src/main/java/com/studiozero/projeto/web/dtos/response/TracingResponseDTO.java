@@ -19,9 +19,9 @@ public class TracingResponseDTO {
     private LocalDateTime dateTime;
 
     public TracingResponseDTO(Tracing tracing) {
-        this.id = id;
-        this.context = context;
-        this.dateTime= dateTime;
+        this.id = tracing.getId();
+        this.context = tracing.getContext();
+        this.dateTime= tracing.getDateTime();
     }
 
     public TracingResponseDTO() {

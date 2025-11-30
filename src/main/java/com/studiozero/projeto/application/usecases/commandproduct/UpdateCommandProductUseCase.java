@@ -39,7 +39,7 @@ public class UpdateCommandProductUseCase {
         Product product = getProductUseCase.execute(updated.getProduct().getId());
 
         Integer diferenca = updated.getProductQuantity() - existing.getProductQuantity();
-        Integer novoEstoque = product.getQuantity() - diferenca;
+        int novoEstoque = product.getQuantity() - diferenca;
 
         if (novoEstoque < 0) {
             throw new IllegalArgumentException("Not enough product in stock");

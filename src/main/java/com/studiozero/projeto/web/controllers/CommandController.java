@@ -1,6 +1,7 @@
 package com.studiozero.projeto.web.controllers;
 
 import com.studiozero.projeto.application.usecases.client.GetClientUseCase;
+import com.studiozero.projeto.application.usecases.command.*;
 import com.studiozero.projeto.application.usecases.employee.GetEmployeeUseCase;
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.entities.Command;
@@ -10,11 +11,6 @@ import com.studiozero.projeto.infrastructure.entities.CommandEntity;
 import com.studiozero.projeto.web.dtos.request.CommandRequestDTO;
 import com.studiozero.projeto.web.dtos.response.CommandResponseDTO;
 import com.studiozero.projeto.web.mappers.CommandMapper;
-import com.studiozero.projeto.application.usecases.command.CreateCommandUseCase;
-import com.studiozero.projeto.application.usecases.command.GetCommandUseCase;
-import com.studiozero.projeto.application.usecases.command.ListCommandsUseCase;
-import com.studiozero.projeto.application.usecases.command.UpdateCommandUseCase;
-import com.studiozero.projeto.application.usecases.command.DeleteCommandUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -34,15 +30,17 @@ public class CommandController {
     private final CreateCommandUseCase createCommandUseCase;
     private final GetCommandUseCase getCommandUseCase;
     private final ListCommandsUseCase listCommandsUseCase;
+    private final ListAllCommandsByStatusUseCase listAllCommandByStatusUseCase;
     private final UpdateCommandUseCase updateCommandUseCase;
     private final DeleteCommandUseCase deleteCommandUseCase;
     private final GetClientUseCase getClientUseCase;
     private final GetEmployeeUseCase getEmployeeUseCase;
 
-    public CommandController(CreateCommandUseCase createCommandUseCase, GetCommandUseCase getCommandUseCase, ListCommandsUseCase listCommandsUseCase, UpdateCommandUseCase updateCommandUseCase, DeleteCommandUseCase deleteCommandUseCase, GetClientUseCase getClientUseCase, GetEmployeeUseCase getEmployeeUseCase) {
+    public CommandController(CreateCommandUseCase createCommandUseCase, GetCommandUseCase getCommandUseCase, ListCommandsUseCase listCommandsUseCase, ListAllCommandsByStatusUseCase listAllCommandByStatusUseCase, UpdateCommandUseCase updateCommandUseCase, DeleteCommandUseCase deleteCommandUseCase, GetClientUseCase getClientUseCase, GetEmployeeUseCase getEmployeeUseCase) {
         this.createCommandUseCase = createCommandUseCase;
         this.getCommandUseCase = getCommandUseCase;
         this.listCommandsUseCase = listCommandsUseCase;
+        this.listAllCommandByStatusUseCase = listAllCommandByStatusUseCase;
         this.updateCommandUseCase = updateCommandUseCase;
         this.deleteCommandUseCase = deleteCommandUseCase;
         this.getClientUseCase = getClientUseCase;
@@ -72,17 +70,22 @@ public class CommandController {
 
     @Operation(summary = "List all commands", description = "This method is responsible for listing all commands.")
     @GetMapping
-    public ResponseEntity<List<CommandResponseDTO>> listAllCommands(
-            @RequestParam(required = false) Status status
-    ) {
-        List<Command> commands = new ArrayList<Command>();
-        if (status != null) {
-            commands = listCommandsUseCase.execute(status);
-        } else {
-            commands = listCommandsUseCase.execute();
+    public ResponseEntity<List<CommandResponseDTO>> listAllCommands() {
+        List<Command> commands = listCommandsUseCase.execute();
+        if (commands.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
+        List<CommandResponseDTO> dtoPage = commands.stream().map(CommandMapper::toDTO).toList();
 
+        return ResponseEntity.ok(dtoPage);
+    }
 
+    @Operation(summary = "List all commands", description = "This method is responsible for listing all commands.")
+    @GetMapping("/by-status")
+    public ResponseEntity<List<CommandResponseDTO>> listAllCommandsByStatus(
+            @RequestParam String status
+    ) {
+        List<Command> commands = listAllCommandByStatusUseCase.execute(Status.valueOf(status));
         if (commands.isEmpty()) {
             return ResponseEntity.status(204).build();
         }

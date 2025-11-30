@@ -13,6 +13,7 @@ import java.time.ZoneOffset;
 public class TokenResetPasswordService {
     private final String secret;
     private final Long expiration;
+    private static final String ISSUER = "studiozero-auth";
 
     public TokenResetPasswordService(String secret,
                                      Long expiration) {
@@ -24,7 +25,7 @@ public class TokenResetPasswordService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-                    .withIssuer("${JWT_RESET_SECRET}")
+                    .withIssuer(ISSUER)
                     .withSubject(employee.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
@@ -39,7 +40,7 @@ public class TokenResetPasswordService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("${JWT_RESET_SECRET}")
+                    .withIssuer(ISSUER)
                     .build()
                     .verify(token)
                     .getSubject();
