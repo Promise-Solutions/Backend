@@ -1,4 +1,39 @@
+version: "3.9"
+
 services:
+  api:
+    image: ${DOCKERHUB_USERNAME}/studiozero-api:latest
+    container_name: studiozero-api
+    restart: always
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      SERVER_PORT: 5000
+      SPRING_PROFILES_ACTIVE: prod
+
+      # Database
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: studiozero
+      MYSQL_USER: root
+      MYSQL_PASSWORD: studiozero
+
+      # RabbitMQ
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+
+      # Secrets / Tokens
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_RESET_SECRET: ${JWT_RESET_SECRET}
+      EMAIL_USUARIO: ${EMAIL_USUARIO}
+      EMAIL_SENHA: ${EMAIL_SENHA}
+
+    ports:
+      - "5000:5000"
+
   db:
     image: mysql:latest
     container_name: studiozero-db
@@ -13,16 +48,18 @@ services:
       - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
   rabbitmq:
-    image: 'rabbitmq:3.13-management'
+    image: rabbitmq:3.13-management
     container_name: studiozero-rabbitmq
+    restart: always
     environment:
-      - 'RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}'
-      - 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}'
-      - 'RABBITMQ_DEFAULT_VHOST=/'
-      - 'RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/etc/rabbitmq/definitions.json"'
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: >
+        -rabbitmq_management load_definitions "/etc/rabbitmq/definitions.json"
     ports:
-      - '5672:5672'
-      - '15672:15672'
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
