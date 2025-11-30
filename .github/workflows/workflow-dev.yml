@@ -3,7 +3,7 @@ name: workflow-ci-dev
 on:
   push:
     branches:
-      - develop
+      - dev
       - feature/**
   pull_request:
 
