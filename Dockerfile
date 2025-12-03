@@ -1,7 +1,14 @@
-FROM eclipse-temurin:21-jre
+# Use a imagem oficial do OpenJDK como base
+FROM eclipse-temurin:21-jdk
 
+# Diretório de trabalho dentro do container
 WORKDIR /app
-COPY ./target/StudioZero-0.0.1-SNAPSHOT.jar studiozero-application.jar
 
-ENTRYPOINT ["java", "-jar", "studiozero-application.jar"]
+# Copie o JAR gerado pelo Maven para o container
+COPY target/StudioZero-0.0.1-SNAPSHOT.jar app.jar
+
+# Exponha a porta usada pela aplicação
 EXPOSE 5000
+
+# Comando para rodar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]
