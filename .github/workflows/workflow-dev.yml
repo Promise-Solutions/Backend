@@ -3,7 +3,6 @@ name: workflow-ci-dev
 on:
   push:
     branches:
-      - main
       - develop
       - feature/**
   pull_request:
@@ -48,9 +47,6 @@ jobs:
           echo "Aguardando serviços ficarem prontos..."
           sleep 30
           docker ps -a
-
-      - name: Compilar sem rodar testes
-        run: mvn clean package -DskipTests
 
       - name: Rodar testes de integração
         env:
