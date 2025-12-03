@@ -22,4 +22,6 @@ public interface JpaSubJobRepository extends JpaRepository<SubJobEntity, UUID> {
     JobEntity findJobBySubJobId(@Param("subJobId") UUID subJobId);
     Page<SubJobEntity> findAllByJob(JobEntity job, Pageable pageable);
     List<SubJobEntity> findAllByDate(LocalDate todayDate);
+
+    List<SubJobEntity> findAllByDateBetween(LocalDate initialDate, LocalDate finalDate);
 }
