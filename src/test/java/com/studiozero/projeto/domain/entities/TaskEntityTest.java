@@ -1,20 +1,20 @@
 package com.studiozero.projeto.domain.entities;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskEntityTest {
     @Test
     void testTaskCreation() {
-        // Simule criação de Task
-        assertTrue(true);
+        Task t = new Task(UUID.randomUUID(), "T", "D", null, null, null, null, null);
+        assertEquals("T", t.getTitle());
     }
 
     @Test
-    void testTaskInvalidData() {
-        // Simule dados inválidos
-        assertThrows(IllegalArgumentException.class, () -> {
-            throw new IllegalArgumentException("Dados inválidos");
-        });
+    void testTaskInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> { throw new IllegalArgumentException("Dados inválidos"); });
     }
 }

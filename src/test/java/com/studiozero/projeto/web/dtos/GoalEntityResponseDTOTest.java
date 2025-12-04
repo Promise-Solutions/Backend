@@ -1,20 +1,23 @@
 package com.studiozero.projeto.web.dtos;
 
+import com.studiozero.projeto.web.dtos.response.GoalResponseDTO;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GoalEntityResponseDTOTest {
     @Test
     void testDTOCreation() {
-        // Simule criação de DTO
-        assertTrue(true);
+        GoalResponseDTO dto = new GoalResponseDTO();
+        dto.setId(1);
+        dto.setTitle("Goal");
+        assertEquals(1, dto.getId());
+        assertEquals("Goal", dto.getTitle());
     }
 
     @Test
     void testDTOInvalidData() {
-        // Simule dados inválidos
-        assertThrows(IllegalArgumentException.class, () -> {
-            throw new IllegalArgumentException("Dados inválidos");
-        });
+        GoalResponseDTO dto = new GoalResponseDTO();
+        assertNull(dto.getTitle());
     }
 }
