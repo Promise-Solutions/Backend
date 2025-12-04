@@ -16,8 +16,11 @@ public class Client {
     private LocalDate birthDay;
     private LocalDate createdDate;
 
+    public Client() {
+    }
+
     public Client(UUID id, String name, String cpf, String email, String contact, ClientType clientType, Boolean active,
-            LocalDate birthDay, LocalDate createdDate) {
+                  LocalDate birthDay, LocalDate createdDate) {
 
         validateName(name);
         validateEmail(email);

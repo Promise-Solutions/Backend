@@ -11,6 +11,9 @@ public class Employee {
     private String password;
     private Boolean active;
 
+    public Employee() {
+    }
+
     public Employee(UUID id, String name, String email, String contact, String cpf, String password, Boolean active) {
         validateName(name);
         validateEmail(email);

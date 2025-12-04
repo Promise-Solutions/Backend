@@ -2,6 +2,7 @@ package com.studiozero.projeto.application.usecases.job;
 
 import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.repositories.JobRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

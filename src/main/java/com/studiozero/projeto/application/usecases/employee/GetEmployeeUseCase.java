@@ -1,5 +1,6 @@
 package com.studiozero.projeto.application.usecases.employee;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import com.studiozero.projeto.domain.entities.Employee;
@@ -13,10 +14,12 @@ public class GetEmployeeUseCase {
     }
 
     public Employee execute(UUID id) {
-        Employee employee = null;
+        Objects.requireNonNull(id, "id must not be null");
 
-        if (id != null) {
-            employee = employeeRepository.findById(id);
+        Employee employee = employeeRepository.findById(id);
+
+        if(employee == null) {
+            throw new IllegalArgumentException("employee not found for id: "+ id);
         }
 
         return employee;

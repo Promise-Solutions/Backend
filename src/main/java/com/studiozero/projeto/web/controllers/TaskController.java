@@ -15,6 +15,7 @@ import com.studiozero.projeto.application.usecases.task.ListTasksUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,12 @@ import java.util.UUID;
 @Tag(name = "Tasks", description = "Endpoints for Task Management")
 public class TaskController {
 
-        private final CreateTaskUseCase createTaskUseCase;
-        private final GetTaskUseCase getTaskUseCase;
-        private final UpdateTaskUseCase updateTaskUseCase;
-        private final DeleteTaskUseCase deleteTaskUseCase;
-        private final ListTasksUseCase listTasksUseCase;
-        private final GetEmployeeUseCase getEmployeeUseCase;
+    private final CreateTaskUseCase createTaskUseCase;
+    private final GetTaskUseCase getTaskUseCase;
+    private final UpdateTaskUseCase updateTaskUseCase;
+    private final DeleteTaskUseCase deleteTaskUseCase;
+    private final ListTasksUseCase listTasksUseCase;
+    private final GetEmployeeUseCase getEmployeeUseCase;
 
     public TaskController(CreateTaskUseCase createTaskUseCase, GetTaskUseCase getTaskUseCase, UpdateTaskUseCase updateTaskUseCase, DeleteTaskUseCase deleteTaskUseCase, ListTasksUseCase listTasksUseCase, GetEmployeeUseCase getEmployeeUseCase) {
         this.createTaskUseCase = createTaskUseCase;

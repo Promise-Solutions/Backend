@@ -1,9 +1,11 @@
 package com.studiozero.projeto.application.usecases.client;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.repositories.ClientRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 public class GetClientUseCase {
     private final ClientRepository clientRepository;
@@ -13,11 +15,14 @@ public class GetClientUseCase {
     }
 
     public Client execute(UUID id) {
-        Client client = null;
-        if (id != null) {
-            client = clientRepository.findById(id);
+        Objects.requireNonNull(id, "id must not be null");
+
+        Client clientFound = clientRepository.findById(id);
+
+        if(clientFound == null) {
+            throw new IllegalArgumentException("client not found for id: "+ id);
         }
 
-        return client;
+        return clientFound;
     }
 }

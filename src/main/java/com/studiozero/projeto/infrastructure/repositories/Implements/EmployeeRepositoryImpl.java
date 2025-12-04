@@ -6,6 +6,8 @@ import com.studiozero.projeto.infrastructure.entities.EmployeeEntity;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaEmployeeRepository;
 import com.studiozero.projeto.infrastructure.mappers.EmployeeEntityMapper;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         this.jpaEmployeeRepository = jpaEmployeeRepository;
     }
 
+    @Cacheable(cacheNames = "employees:byId", key = "#id")
     @Override
     public Employee findById(UUID id) {
         return jpaEmployeeRepository.findById(id)
@@ -59,12 +62,14 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         return EmployeeEntityMapper.toDomain(jpaEmployeeRepository.findByCpf(cpf));
     }
 
+    @CacheEvict(cacheNames = "employees:byId", key = "#employee.id")
     @Override
     public void save(Employee employee) {
         EmployeeEntity entity = EmployeeEntityMapper.toEntity(employee);
         jpaEmployeeRepository.save(entity);
     }
 
+    @CacheEvict(cacheNames = "employees:byId", key = "#id")
     @Override
     public void deleteById(UUID id) {
         jpaEmployeeRepository.deleteById(id);
