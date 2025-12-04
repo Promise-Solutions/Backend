@@ -29,7 +29,6 @@ public class RedisConfig {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        // ESSENCIAL para reconstruir objetos do Redis sem virar LinkedHashMap
         mapper.activateDefaultTyping(
                 LaissezFaireSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL
@@ -40,7 +39,6 @@ public class RedisConfig {
 
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer))
-//                .disableCachingNullValues()
                 .prefixCacheNameWith("app::")
                 .entryTtl(Duration.ofHours(1));
 

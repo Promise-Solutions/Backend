@@ -48,13 +48,21 @@ public class TaskController {
         public ResponseEntity<TaskResponseDTO> createTask(
                         @RequestBody @Valid TaskRequestDTO taskDto) {
 
-            Employee employee = getEmployeeUseCase.execute(taskDto.getFkEmployee());
-            Employee assign = getEmployeeUseCase.execute(taskDto.getFkAssigned());
+            Employee employee  = null;
+            Employee assign = null;
 
-             Task task = TaskMapper.toDomain(taskDto, employee, assign);
-                Task savedTask = createTaskUseCase.execute(task);
-                TaskResponseDTO savedDto = TaskMapper.toDTO(savedTask);
-                return ResponseEntity.status(201).body(savedDto);
+            if(taskDto.getFkEmployee() != null) {
+                employee = getEmployeeUseCase.execute(taskDto.getFkEmployee());
+            }
+
+            if(taskDto.getFkAssigned() != null) {
+                assign = getEmployeeUseCase.execute(taskDto.getFkAssigned());
+            }
+
+            Task task = TaskMapper.toDomain(taskDto, employee, assign);
+            Task savedTask = createTaskUseCase.execute(task);
+            TaskResponseDTO savedDto = TaskMapper.toDTO(savedTask);
+            return ResponseEntity.status(201).body(savedDto);
         }
 
         @Operation(summary = "List all task", description = "This method is responsible for list all task.")
