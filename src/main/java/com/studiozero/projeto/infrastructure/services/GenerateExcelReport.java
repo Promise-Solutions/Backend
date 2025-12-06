@@ -128,7 +128,11 @@ public class GenerateExcelReport {
                 row.createCell(2).setCellValue(traduzCategoria(e.getExpenseCategory().toString()));
                 row.createCell(3).setCellValue(e.getDescription());
                 row.createCell(4).setCellValue(e.getAmountSpend());
-                row.createCell(5).setCellValue(e.getProduct().getName());
+                row.createCell(5).setCellValue(
+                          e.getProduct() != null
+                        ? e.getProduct().getName()
+                        : "N/A"
+                );
                 row.createCell(6).setCellValue(traduzTipoPagamento(e.getPaymentType().toString()));
             });
 
@@ -151,8 +155,8 @@ public class GenerateExcelReport {
                     "Status" };
             preencherSheetComDados(subJobSheet, subJobHeaders, headerStyle, subJobs, (Row row, SubJob sj) -> {
                 row.createCell(0).setCellValue(sj.getId().toString());
-                row.createCell(1).setCellValue(sj.getJob() != null ? sj.getJob().getId().toString() : "");
-                row.createCell(2).setCellValue(sj.getJob().getClient().getName());
+                row.createCell(1).setCellValue(sj.getJob() != null ? sj.getJob().getId().toString() : "N/A");
+                row.createCell(2).setCellValue(sj.getJob() != null ? sj.getJob().getClient().getName() : "N/A");
                 row.createCell(3).setCellValue(sj.getTitle());
                 row.createCell(4).setCellValue(sj.getValue());
                 row.createCell(5).setCellValue(formatDate(sj.getDate()));
@@ -168,13 +172,13 @@ public class GenerateExcelReport {
                 row.createCell(0).setCellValue(c.getId().toString());
                 row.createCell(1).setCellValue(
                         c.getClient() != null ? c.getClient().getName() : "Funcionário: " + c.getEmployee().getName());
-                row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "-");
+                row.createCell(2).setCellValue(c.getEmployee() != null ? c.getEmployee().getName() : "N/A");
                 row.createCell(3).setCellValue(traduzStatus(c.getStatus().toString()));
                 row.createCell(4).setCellValue(c.getDiscount());
                 row.createCell(5).setCellValue(c.getTotalValue());
                 row.createCell(6).setCellValue(formatDateTime(c.getOpeningDateTime()));
                 row.createCell(7)
-                        .setCellValue(c.getClosingDateTime() != null ? (formatDateTime(c.getClosingDateTime())) : "-");
+                        .setCellValue(c.getClosingDateTime() != null ? (formatDateTime(c.getClosingDateTime())) : "N/A");
             });
 
             // PRODUTOS
@@ -196,11 +200,12 @@ public class GenerateExcelReport {
                 row.createCell(0).setCellValue(cp.getId());
                 row.createCell(1).setCellValue(cp.getCommand() != null ? cp.getCommand().getId() : '-');
                 row.createCell(2)
-                        .setCellValue(cp.getCommand().getClient() != null
+                        .setCellValue(
+                                  cp.getCommand().getClient() != null
                                 ? "Cliente: " + cp.getCommand().getClient().getName()
                                 : "Funcionário: " + cp.getCommand().getEmployee().getName());
-                row.createCell(3).setCellValue(cp.getCommand() != null ? cp.getCommand().getEmployee().getName() : "-");
-                row.createCell(4).setCellValue(cp.getProduct() != null ? cp.getProduct().getName() : "-");
+                row.createCell(3).setCellValue(cp.getCommand() != null ? cp.getCommand().getEmployee().getName() : "N/A");
+                row.createCell(4).setCellValue(cp.getProduct() != null ? cp.getProduct().getName() : "N/A");
                 row.createCell(5).setCellValue(cp.getProductQuantity());
                 row.createCell(6).setCellValue(cp.getProductQuantity() * cp.getUnitValue());
             });
@@ -241,8 +246,14 @@ public class GenerateExcelReport {
                 row.createCell(0).setCellValue(t.getId().toString());
                 row.createCell(1).setCellValue(t.getTitle());
                 row.createCell(2).setCellValue(t.getDescription());
-                row.createCell(3).setCellValue(t.getEmployee().getName());
-                row.createCell(4).setCellValue(t.getAssign().getName());
+                row.createCell(3).setCellValue(
+                          t.getEmployee() != null
+                        ? t.getEmployee() .getName()
+                        : "Sem autor");
+                row.createCell(4).setCellValue(
+                          t.getAssign() != null
+                        ? t.getAssign().getName()
+                        : "Sem responsável");
                 row.createCell(5).setCellValue(formatDate(t.getStartDate()));
                 row.createCell(6).setCellValue(t.getLimitDate() != null ? formatDate(t.getLimitDate()) : "-");
                 row.createCell(7).setCellValue(traduzStatus(t.getStatus().toString()));

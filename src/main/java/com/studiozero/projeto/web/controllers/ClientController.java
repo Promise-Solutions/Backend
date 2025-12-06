@@ -24,11 +24,11 @@ import java.util.UUID;
 @Tag(name = "Clients", description = "Endpoints for Client Management")
 public class ClientController {
 
-        private final CreateClientUseCase createClientUseCase;
-        private final GetClientUseCase getClientUseCase;
-        private final ListClientsUseCase listClientsUseCase;
-        private final UpdateClientUseCase updateClientUseCase;
-        private final DeleteClientUseCase deleteClientUseCase;
+     private final CreateClientUseCase createClientUseCase;
+     private final GetClientUseCase getClientUseCase;
+     private final ListClientsUseCase listClientsUseCase;
+     private final UpdateClientUseCase updateClientUseCase;
+     private final DeleteClientUseCase deleteClientUseCase;
 
     public ClientController(CreateClientUseCase createClientUseCase, GetClientUseCase getClientUseCase, ListClientsUseCase listClientsUseCase, UpdateClientUseCase updateClientUseCase, DeleteClientUseCase deleteClientUseCase) {
         this.createClientUseCase = createClientUseCase;
@@ -39,48 +39,52 @@ public class ClientController {
     }
 
     @Operation(summary = "Create a new client", description = "This method is responsible for creating a new client.")
-        @PostMapping
-        public ResponseEntity<ClientResponseDTO> createClient(
-                        @RequestBody @Valid ClientRequestDTO clientDto) {
-                Client client= ClientMapper.toDomain(clientDto);
-                Client created = createClientUseCase.execute(client);
-                return ResponseEntity.status(201).body(ClientMapper.toDTO(created));
-        }
+    @PostMapping
+    public ResponseEntity<ClientResponseDTO> createClient(
+        @RequestBody @Valid ClientRequestDTO clientDto
+    ) {
+        Client client = ClientMapper.toDomain(clientDto);
+        Client created = createClientUseCase.execute(client);
+        return ResponseEntity.status(201).body(ClientMapper.toDTO(created));
+    }
 
-        @Operation(summary = "Search a client", description = "This method is responsible for searching a client.")
-        @GetMapping("/{id}")
-        public ResponseEntity<ClientResponseDTO> findClientById(
-                        @PathVariable UUID id) {
-                Client client = getClientUseCase.execute(id);
-                return ResponseEntity.ok(ClientMapper.toDTO(client));
-        }
+    @Operation(summary = "Search a client", description = "This method is responsible for searching a client.")
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponseDTO> findClientById(
+        @PathVariable UUID id
+    ) {
+        Client client = getClientUseCase.execute(id);
+        return ResponseEntity.ok(ClientMapper.toDTO(client));
+    }
 
-        @Operation(summary = "List all clients", description = "This method is responsible for listing all clients.")
-        @GetMapping
-        public ResponseEntity<List<ClientResponseDTO>> listAllClients() {
-                List<Client> clients = listClientsUseCase.execute();
-                if (clients.isEmpty()) {
-                        return ResponseEntity.status(204).build();
-                }
-                List<ClientResponseDTO> dtos = ClientMapper.toDTOList(clients);
-                return ResponseEntity.status(200).body(dtos);
+    @Operation(summary = "List all clients", description = "This method is responsible for listing all clients.")
+    @GetMapping
+    public ResponseEntity<List<ClientResponseDTO>> listAllClients() {
+        List<Client> clients = listClientsUseCase.execute();
+        if (clients.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
+        List<ClientResponseDTO> dtos = ClientMapper.toDTOList(clients);
+        return ResponseEntity.status(200).body(dtos);
+    }
 
-        @Operation(summary = "Update a client", description = "This method is responsible for updating a client.")
-        @PatchMapping("/{id}")
-        public ResponseEntity<ClientResponseDTO> updateClient(
-                        @PathVariable UUID id,
-                        @RequestBody @Valid ClientUpdateRequestDTO clientDto) {
-                Client client = ClientMapper.toDomain(clientDto, id);
-                Client updatedClient = updateClientUseCase.execute(client);
-                return ResponseEntity.ok(ClientMapper.toDTO(updatedClient));
-        }
+    @Operation(summary = "Update a client", description = "This method is responsible for updating a client.")
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClientResponseDTO> updateClient(
+        @PathVariable UUID id,
+        @RequestBody @Valid ClientUpdateRequestDTO clientDto
+    ) {
+        Client client = ClientMapper.toDomain(clientDto, id);
+        Client updatedClient = updateClientUseCase.execute(client);
+        return ResponseEntity.ok(ClientMapper.toDTO(updatedClient));
+    }
 
-        @Operation(summary = "Delete a client", description = "This method is responsible for deleting a client.")
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteClient(
-                        @PathVariable @Valid UUID id) {
-                deleteClientUseCase.execute(id);
-                return ResponseEntity.ok().build();
-        }
+    @Operation(summary = "Delete a client", description = "This method is responsible for deleting a client.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClient(
+        @PathVariable @Valid UUID id
+    ) {
+        deleteClientUseCase.execute(id);
+        return ResponseEntity.ok().build();
+    }
 }

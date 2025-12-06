@@ -26,14 +26,14 @@ import java.util.UUID;
 @Tag(name = "Sub Jobs", description = "Endpoints for Sub Job Management")
 public class SubJobController {
 
-        private final CreateSubJobUseCase createSubJobUseCase;
-        private final GetSubJobUseCase getSubJobUseCase;
-        private final UpdateSubJobUseCase updateSubJobUseCase;
-        private final DeleteSubJobUseCase deleteSubJobUseCase;
-        private final ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase;
-        private final ListSubJobsUseCase listSubJobsUseCase;
-        private final UpdateSubJobStatusUseCase updateSubJobStatusUseCase;
-        private final GetJobUseCase getJobUseCase;
+    private final CreateSubJobUseCase createSubJobUseCase;
+    private final GetSubJobUseCase getSubJobUseCase;
+    private final UpdateSubJobUseCase updateSubJobUseCase;
+    private final DeleteSubJobUseCase deleteSubJobUseCase;
+    private final ListSubJobsByFkServiceUseCase listSubJobsByFkServiceUseCase;
+    private final ListSubJobsUseCase listSubJobsUseCase;
+    private final UpdateSubJobStatusUseCase updateSubJobStatusUseCase;
+    private final GetJobUseCase getJobUseCase;
 
     public SubJobController(CreateSubJobUseCase createSubJobUseCase,
                             GetSubJobUseCase getSubJobUseCase,
@@ -54,40 +54,42 @@ public class SubJobController {
     }
 
     @Operation(summary = "Create a new sub job", description = "This method is responsible for create a new sub job.")
-        @PostMapping
-        public ResponseEntity<SubJobResponseDTO> createSubJob(
-                        @RequestBody @Valid SubJobRequestDTO subJobDto) {
+    @PostMapping
+    public ResponseEntity<SubJobResponseDTO> createSubJob(
+        @RequestBody @Valid SubJobRequestDTO subJobDto
+    ) {
 
-            Job job = getJobUseCase.execute(subJobDto.getFkService());
-            SubJob subJob = SubJobMapper.toDomain(subJobDto, job);
-            SubJob savedSubJob = createSubJobUseCase.execute(subJob);
-            Job jobChanged = savedSubJob.getJob();
-            return ResponseEntity.status(201).body(SubJobMapper.toDTO(savedSubJob, jobChanged));
-        }
+        Job job = getJobUseCase.execute(subJobDto.getFkService());
+        SubJob subJob = SubJobMapper.toDomain(subJobDto, job);
+        SubJob savedSubJob = createSubJobUseCase.execute(subJob);
+        Job jobChanged = savedSubJob.getJob();
+        return ResponseEntity.status(201).body(SubJobMapper.toDTO(savedSubJob, jobChanged));
+    }
 
-        @Operation(summary = "Search a sub job", description = "This method is responsible for search a sub job.")
-        @GetMapping("/{id}")
-        public ResponseEntity<SubJobResponseDTO> findSubJobById(
-                        @PathVariable @Valid UUID id) {
-                SubJob subJob = getSubJobUseCase.execute(id);
-                SubJobResponseDTO jobDto = SubJobMapper.toDTO(subJob);
-                return ResponseEntity.ok(jobDto);
-        }
+    @Operation(summary = "Search a sub job", description = "This method is responsible for search a sub job.")
+    @GetMapping("/{id}")
+    public ResponseEntity<SubJobResponseDTO> findSubJobById(
+        @PathVariable @Valid UUID id
+    ) {
+        SubJob subJob = getSubJobUseCase.execute(id);
+        SubJobResponseDTO jobDto = SubJobMapper.toDTO(subJob);
+        return ResponseEntity.ok(jobDto);
+    }
 
-        @Operation(summary = "List subJobs By a fkService", description = "This method is responsible for listing all subJobs associated with a job.")
-        @GetMapping("/job")
-        public ResponseEntity<Page<SubJobResponseDTO>> listSubJobsByFkService(
-                        @RequestParam @Valid UUID fkService,
-                        @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "10") int size
+    @Operation(summary = "List subJobs By a fkService", description = "This method is responsible for listing all subJobs associated with a job.")
+    @GetMapping("/job")
+    public ResponseEntity<Page<SubJobResponseDTO>> listSubJobsByFkService(
+        @RequestParam @Valid UUID fkService,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
         ) {
-                Page<SubJob> subJobs = listSubJobsByFkServiceUseCase.execute(fkService, PageRequest.of(page, size));
-                if (subJobs.isEmpty()) {
-                        return ResponseEntity.status(204).build();
-                }
-            Page<SubJobResponseDTO> subJobDtos = subJobs.map(SubJobMapper::toDTO);
-            return ResponseEntity.ok(subJobDtos);
+        Page<SubJob> subJobs = listSubJobsByFkServiceUseCase.execute(fkService, PageRequest.of(page, size));
+        if (subJobs.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
+        Page<SubJobResponseDTO> subJobDtos = subJobs.map(SubJobMapper::toDTO);
+        return ResponseEntity.ok(subJobDtos);
+    }
 
     @Operation(summary = "List all sub jobs", description = "This method is responsible for list all sub jobs.")
     @GetMapping
@@ -100,36 +102,38 @@ public class SubJobController {
         return ResponseEntity.ok(subJobDtos);
     }
 
-        @Operation(summary = "Update a sub job", description = "This method is responsible for update a sub job.")
-        @PatchMapping("/{id}")
-        public ResponseEntity<SubJobResponseDTO> updateSubJob(
-                        @PathVariable UUID id,
-                        @RequestBody @Valid SubJobRequestDTO subJobDto) {
-                Job job = getJobUseCase.execute(subJobDto.getFkService());
-                SubJob subJob = SubJobMapper.toDomain(subJobDto, id, job);
-                SubJob updatedSubJob = updateSubJobUseCase.execute(subJob);
+    @Operation(summary = "Update a sub job", description = "This method is responsible for update a sub job.")
+    @PatchMapping("/{id}")
+    public ResponseEntity<SubJobResponseDTO> updateSubJob(
+        @PathVariable UUID id,
+        @RequestBody @Valid SubJobRequestDTO subJobDto
+    ) {
+        Job job = getJobUseCase.execute(subJobDto.getFkService());
+        SubJob subJob = SubJobMapper.toDomain(subJobDto, id, job);
+        SubJob updatedSubJob = updateSubJobUseCase.execute(subJob);
 
-                Double jobTotalValue = updatedSubJob.getJob().getTotalValue();
-                return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, jobTotalValue));
-        }
+        Double jobTotalValue = updatedSubJob.getJob().getTotalValue();
+        return ResponseEntity.ok(SubJobMapper.toDTO(updatedSubJob, jobTotalValue));
+    }
 
-        @Operation(summary = "Update a sub job status", description = "This method is responsible for update a sub job status")
-        @PatchMapping("/{id}/status")
-        public ResponseEntity<SubJobUpdateStatusResponseDTO> updateSubJobStatus(
-                        @PathVariable UUID id,
-                        @RequestBody @Valid SubJobUpdateStatusRequestDTO statusDTO) {
-                SubJob subJobUpdated = updateSubJobStatusUseCase.execute(id, statusDTO.getStatus(), statusDTO.getJobId());
+    @Operation(summary = "Update a sub job status", description = "This method is responsible for update a sub job status")
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<SubJobUpdateStatusResponseDTO> updateSubJobStatus(
+        @PathVariable UUID id,
+        @RequestBody @Valid SubJobUpdateStatusRequestDTO statusDTO
+    ) {
+        SubJob subJobUpdated = updateSubJobStatusUseCase.execute(id, statusDTO.getStatus(), statusDTO.getJobId());
 
-                return ResponseEntity.ok().body(new SubJobUpdateStatusResponseDTO(subJobUpdated.getId(),
+        return ResponseEntity.ok().body(new SubJobUpdateStatusResponseDTO(subJobUpdated.getId(),
                                 subJobUpdated.getStatus(), subJobUpdated.getJob().getStatus()));
-        }
+    }
 
-        @Operation(summary = "Delete a sub job", description = "This method is responsible for delete a sub job.")
-        @DeleteMapping("/{id}")
-        public ResponseEntity<SubJobDeleteResponseDTO> deleteSubJob(
-                        @PathVariable UUID id) {
-            SubJob subJobDeleted = deleteSubJobUseCase.execute(id);
-
-            return ResponseEntity.ok().body(SubJobMapper.toDTO(id, subJobDeleted.getJob()));
-        }
+    @Operation(summary = "Delete a sub job", description = "This method is responsible for delete a sub job.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SubJobDeleteResponseDTO> deleteSubJob(
+        @PathVariable UUID id
+    ) {
+        SubJob subJobDeleted = deleteSubJobUseCase.execute(id);
+        return ResponseEntity.ok().body(SubJobMapper.toDTO(id, subJobDeleted.getJob()));
+    }
 }

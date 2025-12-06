@@ -27,15 +27,14 @@ import java.util.UUID;
 @Tag(name = "Employees", description = "Endpoints for Employee Management")
 public class EmployeeController {
 
-        private final CreateEmployeeUseCase createEmployeeUseCase;
-        private final GetEmployeeUseCase getEmployeeUseCase;
-        private final UpdateEmployeeUseCase updateEmployeeUseCase;
-        private final LoginEmployeeUseCase loginEmployeeUseCase;
-        private final DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase;
-        private final ListEmployeesUseCase listEmployeesUseCase;
-        private final AuthenticationManager authenticationManager;
-        private final GenerateTokenService generateTokenService;
-        private final EncryptPasswordService encryptPasswordService;
+     private final CreateEmployeeUseCase createEmployeeUseCase;
+     private final GetEmployeeUseCase getEmployeeUseCase;
+     private final UpdateEmployeeUseCase updateEmployeeUseCase;
+     private final DeleteEmployeeWithUserUseCase deleteEmployeeWithUserUseCase;
+     private final ListEmployeesUseCase listEmployeesUseCase;
+     private final AuthenticationManager authenticationManager;
+     private final GenerateTokenService generateTokenService;
+     private final EncryptPasswordService encryptPasswordService;
 
     public EmployeeController(CreateEmployeeUseCase createEmployeeUseCase,
                               GetEmployeeUseCase getEmployeeUseCase,
@@ -50,7 +49,6 @@ public class EmployeeController {
         this.createEmployeeUseCase = createEmployeeUseCase;
         this.getEmployeeUseCase = getEmployeeUseCase;
         this.updateEmployeeUseCase = updateEmployeeUseCase;
-        this.loginEmployeeUseCase = loginEmployeeUseCase;
         this.deleteEmployeeWithUserUseCase = deleteEmployeeWithUserUseCase;
         this.listEmployeesUseCase = listEmployeesUseCase;
         this.authenticationManager = authenticationManager;
@@ -58,69 +56,75 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Create a employee", description = "This method is responsible for create a employee.")
-        @PostMapping
-        public ResponseEntity<EmployeeResponseDTO> createEmployee(
-                        @RequestBody @Valid EmployeeRequestDTO employeeDto) {
+    @PostMapping
+    public ResponseEntity<EmployeeResponseDTO> createEmployee(
+        @RequestBody @Valid EmployeeRequestDTO employeeDto
+    ) {
 
-                Employee employee = EmployeeMapper.toDomain(employeeDto);
-                Employee employeeToEncrypt = encryptPasswordService.encryptPassword(employee);
-                createEmployeeUseCase.execute(employeeToEncrypt);
-                return ResponseEntity.status(201).body(EmployeeMapper.toDTO(employee));
+        Employee employee = EmployeeMapper.toDomain(employeeDto);
+        Employee employeeToEncrypt = encryptPasswordService.encryptPassword(employee);
+        createEmployeeUseCase.execute(employeeToEncrypt);
+        return ResponseEntity.status(201).body(EmployeeMapper.toDTO(employee));
+    }
+
+    @Operation(summary = "Login a employee", description = "This method is responsible for login a employee.")
+    @PostMapping("/login")
+    public ResponseEntity<EmployeeLoginResponseDTO> loginEmployee(
+        @RequestBody @Valid EmployeeLoginRequestDTO employeeDto
+    ) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(
+            employeeDto.getEmail(),
+            employeeDto.getPassword()
+        );
+
+        var auth = authenticationManager.authenticate(usernamePassword);
+
+        var employeeUserDetails = (EmployeeUserDetails) auth.getPrincipal();
+
+        var token = generateTokenService.execute(employeeUserDetails.getEmployee());
+        var id = employeeUserDetails.getEmployee().getId();
+
+        return ResponseEntity.ok(new EmployeeLoginResponseDTO(token, id));
+    }
+
+    @Operation(summary = "Search a employee", description = "This method is responsible for search a employee.")
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeResponseDTO> findEmployeeById(
+        @PathVariable @Valid UUID id
+    ) {
+        Employee employee = getEmployeeUseCase.execute(id);
+        return ResponseEntity.ok(EmployeeMapper.toDTO(employee));
+    }
+
+    @Operation(summary = "List all employees", description = "This method is responsible for list all employees.")
+    @GetMapping
+    public ResponseEntity<List<EmployeeResponseDTO>> listAllEmployees() {
+        List<Employee> employees = listEmployeesUseCase.execute();
+        if (employees.isEmpty()) {
+            return ResponseEntity.status(204).build();
         }
+        List<EmployeeResponseDTO> dtos = EmployeeMapper.toDTOList(employees);
+        return ResponseEntity.status(200).body(dtos);
+    }
 
-        @Operation(summary = "Login a employee", description = "This method is responsible for login a employee.")
-        @PostMapping("/login")
-        public ResponseEntity<EmployeeLoginResponseDTO> loginEmployee(
-                        @RequestBody @Valid EmployeeLoginRequestDTO employeeDto) {
-                var usernamePassword = new UsernamePasswordAuthenticationToken(
-                                employeeDto.getEmail(),
-                                employeeDto.getPassword());
+    @Operation(summary = "Update a employee", description = "This method is responsible for update a employee.")
+    @PatchMapping("/{id}")
+    public ResponseEntity<EmployeeResponseDTO> updateEmployee(
+        @PathVariable @Valid UUID id,
+        @RequestBody @Valid EmployeeUpdateRequestDTO employeeDto
+    ) {
+        Employee employee = EmployeeMapper.toDomain(employeeDto, id);
+        Employee updatedEmployee = updateEmployeeUseCase.execute(employee);
+        return ResponseEntity.ok(EmployeeMapper.toDTO(updatedEmployee));
+    }
 
-                var auth = authenticationManager.authenticate(usernamePassword);
-
-                var employeeUserDetails = (EmployeeUserDetails) auth.getPrincipal();
-
-                var token = generateTokenService.execute(employeeUserDetails.getEmployee());
-                var id = employeeUserDetails.getEmployee().getId();
-
-                return ResponseEntity.ok(new EmployeeLoginResponseDTO(token, id));
-        }
-
-        @Operation(summary = "Search a employee", description = "This method is responsible for search a employee.")
-        @GetMapping("/{id}")
-        public ResponseEntity<EmployeeResponseDTO> findEmployeeById(
-                        @PathVariable @Valid UUID id) {
-                Employee employee = getEmployeeUseCase.execute(id);
-                return ResponseEntity.ok(EmployeeMapper.toDTO(employee));
-        }
-
-        @Operation(summary = "List all employees", description = "This method is responsible for list all employees.")
-        @GetMapping
-        public ResponseEntity<List<EmployeeResponseDTO>> listAllEmployees() {
-                List<Employee> employees = listEmployeesUseCase.execute();
-                if (employees.isEmpty()) {
-                        return ResponseEntity.status(204).build();
-                }
-                List<EmployeeResponseDTO> dtos = EmployeeMapper.toDTOList(employees);
-                return ResponseEntity.status(200).body(dtos);
-        }
-
-        @Operation(summary = "Update a employee", description = "This method is responsible for update a employee.")
-        @PatchMapping("/{id}")
-        public ResponseEntity<EmployeeResponseDTO> updateEmployee(
-                        @PathVariable @Valid UUID id,
-                        @RequestBody @Valid EmployeeUpdateRequestDTO employeeDto) {
-                Employee employee = EmployeeMapper.toDomain(employeeDto, id);
-                Employee updatedEmployee = updateEmployeeUseCase.execute(employee);
-                return ResponseEntity.ok(EmployeeMapper.toDTO(updatedEmployee));
-        }
-
-        @Operation(summary = "Delete a employee", description = "This method is responsible for delete a employee.")
-        @DeleteMapping("/{id}/{userLogged}")
-        public ResponseEntity<Void> deleteEmployee(
-                        @PathVariable @Valid UUID id,
-                        @PathVariable @Valid UUID userLogged) {
-                deleteEmployeeWithUserUseCase.execute(id, userLogged);
-                return ResponseEntity.ok().build();
-        }
+    @Operation(summary = "Delete a employee", description = "This method is responsible for delete a employee.")
+    @DeleteMapping("/{id}/{userLogged}")
+    public ResponseEntity<Void> deleteEmployee(
+        @PathVariable @Valid UUID id,
+        @PathVariable @Valid UUID userLogged
+    ) {
+        deleteEmployeeWithUserUseCase.execute(id, userLogged);
+        return ResponseEntity.ok().build();
+    }
 }

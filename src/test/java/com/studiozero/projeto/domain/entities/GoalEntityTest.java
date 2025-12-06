@@ -9,7 +9,7 @@ public class GoalEntityTest {
     void testGoalCreation() {
         Goal g = new Goal(1, 100.0);
         assertEquals(1, g.getId());
-        assertEquals(100.0, g.getGoal());
+        assertEquals(100.0, g.getValue());
     }
 
     @Test

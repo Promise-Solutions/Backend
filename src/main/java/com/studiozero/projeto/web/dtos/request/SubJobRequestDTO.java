@@ -6,6 +6,7 @@ import com.studiozero.projeto.application.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,7 +22,7 @@ public class SubJobRequestDTO {
     private String description;
 
     @NotNull(message = "Value is mandatory")
-    @Positive
+    @PositiveOrZero
     private Double value;
 
     private LocalDate date;
@@ -70,11 +71,11 @@ public class SubJobRequestDTO {
         this.description = description;
     }
 
-    public @NotNull(message = "Value is mandatory") @Positive Double getValue() {
+    public @NotNull(message = "Value is mandatory") @PositiveOrZero Double getValue() {
         return value;
     }
 
-    public void setValue(@NotNull(message = "Value is mandatory") @Positive Double value) {
+    public void setValue(@NotNull(message = "Value is mandatory") @PositiveOrZero Double value) {
         this.value = value;
     }
 

@@ -1,25 +1,25 @@
 package com.studiozero.projeto.web.dtos.request;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public class GoalRequestDTO {
     @NotNull
-    @Positive
-    private Double goal;
+    @PositiveOrZero
+    private Double value;
 
     public GoalRequestDTO() {
     }
 
-    public GoalRequestDTO(Double goal) {
-        this.goal = goal;
+    public GoalRequestDTO(Double value) {
+        this.value = value;
     }
 
-    public @NotNull @Positive Double getGoal() {
-        return goal;
+    public @NotNull @PositiveOrZero Double getValue() {
+        return value;
     }
 
-    public void setGoal(@NotNull @Positive Double goal) {
-        this.goal = goal;
+    public void setValue(@NotNull @PositiveOrZero Double value) {
+        this.value = value;
     }
 }

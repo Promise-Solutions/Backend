@@ -62,9 +62,13 @@ public class GoalController {
         return ResponseEntity.ok(GoalMapper.toDTO(goal));
     }
 
-    @PutMapping
-    public ResponseEntity<GoalResponseDTO> updateGoal(@Valid @RequestBody Goal goal) {
-        Goal updatedGoal = updateGoalUseCase.execute(goal);
+    @PutMapping("/{id}")
+    public ResponseEntity<GoalResponseDTO> updateGoal(
+            @PathVariable Integer id,
+            @Valid @RequestBody GoalRequestDTO goal
+    ) {
+        Goal goalDomain = GoalMapper.toDomain(goal);
+        Goal updatedGoal = updateGoalUseCase.execute(id, goalDomain);
         return ResponseEntity.ok(GoalMapper.toDTO(updatedGoal));
     }
 

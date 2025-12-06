@@ -14,7 +14,7 @@ public class GoalEntityMapper {
 
     public static GoalEntity toEntity(Goal goal) {
         if (goal == null) return null;
-        return new GoalEntity(goal.getId(), goal.getGoal());
+        return new GoalEntity(goal.getId(), goal.getValue());
     }
 
     public static List<Goal> toDomainList(List<GoalEntity> entities) {

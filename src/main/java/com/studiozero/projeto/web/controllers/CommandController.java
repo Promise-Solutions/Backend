@@ -50,8 +50,12 @@ public class CommandController {
     @Operation(summary = "Create a new command", description = "This method is responsible for creating a new command.")
     @PostMapping
     public ResponseEntity<CommandResponseDTO> createCommand(
-            @RequestBody @Valid CommandRequestDTO commandDto) {
-        Client client = getClientUseCase.execute(commandDto.getFkClient());
+            @RequestBody @Valid CommandRequestDTO commandDto
+    ) {
+        Client client = null;
+        if(commandDto.getFkClient() != null) {
+            client = getClientUseCase.execute(commandDto.getFkClient());
+        }
         Employee employee = getEmployeeUseCase.execute(commandDto.getFkEmployee());
         Command command = CommandMapper.toDomain(commandDto, client, employee);
         Command savedCommand = createCommandUseCase.execute(command);
@@ -99,7 +103,10 @@ public class CommandController {
     public ResponseEntity<CommandResponseDTO> updateCommand(
             @PathVariable Integer id,
             @RequestBody @Valid CommandRequestDTO commandDto) {
-        Client client = getClientUseCase.execute(commandDto.getFkClient());
+        Client client = null;
+        if(commandDto.getFkClient() != null) {
+            client = getClientUseCase.execute(commandDto.getFkClient());
+        }
         Employee employee = getEmployeeUseCase.execute(commandDto.getFkEmployee());
         Command command = CommandMapper.toDomain(commandDto, id, client, employee);
         Command updatedCommand = updateCommandUseCase.execute(command);

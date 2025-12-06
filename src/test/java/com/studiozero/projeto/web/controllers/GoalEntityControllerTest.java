@@ -36,7 +36,7 @@ public class GoalEntityControllerTest {
         };
         UpdateGoalUseCase update = new UpdateGoalUseCase(null) {
             @Override
-            public Goal execute(Goal goal) { return goal; }
+            public Goal execute(Integer id, Goal goal) { return goal; }
         };
         DeleteGoalUseCase delete = new DeleteGoalUseCase(null) {
             @Override

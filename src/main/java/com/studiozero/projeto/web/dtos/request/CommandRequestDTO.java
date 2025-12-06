@@ -25,7 +25,6 @@ public class CommandRequestDTO {
     @NotNull(message = "Total value is mandatory")
     private Double totalValue;
 
-    @Nullable
     private UUID fkClient;
 
     @NotNull(message = "Employee ID is mandatory")

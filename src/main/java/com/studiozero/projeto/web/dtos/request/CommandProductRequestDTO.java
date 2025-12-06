@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
 public class CommandProductRequestDTO {
@@ -21,7 +22,7 @@ public class CommandProductRequestDTO {
 
     // não vai ser solicitado, isInternal que vai determinar isso
     @NotNull(message = "unitValue is mandatory")
-    @Positive
+    @PositiveOrZero
     private Double unitValue;
 
     public CommandProductRequestDTO() {
@@ -58,11 +59,11 @@ public class CommandProductRequestDTO {
         this.productQuantity = productQuantity;
     }
 
-    public @NotNull(message = "unitValue is mandatory") @Positive Double getUnitValue() {
+    public @NotNull(message = "unitValue is mandatory") @PositiveOrZero Double getUnitValue() {
         return unitValue;
     }
 
-    public void setUnitValue(@NotNull(message = "unitValue is mandatory") @Positive Double unitValue) {
+    public void setUnitValue(@NotNull(message = "unitValue is mandatory") @PositiveOrZero Double unitValue) {
         this.unitValue = unitValue;
     }
 }
