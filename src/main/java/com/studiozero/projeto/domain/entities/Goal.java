@@ -10,6 +10,9 @@ public class Goal {
         this.value = value;
     }
 
+    public Goal() {
+    }
+
     private void validateGoal(Double goal) {
         if (goal == null || goal <= 0) {
             throw new IllegalArgumentException("Goal must be greater than zero");
@@ -27,5 +30,13 @@ public class Goal {
     public void changeGoal(Double newGoal) {
         validateGoal(newGoal);
         this.value = newGoal;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
     }
 }

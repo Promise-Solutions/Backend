@@ -34,6 +34,10 @@ public class Command {
         this.status = status;
     }
 
+    public Command() {
+
+    }
+
     private void validateCommandNumber(Integer commandNumber) {
         if (commandNumber == null || commandNumber <= 0) {
             throw new IllegalArgumentException("Command number must be greater than zero");

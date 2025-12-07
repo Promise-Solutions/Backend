@@ -10,14 +10,14 @@ public class GoalEntityResponseDTOTest {
     void testDTOCreation() {
         GoalResponseDTO dto = new GoalResponseDTO();
         dto.setId(1);
-        dto.setTitle("Goal");
+        dto.setValue(100.0);
         assertEquals(1, dto.getId());
-        assertEquals("Goal", dto.getTitle());
+        assertEquals(100.00, dto.getValue());
     }
 
     @Test
     void testDTOInvalidData() {
         GoalResponseDTO dto = new GoalResponseDTO();
-        assertNull(dto.getTitle());
+        assertNull(dto.getValue());
     }
 }

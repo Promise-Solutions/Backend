@@ -19,6 +19,10 @@ public class CommandProduct {
         this.unitValue = unitValue;
     }
 
+    public CommandProduct() {
+
+    }
+
     private void validateProduct(Product product) {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
@@ -85,5 +89,25 @@ public class CommandProduct {
 
     public void addQuantity(Integer quantity) {
         changeProductQuantity(this.productQuantity + quantity);
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public void setUnitValue(Double unitValue) {
+        this.unitValue = unitValue;
     }
 }

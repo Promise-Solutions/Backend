@@ -42,6 +42,10 @@ public class Expense {
         this.paymentType = paymentType;
     }
 
+    public Expense() {
+
+    }
+
     private void validateDescription(String description) {
         if (description == null || description.trim().isEmpty()) {
             throw new IllegalArgumentException("Description cannot be null or empty");
@@ -103,5 +107,37 @@ public class Expense {
     public void changeAmountSpend(Double newAmountSpend) {
         validateAmountSpend(newAmountSpend);
         this.amountSpend = newAmountSpend;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setExpenseCategory(ExpenseCategory expenseCategory) {
+        this.expenseCategory = expenseCategory;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setAmountSpend(Double amountSpend) {
+        this.amountSpend = amountSpend;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 }

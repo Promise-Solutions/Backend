@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.studiozero.projeto.domain.entities.Client;
 import com.studiozero.projeto.domain.repositories.ClientRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 public class GetClientUseCase {
     private final ClientRepository clientRepository;

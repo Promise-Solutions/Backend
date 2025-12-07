@@ -16,6 +16,10 @@ public class Product {
         this.internalValue = internalValue;
     }
 
+    public Product() {
+
+    }
+
     public Integer getId() {
         return id;
     }

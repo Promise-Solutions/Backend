@@ -1,6 +1,4 @@
-
 package com.studiozero.projeto.application.usecases.product;
-
 
 import com.studiozero.projeto.domain.entities.Product;
 import com.studiozero.projeto.domain.repositories.ProductRepository;

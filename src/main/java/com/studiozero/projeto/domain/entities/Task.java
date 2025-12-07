@@ -28,6 +28,13 @@ public class Task {
         this.assign = assign;
     }
 
+    public Task() {
+
+    }
+
+    public Task(UUID uuid, String exampleTask, String desc, LocalDate now, boolean b) {
+    }
+
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");

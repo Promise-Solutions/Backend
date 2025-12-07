@@ -1,6 +1,5 @@
 package com.studiozero.projeto.application.usecases.subjob;
 
-import com.studiozero.projeto.domain.entities.Job;
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
 import org.springframework.data.domain.Page;
