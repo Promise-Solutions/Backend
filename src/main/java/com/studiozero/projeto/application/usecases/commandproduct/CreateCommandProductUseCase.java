@@ -1,6 +1,5 @@
 package com.studiozero.projeto.application.usecases.commandproduct;
 
-import com.studiozero.projeto.application.enums.Status;
 import com.studiozero.projeto.application.usecases.command.CommandTotalCalculator;
 import com.studiozero.projeto.application.usecases.command.GetCommandUseCase;
 import com.studiozero.projeto.application.usecases.command.UpdateCommandUseCase;

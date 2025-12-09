@@ -2,12 +2,15 @@ package com.studiozero.projeto.domain.entities;
 
 public class Goal {
     private Integer id;
-    private Double goal;
+    private Double value;
 
-    public Goal(Integer id, Double goal) {
-        validateGoal(goal);
+    public Goal(Integer id, Double value) {
+        validateGoal(value);
         this.id = id;
-        this.goal = goal;
+        this.value = value;
+    }
+
+    public Goal() {
     }
 
     private void validateGoal(Double goal) {
@@ -20,12 +23,20 @@ public class Goal {
         return id;
     }
 
-    public Double getGoal() {
-        return goal;
+    public Double getValue() {
+        return value;
     }
 
     public void changeGoal(Double newGoal) {
         validateGoal(newGoal);
-        this.goal = newGoal;
+        this.value = newGoal;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
     }
 }

@@ -4,6 +4,7 @@ import com.studiozero.projeto.application.enums.ExpenseCategory;
 import com.studiozero.projeto.application.enums.PaymentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 
@@ -29,7 +30,7 @@ public class ExpenseEntity {
     @Column(name = "quantidade")
     private Integer quantity;
 
-    @Positive
+    @PositiveOrZero
     @Column(name = "valor", nullable = false)
     private Double amountSpend;
 
@@ -95,11 +96,11 @@ public class ExpenseEntity {
         this.quantity = quantity;
     }
 
-    public @Positive Double getAmountSpend() {
+    public @PositiveOrZero Double getAmountSpend() {
         return amountSpend;
     }
 
-    public void setAmountSpend(@Positive Double amountSpend) {
+    public void setAmountSpend(@PositiveOrZero Double amountSpend) {
         this.amountSpend = amountSpend;
     }
 

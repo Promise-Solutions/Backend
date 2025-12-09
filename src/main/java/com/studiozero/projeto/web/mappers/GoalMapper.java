@@ -8,12 +8,12 @@ import java.util.List;
 public class GoalMapper {
     public static Goal toDomain(GoalRequestDTO dto) {
         if (dto == null) return null;
-        return new Goal(null, dto.getGoal());
+        return new Goal(null, dto.getValue());
     }
 
     public static Goal toDomain(GoalRequestDTO dto, Integer id) {
         if (dto == null || id == null) return null;
-        return new Goal(id, dto.getGoal());
+        return new Goal(id, dto.getValue());
     }
 
     public static GoalResponseDTO toDTO(Goal goal) {

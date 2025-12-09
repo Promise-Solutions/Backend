@@ -93,6 +93,10 @@ public class SubJob {
         this.status = status;
     }
 
+    public SubJob() {
+
+    }
+
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");

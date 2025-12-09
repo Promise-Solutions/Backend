@@ -6,6 +6,8 @@ import com.studiozero.projeto.infrastructure.entities.ClientEntity;
 import com.studiozero.projeto.infrastructure.mappers.ClientEntityMapper;
 import com.studiozero.projeto.infrastructure.repositories.jpa.JpaClientRepository;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class ClientRepositoryImpl implements ClientRepository {
         this.jpaClientRepository = jpaClientRepository;
     }
 
+    @Cacheable(cacheNames = "clients:byId", key = "#id")
     @Override
     public Client findById(UUID id) {
         return jpaClientRepository.findById(id)
@@ -26,12 +29,15 @@ public class ClientRepositoryImpl implements ClientRepository {
             .orElse(null);
     }
 
+    @CacheEvict(cacheNames = "clients:byId", key = "#client.id")
     @Override
     public void save(Client client) {
         ClientEntity entity = ClientEntityMapper.toEntity(client);
         jpaClientRepository.save(entity);
     }
 
+
+    @CacheEvict(cacheNames = "clients:byId", key = "#id")
     @Override
     public void deleteById(UUID id) {
         jpaClientRepository.deleteById(id);

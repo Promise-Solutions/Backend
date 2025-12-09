@@ -89,6 +89,10 @@ public class Job {
         this.subJobs = new ArrayList<>();
     }
 
+    public Job() {
+
+    }
+
     private void validateClient(Client client) {
         if (client == null) {
             throw new IllegalArgumentException("Client cannot be null");

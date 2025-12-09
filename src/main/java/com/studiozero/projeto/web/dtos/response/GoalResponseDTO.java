@@ -5,19 +5,19 @@ import com.studiozero.projeto.domain.entities.Goal;
 
 public class GoalResponseDTO {
     private Integer id;
-    private Double goal;
+    private Double value;
 
     public GoalResponseDTO(Goal entity) {
         this.id = entity.getId();
-        this.goal = entity.getGoal();
+        this.value = entity.getValue();
     }
 
     public GoalResponseDTO() {
     }
 
-    public GoalResponseDTO(Integer id, Double goal) {
+    public GoalResponseDTO(Integer id, Double value) {
         this.id = id;
-        this.goal = goal;
+        this.value = value;
     }
 
     public Integer getId() {
@@ -28,11 +28,11 @@ public class GoalResponseDTO {
         this.id = id;
     }
 
-    public Double getGoal() {
-        return goal;
+    public Double getValue() {
+        return value;
     }
 
-    public void setGoal(Double goal) {
-        this.goal = goal;
+    public void setValue(Double value) {
+        this.value = value;
     }
 }

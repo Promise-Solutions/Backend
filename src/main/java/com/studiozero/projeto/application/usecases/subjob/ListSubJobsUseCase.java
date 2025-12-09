@@ -2,8 +2,6 @@ package com.studiozero.projeto.application.usecases.subjob;
 
 import com.studiozero.projeto.domain.entities.SubJob;
 import com.studiozero.projeto.domain.repositories.SubJobRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 

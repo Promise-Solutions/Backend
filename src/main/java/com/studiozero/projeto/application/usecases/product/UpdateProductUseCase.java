@@ -24,11 +24,11 @@ public class UpdateProductUseCase {
     }
 
     private void validateProductsValues(Product product) {
-        if (product.getClientValue() == null || product.getClientValue() <= 0) {
-            throw new IllegalArgumentException("Client value should be greater than zero");
+        if (product.getClientValue() == null || product.getClientValue() < 0) {
+            throw new IllegalArgumentException("Client value should not be negative");
         }
-        if (product.getInternalValue() == null || product.getInternalValue() <= 0) {
-            throw new IllegalArgumentException("Internal value should be greater than zero");
+        if (product.getInternalValue() == null || product.getInternalValue() < 0) {
+            throw new IllegalArgumentException("Internal value should not be negative");
         }
     }
 }

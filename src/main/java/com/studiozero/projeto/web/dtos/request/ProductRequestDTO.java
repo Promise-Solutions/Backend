@@ -18,11 +18,11 @@ public class ProductRequestDTO {
     private Integer quantity;
 
     @NotNull(message = "clientValue  is mandatory")
-    @Positive
+    @PositiveOrZero(message = "clientValue must not be negative")
     private Double clientValue;
 
     @NotNull(message = "internalValue  is mandatory")
-    @Positive
+    @PositiveOrZero(message = "internalValue must not be negative")
     private Double internalValue;
 
     public ProductRequestDTO() {
@@ -51,19 +51,19 @@ public class ProductRequestDTO {
         this.quantity = quantity;
     }
 
-    public @NotNull(message = "clientValue  is mandatory") @Positive Double getClientValue() {
+    public @NotNull(message = "clientValue  is mandatory") @PositiveOrZero Double getClientValue() {
         return clientValue;
     }
 
-    public void setClientValue(@NotNull(message = "clientValue  is mandatory") @Positive Double clientValue) {
+    public void setClientValue(@NotNull(message = "clientValue  is mandatory") @PositiveOrZero Double clientValue) {
         this.clientValue = clientValue;
     }
 
-    public void setInternalValue(@NotNull(message = "internalValue  is mandatory") @Positive Double internalValue) {
+    public void setInternalValue(@NotNull(message = "internalValue  is mandatory") @PositiveOrZero Double internalValue) {
         this.internalValue = internalValue;
     }
 
-    public @NotNull(message = "internalValue  is mandatory") @Positive Double getInternalValue() {
+    public @NotNull(message = "internalValue  is mandatory") @PositiveOrZero Double getInternalValue() {
         return internalValue;
     }
 }
