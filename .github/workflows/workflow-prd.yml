@@ -88,3 +88,48 @@ jobs:
           VERSION="${{ steps.project_version.outputs.VERSION }}"
           docker push $IMAGE:$VERSION
           docker push $IMAGE:latest
+
+      # -------------------------------------------------------
+      # DEPLOY PARA AWS (public -> private)
+      # Acessa a instância pública via SSH e, a partir dela, conecta na
+      # instância privada para remover containers e subir o docker-compose
+      # que fica em /home/ubuntu/app/studiozero (sempre usa :latest).
+      # -------------------------------------------------------
+      - name: Deploy to AWS (public -> private)
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.DEPLOY_PUBLIC_HOST }}
+          username: ${{ secrets.DEPLOY_PUBLIC_USER }}
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.DEPLOY_SSH_PORT }}
+          script: |
+            set -e
+            echo 'Preparando chave temporária para acesso à instância privada'
+            cat > /tmp/deploy_key <<'SSH_KEY'
+            ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+            SSH_KEY
+            chmod 600 /tmp/deploy_key
+
+            echo 'Conectando da instância pública na instância privada e executando deploy'
+            ssh -o StrictHostKeyChecking=no -i /tmp/deploy_key ${{ secrets.DEPLOY_PRIVATE_USER }}@${{ secrets.DEPLOY_PRIVATE_HOST }} <<'REMOTE_CMDS'
+              set -e
+              echo 'Removendo containers antigos (se existirem)'
+              docker rm -f backend-1 backend-2 || true
+
+              echo 'Indo para o diretório do app e atualizando imagens'
+              cd /home/ubuntu/app/studiozero || exit 1
+
+              # Puxa imagens latest (opcional, garante que a tag latest esteja atualizada)
+              docker compose pull || true
+
+              echo 'Derrubando compose atual e apagando volumes temporários (se houver)'
+              docker compose down -v || true
+
+              echo 'Subindo containers em background (detached)'
+              docker compose up -d
+
+              echo 'Deploy concluído na instância privada'
+            REMOTE_CMDS
+
+            echo 'Limpeza da chave temporária'
+            shred -u /tmp/deploy_key || rm -f /tmp/deploy_key || true
