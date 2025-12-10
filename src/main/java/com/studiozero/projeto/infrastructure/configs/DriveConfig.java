@@ -9,7 +9,6 @@ import com.google.api.services.drive.DriveScopes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,26 +21,21 @@ public class DriveConfig {
     private static final String APPLICATION_NAME = "Backoffice";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    @Value("${google.credentials.path:}")
+    @Value("${google.credentials.path}")
     private String credentialsPath;
 
     @Bean(name = "customGoogleDriveService")
     public Drive googleDriveService() throws Exception {
-        InputStream credentialsStream;
 
-        if (credentialsPath != null && !credentialsPath.isBlank()) {
-            File credentialsFile = new File(credentialsPath);
-            if (!credentialsFile.exists()) {
-                throw new IllegalStateException("Arquivo de credenciais não encontrado em: " + credentialsPath);
-            }
-            credentialsStream = new FileInputStream(credentialsFile);
-        } else {
-            ClassPathResource resource = new ClassPathResource("credentials.json");
-            if (!resource.exists()) {
-                throw new IllegalStateException("Arquivo credentials.json não encontrado no classpath.");
-            }
-            credentialsStream = resource.getInputStream();
+        File credentialsFile = new File(credentialsPath);
+
+        if (!credentialsFile.exists()) {
+            throw new IllegalStateException(
+                    "Arquivo de credenciais não encontrado em: " + credentialsFile.getAbsolutePath()
+            );
         }
+
+        InputStream credentialsStream = new FileInputStream(credentialsFile);
 
         GoogleCredential credential = GoogleCredential.fromStream(credentialsStream)
                 .createScoped(Collections.singleton(DriveScopes.DRIVE));
