@@ -47,7 +47,6 @@ public class SecurityConfig {
 
             // Auth endpoints
             "/api/employees/login",
-            "/api/employees/**",
             "/api/auth/forgot-password",
             "/api/auth/reset-password",
 
