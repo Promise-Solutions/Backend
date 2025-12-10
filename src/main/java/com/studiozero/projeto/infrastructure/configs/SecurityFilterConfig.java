@@ -31,7 +31,7 @@ public class SecurityFilterConfig extends OncePerRequestFilter {
             "/webjars",
             "/h2-console",
             "/actuator",
-            "/api/employees/**",
+            "/api/employees/login",
             "/api/auth/forgot-password",
             "/api/auth/reset-password",
             "/api/error"
